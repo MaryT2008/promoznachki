@@ -1516,25 +1516,6 @@ a { color: inherit; text-decoration: none; }
 .pp-badge--38b { --r: 9deg;   left: 70%; top: 58%; height: 30%; z-index: 3; animation-delay: -1s; }
 .pp-badge--25  { --r: -6deg;  left: 80%; top: 8%;  height: 20%; z-index: 1; animation-delay: -5s; }
 
-/* Подписи размеров */
-.pp-size-tag {
-  position: absolute;
-  z-index: 4;
-  padding: 5px 11px;
-  border-radius: 999px;
-  background: var(--white);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, .10);
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--orange-dark);
-  white-space: nowrap;
-}
-
-.pp-size-tag--78 { left: 74%; top: 30%; }
-.pp-size-tag--56 { left: 4%;  top: 89%; }
-.pp-size-tag--38 { left: 78%; top: 88%; }
-.pp-size-tag--25 { left: 80%; top: 1%; }
-
 @keyframes float {
   0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
   50% { transform: translateY(-10px) rotate(calc(var(--r, 0deg) + 3deg)); }
