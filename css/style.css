@@ -582,7 +582,6 @@ a { color: inherit; text-decoration: none; }
   .work { border-radius: 12px; }
   .work-caption { padding: 28px 10px 9px; font-size: 11px; }
   .work-caption b { font-size: 12px; }
-  .work-caption-text { display: none; }
 }
 
 /* ---------- Адаптив ---------- */
