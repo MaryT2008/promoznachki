@@ -189,7 +189,7 @@ a { color: inherit; text-decoration: none; }
   white-space: nowrap;
 }
 
-.catalog { padding: 24px 0 56px; }
+.catalog { padding: 8px 0 56px; }
 
 .catalog-grid {
   display: grid;
@@ -251,7 +251,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 640px) {
-  .catalog { padding: 8px 0 40px; }
+  .catalog { padding: 0 0 40px; }
   .catalog-grid { gap: 12px; }
   .catalog-card { border-radius: 10px; }
   .catalog-card-title { font-size: 14px; padding: 10px 8px 12px; }
@@ -439,7 +439,7 @@ a { color: inherit; text-decoration: none; }
     color: var(--white);
   }
 
-  .hero-intro { font-size: 15px; padding-top: 24px; }
+  .hero-intro { font-size: 15px; padding-top: 24px; padding-bottom: 13px; }
 }
 
 /* h1 виден поисковикам и скринридерам и на десктопе */
