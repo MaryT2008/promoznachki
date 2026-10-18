@@ -43,6 +43,9 @@
     <symbol id="i-pin" viewBox="0 0 24 24">
       <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></g>
     </symbol>
+    <symbol id="i-clip" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="m20 11.5-7.8 7.8a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8"/>
+    </symbol>
     <symbol id="i-check" viewBox="0 0 24 24">
       <path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/>
     </symbol>
@@ -310,7 +313,7 @@
             </ul>
           </div>
 
-          <form class="request-form" id="request-form" novalidate>
+          <form class="request-form" id="request-form" method="POST" enctype="multipart/form-data" novalidate>
             <!-- Служебные поля FormSubmit -->
             <input type="hidden" name="_subject" value="Новый запрос с сайта promoznachki.ru">
             <input type="hidden" name="_template" value="table">
@@ -344,6 +347,18 @@
                 <span class="field-error"></span>
             </div>
             <p class="field-hint field-hint--example">Например: 100 закатных значков 56&nbsp;мм с логотипом к 15&nbsp;мая</p>
+
+            <label class="upload" id="upload">
+              <input type="file" name="attachment" id="f-files" multiple
+                     accept=".jpg,.jpeg,.png,.gif,.webp,.heic,.tif,.tiff,.bmp,.svg,.pdf,.ai,.eps,.cdr,.psd">
+              <span class="upload-icon"><svg aria-hidden="true"><use href="#i-clip"/></svg></span>
+              <span class="upload-text">
+                <b>Прикрепите макет или логотип</b> — перетащите файлы сюда или нажмите, чтобы выбрать
+                <small>JPG, PNG, SVG, PDF, AI, EPS, CDR, PSD, TIFF · до 5 файлов, всего до 10&nbsp;МБ</small>
+              </span>
+            </label>
+            <p class="upload-error" role="alert"></p>
+            <ul class="upload-list" aria-label="Прикреплённые файлы"></ul>
 
             <button class="btn request-submit" type="submit">
               <span>Отправить запрос</span>
@@ -394,6 +409,97 @@
       var email = form.elements['email'];
       var message = form.elements['Запрос'];
       var startedAt = Date.now();
+
+      // ---- Файлы ----
+      var MAX_FILES = 5;
+      var MAX_TOTAL = 10 * 1024 * 1024;
+      var ALLOWED = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic', 'tif', 'tiff', 'bmp', 'svg', 'pdf', 'ai', 'eps', 'cdr', 'psd'];
+      var upload = document.getElementById('upload');
+      var fileInput = form.elements['attachment'];
+      var fileList = form.querySelector('.upload-list');
+      var fileError = form.querySelector('.upload-error');
+      var files = [];
+
+      function formatSize(b) {
+        return b < 1024 * 1024 ? Math.max(1, Math.round(b / 1024)) + ' КБ' : (b / 1024 / 1024).toFixed(1).replace('.', ',') + ' МБ';
+      }
+
+      function syncInput() {
+        // Кладём выбранные файлы обратно в поле, чтобы они ушли вместе с формой
+        try {
+          var dt = new DataTransfer();
+          files.forEach(function (f) { dt.items.add(f); });
+          fileInput.files = dt.files;
+        } catch (e) {}
+      }
+
+      function renderFiles() {
+        fileList.innerHTML = '';
+        files.forEach(function (f, i) {
+          var li = document.createElement('li');
+          var name = document.createElement('span');
+          name.textContent = f.name;
+          var size = document.createElement('small');
+          size.textContent = formatSize(f.size);
+          var del = document.createElement('button');
+          del.type = 'button';
+          del.setAttribute('aria-label', 'Удалить файл ' + f.name);
+          del.textContent = '×';
+          del.addEventListener('click', function () {
+            files.splice(i, 1);
+            fileError.textContent = '';
+            upload.classList.remove('is-invalid');
+            syncInput();
+            renderFiles();
+          });
+          li.append(name, size, del);
+          fileList.appendChild(li);
+        });
+      }
+
+      function addFiles(list) {
+        var errors = [];
+        Array.prototype.forEach.call(list, function (f) {
+          var ext = (f.name.split('.').pop() || '').toLowerCase();
+          var total = files.reduce(function (sum, x) { return sum + x.size; }, 0);
+          if (ALLOWED.indexOf(ext) === -1) {
+            errors.push('«' + f.name + '» — такой формат не принимаем');
+          } else if (files.length >= MAX_FILES) {
+            errors.push('Можно прикрепить не больше ' + MAX_FILES + ' файлов');
+          } else if (total + f.size > MAX_TOTAL) {
+            errors.push('«' + f.name + '» не помещается: все файлы вместе — до 10 МБ. Большие файлы пришлите на sales@promoznachki.ru');
+          } else if (!files.some(function (x) { return x.name === f.name && x.size === f.size; })) {
+            files.push(f);
+          }
+        });
+        fileError.textContent = errors.filter(function (v, i, a) { return a.indexOf(v) === i; }).join('. ');
+        upload.classList.toggle('is-invalid', errors.length > 0);
+        syncInput();
+        renderFiles();
+      }
+
+      fileInput.addEventListener('change', function () {
+        var picked = Array.prototype.slice.call(fileInput.files);
+        addFiles(picked);
+      });
+
+      ['dragenter', 'dragover'].forEach(function (type) {
+        upload.addEventListener(type, function (e) { e.preventDefault(); upload.classList.add('is-drag'); });
+      });
+      ['dragleave', 'drop'].forEach(function (type) {
+        upload.addEventListener(type, function (e) { e.preventDefault(); upload.classList.remove('is-drag'); });
+      });
+      upload.addEventListener('drop', function (e) {
+        if (e.dataTransfer && e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
+      });
+
+      // После обычной отправки (с файлами) FormSubmit возвращает посетителя сюда с ?sent=1
+      if (/[?&]sent=1/.test(location.search)) {
+        form.classList.add('is-sent');
+        success.hidden = false;
+        try { localStorage.setItem('requestSentAt', String(Date.now())); } catch (e) {}
+        history.replaceState(null, '', location.pathname + '#order');
+      }
 
       function setError(el, text) {
         var field = el.closest('.field');
@@ -474,6 +580,21 @@
         }
         button.disabled = true;
         button.classList.add('is-loading');
+
+        if (files.length) {
+          // С файлами — обычная отправка формы: FormSubmit принимает вложения только так
+          var next = document.createElement('input');
+          next.type = 'hidden';
+          next.name = '_next';
+          next.value = location.href.split(/[?#]/)[0] + '?sent=1#order';
+          form.appendChild(next);
+          form.action = 'https://formsubmit.co/sales@promoznachki.ru';
+          try { localStorage.setItem('requestSentAt', String(Date.now())); } catch (e) {}
+          HTMLFormElement.prototype.submit.call(form);
+          return;
+        }
+
+        fileInput.disabled = true; // пустое поле файла не отправляем
         fetch('https://formsubmit.co/ajax/sales@promoznachki.ru', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -485,11 +606,14 @@
             form.classList.add('is-sent');
             success.hidden = false;
             form.reset();
+            files = [];
+            renderFiles();
           })
           .catch(function () {
             status.textContent = 'Не удалось отправить. Напишите нам на sales@promoznachki.ru или позвоните.';
           })
           .finally(function () {
+            fileInput.disabled = false;
             button.disabled = false;
             button.classList.remove('is-loading');
           });
