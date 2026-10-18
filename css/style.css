@@ -420,6 +420,18 @@ a { color: inherit; text-decoration: none; }
 /* ---------- Секция 4: значки с логотипом ---------- */
 
 .products { padding: 36px 0 48px; }
+.products--alt { padding-top: 0; }
+
+/* Пять карточек: 3 + 2, нижний ряд по центру */
+.product-grid.product-grid--5 { grid-template-columns: repeat(6, 1fr); }
+.product-grid--5 > li { grid-column: span 2; }
+.product-grid--5 > li:nth-child(4) { grid-column: 2 / span 2; }
+
+@media (max-width: 640px) {
+  .product-grid.product-grid--5 { grid-template-columns: 1fr; }
+  .product-grid--5 > li,
+  .product-grid--5 > li:nth-child(4) { grid-column: auto; }
+}
 
 .product-grid {
   display: grid;
