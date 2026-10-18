@@ -345,17 +345,16 @@
             </div>
             <div class="field-row">
               <div class="field">
-                <input type="tel" id="f-phone" name="Телефон" placeholder=" " autocomplete="tel" inputmode="tel">
-                <label for="f-phone">Телефон</label>
+                <input type="tel" id="f-phone" name="Телефон" placeholder=" " autocomplete="tel" inputmode="tel" required>
+                <label for="f-phone">Телефон *</label>
                 <span class="field-error"></span>
               </div>
               <div class="field">
-                <input type="email" id="f-email" name="email" placeholder=" " autocomplete="email">
-                <label for="f-email">Электронная почта</label>
+                <input type="email" id="f-email" name="email" placeholder=" " autocomplete="email" required>
+                <label for="f-email">Электронная почта *</label>
                 <span class="field-error"></span>
               </div>
             </div>
-            <p class="field-hint">Достаточно телефона или почты — как вам удобнее</p>
             <div class="field">
               <textarea id="f-message" name="Запрос" rows="4" placeholder=" " required></textarea>
               <label for="f-message">Что нужно изготовить? *</label>
@@ -612,16 +611,11 @@
         var msgErr = !m ? 'Опишите, что нужно изготовить' : (m.length < 5 ? 'Напишите чуть подробнее' : '');
         var phoneErr = '';
         var emailErr = '';
-        if (!digits && !mail) {
-          phoneErr = 'Укажите телефон';
-          emailErr = 'или почту';
-        } else {
-          if (digits && !phoneOk) phoneErr = 'Проверьте номер телефона';
-          if (mail && !emailOk) emailErr = 'Проверьте адрес почты';
-          // Достаточно одного правильного способа связи
-          if (phoneOk && !mail) emailErr = '';
-          if (emailOk && !digits) phoneErr = '';
-        }
+        // Нужны и телефон, и почта
+        if (!digits) phoneErr = 'Укажите телефон';
+        else if (!phoneOk) phoneErr = 'Проверьте номер телефона';
+        if (!mail) emailErr = 'Укажите почту';
+        else if (!emailOk) emailErr = 'Проверьте адрес почты';
 
         [[name, nameErr], [message, msgErr], [phone, phoneErr], [email, emailErr]].forEach(function (pair) {
           setError(pair[0], pair[1]);
