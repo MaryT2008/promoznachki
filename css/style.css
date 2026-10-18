@@ -2072,6 +2072,47 @@ a { color: inherit; text-decoration: none; }
   .calc-sizes--many { grid-template-columns: repeat(4, 1fr); }
 }
 
+/* Значки-перевёртыши: сначала увеличиваются, затем поворачиваются задником */
+.pp-gallery-grid li.flip {
+  overflow: visible;
+  perspective: 900px;
+  transition: transform .35s cubic-bezier(.22, .61, .36, 1) .55s, box-shadow .35s .55s;
+}
+
+.flip-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .55s cubic-bezier(.45, .05, .25, 1) 0s;
+}
+
+.flip-inner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-back { transform: rotateY(180deg); }
+
+.pp-gallery-grid li.flip:hover {
+  transition-delay: 0s;
+}
+
+.pp-gallery-grid li.flip:hover .flip-inner {
+  transform: rotateY(180deg);
+  transition-delay: .35s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-inner, .pp-gallery-grid li.flip { transition: none; }
+}
+
 /* ---------- Адаптив ---------- */
 
 .main-nav-extra { display: none; }
