@@ -2077,17 +2077,6 @@ a { color: inherit; text-decoration: none; }
 
 .size-tabs--many .size-tab { padding: 9px 16px; }
 
-.tier-empty {
-  padding: 28px;
-  border-radius: 16px;
-  background: #f7f7f8;
-  text-align: center;
-  color: var(--muted);
-}
-
-.tier-empty p { margin: 0; }
-.tier-empty a { font-weight: 700; color: var(--orange); }
-
 .calc-sizes--many { gap: 6px; }
 .calc-sizes--many span { padding: 9px 13px; font-size: 14px; }
 
