@@ -567,6 +567,7 @@
         var box = form.querySelector('.order-summary');
         var hidden = box.querySelector('input');
         var title = q.get('item') + ', ' + q.get('size') + ' — ' + Number(q.get('qty')).toLocaleString('ru-RU') + ' шт';
+        if (q.get('opts')) title += '; ' + q.get('opts');
         var price = q.get('per') ? q.get('total') + ' (' + q.get('per') + ' за шт)' : q.get('total');
         box.querySelector('.order-summary-title').textContent = title;
         box.querySelector('.order-summary-price').textContent = price;

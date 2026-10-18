@@ -185,12 +185,28 @@
               <div class="calc-presets">
                 <button type="button" data-qty="50">50</button><button type="button" data-qty="100">100</button><button type="button" data-qty="300">300</button><button type="button" data-qty="500">500</button><button type="button" data-qty="1000">1&nbsp;000</button>
               </div>
+            <div class="calc-field">
+              <span class="calc-label">Дополнительно</span>
+              <label class="calc-check">
+                <input type="checkbox" id="calc-pack">
+                <span>Индивидуальная упаковка в пакет <b>+5&nbsp;₽/шт</b></span>
+              </label>
+            </div>
+            <div class="calc-field">
+              <span class="calc-label" id="calc-delivery-label">Доставка</span>
+              <div class="calc-delivery" role="radiogroup" aria-labelledby="calc-delivery-label">
+                <label><input type="radio" name="calc-delivery" value="0" data-name="" checked><span>Самовывоз<small>бесплатно</small></span></label>
+                <label><input type="radio" name="calc-delivery" value="1000" data-name="доставка в пределах МКАД"><span>В пределах МКАД<small>+1&nbsp;000&nbsp;₽</small></span></label>
+                <label><input type="radio" name="calc-delivery" value="750" data-name="доставка до транспортной компании"><span>До транспортной компании<small>+750&nbsp;₽</small></span></label>
+              </div>
+            </div>
             </div>
           </div>
           <div class="calc-result" aria-live="polite">
             <span class="calc-result-label">Стоимость тиража</span>
             <b class="calc-total" id="calc-total">5&nbsp;370&nbsp;₽</b>
             <span class="calc-per" id="calc-per">53,70&nbsp;₽ за штуку</span>
+            <span class="calc-breakdown" id="calc-breakdown"></span>
             <p class="calc-hint" id="calc-hint"></p>
             <a class="btn btn--light calc-order" href="index.html#order">Оформить заказ</a>
             <small>Итоговую цену менеджер подтвердит после согласования макета</small>
@@ -453,6 +469,28 @@
       var hintEl = document.getElementById('calc-hint');
       var orderLink = document.querySelector('.calc-order');
 
+      // Дополнительные услуги: упаковка (за штуку) и доставка (за заказ)
+      var PACK_PRICE = 5;
+      var packInput = document.getElementById('calc-pack');
+      var breakdownEl = document.getElementById('calc-breakdown');
+
+      function extras(count) {
+        var pack = packInput.checked ? PACK_PRICE * count : 0;
+        var dl = document.querySelector('input[name="calc-delivery"]:checked');
+        var delivery = Number(dl.value);
+        var parts = [];
+        if (pack) parts.push('упаковка в пакет +' + money(pack, 0));
+        if (delivery) parts.push(dl.dataset.name + ' +' + money(delivery, 0));
+        return { sum: pack + delivery, text: parts.join(', ') };
+      }
+
+      function showBreakdown(base, ex) {
+        breakdownEl.textContent = ex.sum && base ? 'Значки ' + money(base, 0) + ' · ' + ex.text : '';
+      }
+
+      packInput.addEventListener('change', function () { update(); });
+      document.querySelectorAll('input[name="calc-delivery"]').forEach(function (r) { r.addEventListener('change', function () { update(); }); });
+
       function money(v, frac) {
         return v.toLocaleString('ru-RU', { minimumFractionDigits: frac, maximumFractionDigits: frac }) + '\u00a0₽';
       }
@@ -464,7 +502,10 @@
         for (var i = 0; i < QTY.length; i++) if (qty >= QTY[i]) idx = i;
         var price = PRICES[size][idx];
         var total = Math.round(price * qty);
-        totalEl.textContent = money(Math.max(total, MIN_ORDER), 0);
+        var base = Math.max(total, MIN_ORDER);
+        var ex = extras(qty);
+        totalEl.textContent = money(base + ex.sum, 0);
+        showBreakdown(base, ex);
         perEl.textContent = money(price, 2) + ' за штуку';
         var hint = '';
         if (total < MIN_ORDER) hint = 'Минимальная сумма заказа — 3000 ₽';
@@ -480,8 +521,9 @@
           size: size + ' мм',
           qty: String(qty),
           per: money(price, 2),
-          total: money(Math.max(total, MIN_ORDER), 0)
+          total: money(base + ex.sum, 0)
         });
+        if (ex.text) params.set('opts', ex.text);
         orderLink.href = 'index.html?' + params.toString() + '#order';
       }
 
