@@ -140,13 +140,25 @@ a { color: inherit; text-decoration: none; }
 /* ---------- Секция 1: главный баннер ---------- */
 
 .hero-banner {
-  background: var(--bg-soft);
+  /* На экранах шире 1440px продлеваем вправо оранжевый мазок баннера:
+     правый край картинки растянут на всю правую половину */
+  background:
+    url("../assets/img/hero-badges-edge.png") right top / 50% 100% no-repeat,
+    var(--bg-soft);
 }
 
 .hero-banner img {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
+}
+
+/* Мягкий стык картинки с продолжением мазка */
+@media (min-width: 1441px) {
+  .hero-banner img {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 70px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 70px), transparent);
+  }
 }
 
 .hero-mobile { display: none; }
