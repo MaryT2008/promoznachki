@@ -611,6 +611,271 @@ a { color: inherit; text-decoration: none; }
   .work-caption b { font-size: 12px; }
 }
 
+/* ---------- Секция 6: форма запроса ---------- */
+
+.request { padding: 40px 0 56px; }
+
+.request-card {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  border-radius: 28px;
+  background: var(--white);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .03), 0 20px 60px rgba(0, 0, 0, .08);
+  overflow: hidden;
+}
+
+/* Левая часть: контакты на оранжевом фоне */
+.request-info {
+  position: relative;
+  padding: 44px 40px;
+  background:
+    radial-gradient(circle at 110% 110%, rgba(255, 255, 255, .18) 0 120px, transparent 121px),
+    radial-gradient(circle at -10% -10%, rgba(255, 255, 255, .12) 0 90px, transparent 91px),
+    linear-gradient(150deg, #ff8a2b, var(--orange-dark));
+  color: var(--white);
+  overflow: hidden;
+}
+
+.section-eyebrow--light {
+  background: rgba(255, 255, 255, .2);
+  color: var(--white);
+}
+
+.request-title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 700;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.request-lead {
+  margin: 0 0 28px;
+  font-size: 15px;
+  line-height: 1.55;
+  opacity: .92;
+}
+
+.request-contacts {
+  display: grid;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.request-contacts li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.request-contacts small {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  opacity: .75;
+}
+
+.request-contacts a { display: block; font-weight: 600; }
+.request-contacts a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.request-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .18);
+}
+
+.request-icon svg { width: 20px; height: 20px; }
+
+/* Правая часть: форма */
+.request-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 44px 44px 36px;
+}
+
+.request-form-title {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* Поле с «плавающей» подписью */
+.field { position: relative; }
+
+.field input,
+.field textarea {
+  display: block;
+  width: 100%;
+  padding: 24px 16px 8px;
+  border: 1.5px solid transparent;
+  border-radius: 14px;
+  background: #f4f4f6;
+  color: var(--text);
+  font: inherit;
+  font-size: 16px;
+  transition: border-color .2s, background .2s, box-shadow .2s;
+}
+
+.field textarea { min-height: 120px; resize: vertical; }
+
+.field label {
+  position: absolute;
+  top: 17px;
+  left: 17px;
+  right: 16px;
+  color: #8a8a92;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+  transform-origin: left top;
+  transition: transform .2s, color .2s;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--orange);
+  background: var(--white);
+  box-shadow: 0 0 0 4px rgba(244, 123, 32, .15);
+}
+
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label,
+.field textarea:focus + label,
+.field textarea:not(:placeholder-shown) + label {
+  color: var(--orange-dark);
+  transform: translateY(-10px) scale(.78);
+}
+
+.field.is-invalid input,
+.field.is-invalid textarea {
+  border-color: #e5484d;
+  background: #fff5f5;
+}
+
+.field-hint {
+  margin: -6px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.field-hint.is-invalid { color: #e5484d; }
+
+.request-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 6px;
+  padding: 17px 28px;
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.request-submit svg { width: 20px; height: 20px; transition: transform .25s; }
+.request-submit:hover svg { transform: translateX(4px); }
+.request-submit:disabled { opacity: .7; cursor: wait; }
+.request-submit.is-loading span::after { content: "…"; }
+
+.request-consent {
+  margin: 0;
+  font-size: 12px;
+  color: #9a9aa2;
+  text-align: center;
+}
+
+.request-status {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e5484d;
+  text-align: center;
+}
+
+.request-status:empty { display: none; }
+
+/* Сообщение об успешной отправке поверх формы */
+.request-success {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: var(--white);
+  text-align: center;
+  animation: fade-in .4s ease;
+}
+
+.request-success[hidden] { display: none; }
+
+.request-success h3 {
+  margin: 18px 0 8px;
+  font-family: var(--font-display);
+  font-size: 22px;
+}
+
+.request-success p { margin: 0; color: var(--muted); }
+
+.request-success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(244, 123, 32, .12);
+  color: var(--orange);
+}
+
+.request-success-icon svg { width: 36px; height: 36px; }
+
+@keyframes fade-in {
+  from { opacity: 0; transform: scale(.97); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 960px) {
+  .request-card { grid-template-columns: 1fr; }
+  .request-contacts { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .request { padding: 28px 0 40px; }
+  .request-card { border-radius: 20px; }
+  .request-info { padding: 28px 20px; }
+  .request-contacts { grid-template-columns: 1fr; gap: 14px; }
+  .request-form { padding: 28px 20px 24px; gap: 12px; }
+  .field-row { grid-template-columns: 1fr; gap: 12px; }
+}
+
 /* ---------- Адаптив ---------- */
 
 .main-nav-extra { display: none; }

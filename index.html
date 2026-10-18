@@ -40,6 +40,12 @@
     <symbol id="i-arrow" viewBox="0 0 24 24">
       <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/>
     </symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></g>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/>
+    </symbol>
   </svg>
 
   <header class="site-header">
@@ -62,7 +68,7 @@
         <!-- Пункты оранжевой полосы: на телефоне она скрыта, и они переезжают в меню -->
         <div class="main-nav-extra">
           <a href="#catalog"><svg aria-hidden="true"><use href="#i-catalog"/></svg>Каталог</a>
-          <a href="#calc"><svg aria-hidden="true"><use href="#i-calc"/></svg>Рассчитать заказ</a>
+          <a href="#order"><svg aria-hidden="true"><use href="#i-calc"/></svg>Рассчитать заказ</a>
           <a href="#delivery"><svg aria-hidden="true"><use href="#i-truck"/></svg>Доставка и оплата</a>
           <a href="#contacts"><svg aria-hidden="true"><use href="#i-contacts"/></svg>Контакты</a>
           <a href="mailto:sales@promoznachki.ru"><svg aria-hidden="true"><use href="#i-mail"/></svg>sales@promoznachki.ru</a>
@@ -83,7 +89,7 @@
       <div class="container sub-nav-inner">
         <a href="mailto:sales@promoznachki.ru"><svg aria-hidden="true"><use href="#i-mail"/></svg>sales@promoznachki.ru</a>
         <a href="#catalog"><svg aria-hidden="true"><use href="#i-catalog"/></svg>Каталог</a>
-        <a href="#calc"><svg aria-hidden="true"><use href="#i-calc"/></svg>Рассчитать заказ</a>
+        <a href="#order"><svg aria-hidden="true"><use href="#i-calc"/></svg>Рассчитать заказ</a>
         <a href="#delivery"><svg aria-hidden="true"><use href="#i-truck"/></svg>Доставка и оплата</a>
         <a href="#contacts"><svg aria-hidden="true"><use href="#i-contacts"/></svg>Контакты</a>
       </div>
@@ -274,6 +280,82 @@
         </ul>
       </div>
     </section>
+
+    <!-- Секция 6: форма запроса -->
+    <section class="request" id="order" aria-labelledby="request-title">
+      <div class="container">
+        <div class="request-card">
+          <div class="request-info" id="contacts">
+            <span class="section-eyebrow section-eyebrow--light">Расчёт заказа</span>
+            <h2 id="request-title" class="request-title">Рассчитаем стоимость вашего заказа</h2>
+            <p class="request-lead">Отправьте запрос — менеджер свяжется с вами в ближайшее рабочее время и подберёт лучший вариант.</p>
+
+            <ul class="request-contacts">
+              <li>
+                <span class="request-icon"><svg aria-hidden="true"><use href="#i-mail"/></svg></span>
+                <span><small>Напишите нам</small><a href="mailto:sales@promoznachki.ru">sales@promoznachki.ru</a></span>
+              </li>
+              <li>
+                <span class="request-icon"><svg aria-hidden="true"><use href="#i-phone"/></svg></span>
+                <span><small>Позвоните</small><a href="tel:+74993945984">+7 (499) 394-59-84</a><a href="tel:+79266764435">+7 (926) 676-44-35</a></span>
+              </li>
+              <li>
+                <span class="request-icon"><svg aria-hidden="true"><use href="#i-pin"/></svg></span>
+                <span><small>Наш адрес</small><a href="https://yandex.ru/maps/?text=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0%2C%20%D1%83%D0%BB.%20%D0%9D%D0%B8%D0%B6%D0%B5%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D1%81%D0%BA%D0%B0%D1%8F%2C%2032%D1%816" target="_blank" rel="noopener">109029, Москва, ул.&nbsp;Нижегородская, д.&nbsp;32, стр.&nbsp;6, оф.&nbsp;1</a></span>
+              </li>
+              <li>
+                <span class="request-icon"><svg aria-hidden="true"><use href="#i-clock"/></svg></span>
+                <span><small>Режим работы</small>Пн–Пт, 10:00–19:00</span>
+              </li>
+            </ul>
+          </div>
+
+          <form class="request-form" id="request-form" action="https://formsubmit.co/sales@promoznachki.ru" method="POST" novalidate>
+            <!-- Служебные поля FormSubmit -->
+            <input type="hidden" name="_subject" value="Новый запрос с сайта promoznachki.ru">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="text" name="_honey" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+            <h3 class="request-form-title">Отправьте запрос</h3>
+
+            <div class="field">
+              <input type="text" id="f-name" name="Имя" placeholder=" " autocomplete="name" required>
+              <label for="f-name">Ваше имя *</label>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <input type="tel" id="f-phone" name="Телефон" placeholder=" " autocomplete="tel" inputmode="tel">
+                <label for="f-phone">Телефон</label>
+              </div>
+              <div class="field">
+                <input type="email" id="f-email" name="email" placeholder=" " autocomplete="email">
+                <label for="f-email">Электронная почта</label>
+              </div>
+            </div>
+            <p class="field-hint">Укажите телефон или почту — как вам удобнее для связи</p>
+            <div class="field">
+              <textarea id="f-message" name="Запрос" rows="4" placeholder=" " required></textarea>
+              <label for="f-message">Что нужно изготовить? *</label>
+            </div>
+            <p class="field-hint field-hint--example">Например: 100 закатных значков 56&nbsp;мм с логотипом к 15&nbsp;мая</p>
+
+            <button class="btn request-submit" type="submit">
+              <span>Отправить запрос</span>
+              <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+            </button>
+            <p class="request-consent">Нажимая кнопку, вы соглашаетесь на обработку персональных данных</p>
+            <p class="request-status" role="status" aria-live="polite"></p>
+
+            <div class="request-success" hidden>
+              <span class="request-success-icon"><svg aria-hidden="true"><use href="#i-check"/></svg></span>
+              <h3>Спасибо! Запрос отправлен</h3>
+              <p>Менеджер свяжется с вами в ближайшее рабочее время.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -290,6 +372,67 @@
           nav.classList.remove('is-open');
           btn.setAttribute('aria-expanded', 'false');
         }
+      });
+    })();
+  </script>
+  <script>
+    // Форма запроса: отправка через FormSubmit на sales@promoznachki.ru без перезагрузки страницы
+    (function () {
+      var form = document.getElementById('request-form');
+      var status = form.querySelector('.request-status');
+      var button = form.querySelector('.request-submit');
+      var success = form.querySelector('.request-success');
+      var phone = form.elements['Телефон'];
+      var email = form.elements['email'];
+
+      function check() {
+        var ok = true;
+        [form.elements['Имя'], form.elements['Запрос']].forEach(function (el) {
+          var bad = !el.value.trim();
+          el.closest('.field').classList.toggle('is-invalid', bad);
+          if (bad) ok = false;
+        });
+        var hasPhone = phone.value.replace(/\D/g, '').length >= 10;
+        var hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+        var contactBad = !hasPhone && !hasEmail;
+        phone.closest('.field').classList.toggle('is-invalid', contactBad);
+        email.closest('.field').classList.toggle('is-invalid', contactBad);
+        form.querySelector('.field-hint:not(.field-hint--example)').classList.toggle('is-invalid', contactBad);
+        return ok && !contactBad;
+      }
+
+      form.addEventListener('input', function (e) {
+        if (form.classList.contains('was-checked')) check();
+      });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        form.classList.add('was-checked');
+        status.textContent = '';
+        if (!check()) {
+          status.textContent = 'Заполните отмеченные поля';
+          return;
+        }
+        button.disabled = true;
+        button.classList.add('is-loading');
+        fetch('https://formsubmit.co/ajax/sales@promoznachki.ru', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(form)))
+        })
+          .then(function (r) { return r.json().then(function (d) { if (!r.ok || String(d.success) !== 'true') throw d; }); })
+          .then(function () {
+            form.classList.add('is-sent');
+            success.hidden = false;
+            form.reset();
+          })
+          .catch(function () {
+            status.textContent = 'Не удалось отправить. Напишите нам на sales@promoznachki.ru или позвоните.';
+          })
+          .finally(function () {
+            button.disabled = false;
+            button.classList.remove('is-loading');
+          });
       });
     })();
   </script>
