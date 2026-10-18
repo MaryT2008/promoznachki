@@ -806,6 +806,53 @@ a { color: inherit; text-decoration: none; }
 
 .field-hint.is-invalid { color: #e5484d; }
 
+/* Расчёт со страницы товара в форме заказа */
+.order-summary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 14px 14px 16px;
+  border: 1.5px solid rgba(244, 123, 32, .35);
+  border-radius: 16px;
+  background: #fff7f0;
+  animation: fade-in .4s ease;
+}
+
+.order-summary[hidden] { display: none; }
+
+.order-summary-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--orange);
+  color: var(--white);
+}
+
+.order-summary-icon svg { width: 22px; height: 22px; }
+
+.order-summary-body { flex: 1; min-width: 0; line-height: 1.35; }
+.order-summary-body small { display: block; font-size: 12px; color: var(--muted); }
+.order-summary-title { display: block; font-size: 15px; }
+.order-summary-price { font-size: 14px; font-weight: 600; color: var(--orange-dark); }
+
+.order-summary-remove {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .06);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.order-summary-remove:hover { background: var(--orange); color: var(--white); }
+
 /* Прикрепление файлов */
 .upload {
   position: relative;

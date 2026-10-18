@@ -326,6 +326,18 @@
 
             <h3 class="request-form-title">Отправьте запрос</h3>
 
+            <!-- Расчёт, пришедший со страницы товара -->
+            <div class="order-summary" hidden>
+              <span class="order-summary-icon"><svg aria-hidden="true"><use href="#i-calc"/></svg></span>
+              <div class="order-summary-body">
+                <small>Ваш расчёт</small>
+                <b class="order-summary-title"></b>
+                <span class="order-summary-price"></span>
+              </div>
+              <button type="button" class="order-summary-remove" aria-label="Убрать расчёт">×</button>
+              <input type="hidden" name="Расчёт с сайта" value="" disabled>
+            </div>
+
             <div class="field">
               <input type="text" id="f-name" name="Имя" placeholder=" " autocomplete="name" required>
               <label for="f-name">Ваше имя *</label>
@@ -548,6 +560,30 @@
       upload.addEventListener('drop', function (e) {
         if (e.dataTransfer && e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
       });
+
+      // Расчёт из калькулятора на странице товара: ?item=…&size=…&qty=…&per=…&total=…
+      (function () {
+        var q = new URLSearchParams(location.search);
+        if (!q.get('item')) return;
+        var box = form.querySelector('.order-summary');
+        var hidden = box.querySelector('input');
+        var title = q.get('item') + ', ' + q.get('size') + ' — ' + Number(q.get('qty')).toLocaleString('ru-RU') + ' шт';
+        var price = q.get('total') + ' (' + q.get('per') + ' за шт)';
+        box.querySelector('.order-summary-title').textContent = title;
+        box.querySelector('.order-summary-price').textContent = price;
+        hidden.value = title + ', ' + price;
+        hidden.disabled = false;
+        box.hidden = false;
+        if (!message.value.trim()) {
+          message.value = 'Хочу заказать: ' + title + '. Расчёт на сайте: ' + price + '. Макет прикладываю.';
+        }
+        box.querySelector('.order-summary-remove').addEventListener('click', function () {
+          box.hidden = true;
+          hidden.disabled = true;
+        });
+        // Убираем параметры из адреса, расчёт уже в форме
+        history.replaceState(null, '', location.pathname + '#order');
+      })();
 
       // После обычной отправки (с файлами) FormSubmit возвращает посетителя сюда с ?sent=1
       if (/[?&]sent=1/.test(location.search)) {

@@ -344,6 +344,7 @@
       var totalEl = document.getElementById('calc-total');
       var perEl = document.getElementById('calc-per');
       var hintEl = document.getElementById('calc-hint');
+      var orderLink = document.querySelector('.calc-order');
 
       function money(v, frac) {
         return v.toLocaleString('ru-RU', { minimumFractionDigits: frac, maximumFractionDigits: frac }) + '\u00a0₽';
@@ -365,6 +366,16 @@
           hint = 'От ' + next.toLocaleString('ru-RU') + ' шт — ' + money(PRICES[size][idx + 1], 2) + ' за штуку';
         }
         hintEl.textContent = hint;
+
+        // Передаём расчёт в форму заказа на главной
+        var params = new URLSearchParams({
+          item: 'Закатные значки',
+          size: size + ' мм',
+          qty: String(qty),
+          per: money(price, 2),
+          total: money(Math.max(total, MIN_ORDER), 0)
+        });
+        orderLink.href = 'index.html?' + params.toString() + '#order';
       }
 
       document.querySelectorAll('input[name="calc-size"]').forEach(function (r) { r.addEventListener('change', update); });
