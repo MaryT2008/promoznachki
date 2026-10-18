@@ -1958,6 +1958,138 @@ a { color: inherit; text-decoration: none; }
   .pp-gallery-grid li { border-radius: 14px; }
 }
 
+/* =========================================================
+   Страница: значки с заливкой смолой
+   ========================================================= */
+
+.resin-hero-media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1.15;
+}
+
+/* Мягкий блик-подложка, как отражение в смоле */
+.resin-hero-media::before {
+  content: "";
+  position: absolute;
+  width: 78%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .95), transparent 40%),
+    radial-gradient(circle, #fff3e9, #ffe2cc 70%, transparent 71%);
+}
+
+.resin-hero-media img {
+  position: relative;
+  width: 82%;
+  max-width: 420px;
+  height: auto;
+  mix-blend-mode: multiply;
+  animation: float 7s ease-in-out infinite;
+}
+
+.section-sub {
+  margin: 12px 0 0;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+/* Размеры кружками в масштабе */
+.resin-sizes { padding: 40px 0 24px; }
+
+.size-circles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 18px 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.size-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.size-circle-disc {
+  /* 1 мм = 3.4px, чтобы 35 мм был около 120px */
+  width: calc(var(--d) * 3.4px);
+  height: calc(var(--d) * 3.4px);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, .95) 0 12%, transparent 40%),
+    linear-gradient(145deg, #ffd9bc, #f6a466);
+  box-shadow: inset 0 0 0 3px #f2c24a, 0 8px 18px rgba(0, 0, 0, .10);
+  transition: transform .3s cubic-bezier(.22, .61, .36, 1), box-shadow .3s;
+}
+
+.size-circle-label {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background .2s, color .2s;
+}
+
+.size-circle:hover .size-circle-disc { transform: translateY(-4px) scale(1.06); }
+
+.size-circle.is-active .size-circle-disc {
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, .9) 0 12%, transparent 40%),
+    linear-gradient(145deg, #ff9a4a, var(--orange-dark));
+}
+
+.size-circle.is-active .size-circle-label { background: var(--orange); color: var(--white); }
+
+/* Цены одной таблицей */
+.price-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 16px;
+  margin-bottom: 18px;
+}
+
+.price-card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.price-card-note { font-size: 14px; color: var(--muted); }
+
+.tier-grid--7 { grid-template-columns: repeat(7, 1fr); }
+.tier-grid--7 li:nth-last-child(-n+2) b { color: var(--orange); }
+
+.calc-sizes--many { gap: 6px; }
+.calc-sizes--many span { padding: 9px 13px; font-size: 14px; }
+
+@media (max-width: 1100px) {
+  .tier-grid--7 { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .size-circles { gap: 14px 16px; }
+  .size-circle-disc { width: calc(var(--d) * 2.2px); height: calc(var(--d) * 2.2px); }
+  .size-circle-label { font-size: 12px; padding: 3px 8px; }
+  .tier-grid--7 { grid-template-columns: repeat(2, 1fr); }
+  .calc-sizes--many { grid-template-columns: repeat(4, 1fr); }
+}
+
 /* ---------- Адаптив ---------- */
 
 .main-nav-extra { display: none; }
