@@ -310,11 +310,12 @@
             </ul>
           </div>
 
-          <form class="request-form" id="request-form" action="https://formsubmit.co/sales@promoznachki.ru" method="POST" novalidate>
+          <form class="request-form" id="request-form" novalidate>
             <!-- Служебные поля FormSubmit -->
             <input type="hidden" name="_subject" value="Новый запрос с сайта promoznachki.ru">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_blacklist" value="casino, crypto, bitcoin, viagra, loan, seo, backlinks, porn, казино, ставки, кредит, займ, продвижение сайта">
             <input type="text" name="_honey" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
 
             <h3 class="request-form-title">Отправьте запрос</h3>
@@ -322,21 +323,25 @@
             <div class="field">
               <input type="text" id="f-name" name="Имя" placeholder=" " autocomplete="name" required>
               <label for="f-name">Ваше имя *</label>
+                <span class="field-error"></span>
             </div>
             <div class="field-row">
               <div class="field">
                 <input type="tel" id="f-phone" name="Телефон" placeholder=" " autocomplete="tel" inputmode="tel">
                 <label for="f-phone">Телефон</label>
+                <span class="field-error"></span>
               </div>
               <div class="field">
                 <input type="email" id="f-email" name="email" placeholder=" " autocomplete="email">
                 <label for="f-email">Электронная почта</label>
+                <span class="field-error"></span>
               </div>
             </div>
-            <p class="field-hint">Укажите телефон или почту — как вам удобнее для связи</p>
+            <p class="field-hint">Достаточно телефона или почты — как вам удобнее</p>
             <div class="field">
               <textarea id="f-message" name="Запрос" rows="4" placeholder=" " required></textarea>
               <label for="f-message">Что нужно изготовить? *</label>
+                <span class="field-error"></span>
             </div>
             <p class="field-hint field-hint--example">Например: 100 закатных значков 56&nbsp;мм с логотипом к 15&nbsp;мая</p>
 
@@ -376,32 +381,74 @@
     })();
   </script>
   <script>
-    // Форма запроса: отправка через FormSubmit на sales@promoznachki.ru без перезагрузки страницы
+    // Форма запроса: отправка через FormSubmit на sales@promoznachki.ru без перезагрузки страницы.
+    // Защита от спама: скрытое поле-ловушка, проверка времени заполнения,
+    // фильтр ссылок и стоп-слов, не чаще одного запроса в минуту.
     (function () {
       var form = document.getElementById('request-form');
       var status = form.querySelector('.request-status');
       var button = form.querySelector('.request-submit');
       var success = form.querySelector('.request-success');
+      var name = form.elements['Имя'];
       var phone = form.elements['Телефон'];
       var email = form.elements['email'];
+      var message = form.elements['Запрос'];
+      var startedAt = Date.now();
 
-      function check() {
-        var ok = true;
-        [form.elements['Имя'], form.elements['Запрос']].forEach(function (el) {
-          var bad = !el.value.trim();
-          el.closest('.field').classList.toggle('is-invalid', bad);
-          if (bad) ok = false;
-        });
-        var hasPhone = phone.value.replace(/\D/g, '').length >= 10;
-        var hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
-        var contactBad = !hasPhone && !hasEmail;
-        phone.closest('.field').classList.toggle('is-invalid', contactBad);
-        email.closest('.field').classList.toggle('is-invalid', contactBad);
-        form.querySelector('.field-hint:not(.field-hint--example)').classList.toggle('is-invalid', contactBad);
-        return ok && !contactBad;
+      function setError(el, text) {
+        var field = el.closest('.field');
+        field.classList.toggle('is-invalid', !!text);
+        field.querySelector('.field-error').textContent = text || '';
       }
 
-      form.addEventListener('input', function (e) {
+      function check() {
+        var errors = 0;
+        var n = name.value.trim();
+        var m = message.value.trim();
+        var digits = phone.value.replace(/\D/g, '');
+        var mail = email.value.trim();
+        var phoneOk = digits.length >= 10 && digits.length <= 12;
+        var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail);
+
+        var nameErr = !n ? 'Введите имя' : (n.length < 2 ? 'Слишком короткое имя' : '');
+        var msgErr = !m ? 'Опишите, что нужно изготовить' : (m.length < 5 ? 'Напишите чуть подробнее' : '');
+        var phoneErr = '';
+        var emailErr = '';
+        if (!digits && !mail) {
+          phoneErr = 'Укажите телефон';
+          emailErr = 'или почту';
+        } else {
+          if (digits && !phoneOk) phoneErr = 'Проверьте номер телефона';
+          if (mail && !emailOk) emailErr = 'Проверьте адрес почты';
+          // Достаточно одного правильного способа связи
+          if (phoneOk && !mail) emailErr = '';
+          if (emailOk && !digits) phoneErr = '';
+        }
+
+        [[name, nameErr], [message, msgErr], [phone, phoneErr], [email, emailErr]].forEach(function (pair) {
+          setError(pair[0], pair[1]);
+          if (pair[1]) errors++;
+        });
+        return errors === 0;
+      }
+
+      function looksLikeSpam() {
+        if (form.elements['_honey'].value) return true;             // бот заполнил скрытое поле
+        if (Date.now() - startedAt < 4000) return true;             // форму «заполнили» быстрее 4 секунд
+        var text = name.value + ' ' + message.value;
+        if ((text.match(/https?:\/\/|www\./gi) || []).length > 1) return true; // много ссылок
+        if (/<[a-z][\s\S]*>/i.test(text)) return true;               // html-код в тексте
+        return false;
+      }
+
+      function recentlySent() {
+        try {
+          var last = Number(localStorage.getItem('requestSentAt') || 0);
+          return Date.now() - last < 60000;
+        } catch (e) { return false; }
+      }
+
+      form.addEventListener('input', function () {
         if (form.classList.contains('was-checked')) check();
       });
 
@@ -411,6 +458,18 @@
         status.textContent = '';
         if (!check()) {
           status.textContent = 'Заполните отмеченные поля';
+          var firstBad = form.querySelector('.field.is-invalid input, .field.is-invalid textarea');
+          if (firstBad) firstBad.focus();
+          return;
+        }
+        if (recentlySent()) {
+          status.textContent = 'Запрос уже отправлен. Повторно можно отправить через минуту.';
+          return;
+        }
+        if (looksLikeSpam()) {
+          // Боту показываем «успех», но ничего не отправляем
+          form.classList.add('is-sent');
+          success.hidden = false;
           return;
         }
         button.disabled = true;
@@ -422,6 +481,7 @@
         })
           .then(function (r) { return r.json().then(function (d) { if (!r.ok || String(d.success) !== 'true') throw d; }); })
           .then(function () {
+            try { localStorage.setItem('requestSentAt', String(Date.now())); } catch (e) {}
             form.classList.add('is-sent');
             success.hidden = false;
             form.reset();
