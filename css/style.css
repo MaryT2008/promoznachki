@@ -1964,26 +1964,11 @@ a { color: inherit; text-decoration: none; }
    Страница: значки с заливкой смолой
    ========================================================= */
 
-.resin-hero-media {
-  position: relative;
-  aspect-ratio: 1.15;
-}
-
-/* Статичная композиция на белом фоне */
-.resin-badge {
-  position: absolute;
+.resin-hero-media img {
+  display: block;
+  width: 100%;
   height: auto;
-  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, .16));
-  transition: transform .4s cubic-bezier(.22, .61, .36, 1);
 }
-
-.resin-badge:hover { transform: scale(1.05); }
-
-.resin-badge--main { left: 27%; top: 14%; width: 50%; z-index: 2; }
-.resin-badge--a { left: 4%;  top: 4%;  width: 27%; }
-.resin-badge--b { right: 2%; top: 0;   width: 30%; }
-.resin-badge--c { left: 6%;  bottom: 2%; width: 30%; z-index: 3; }
-.resin-badge--d { right: 4%; bottom: 6%; width: 25%; z-index: 3; }
 
 .section-sub {
   margin: 12px 0 0;
