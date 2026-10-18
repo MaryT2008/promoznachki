@@ -190,7 +190,7 @@ a { color: inherit; text-decoration: none; }
   white-space: nowrap;
 }
 
-.catalog { padding: 8px 0 32px; }
+.catalog { padding: 8px 0 28px; }
 
 .catalog-grid {
   display: grid;
@@ -262,7 +262,7 @@ a { color: inherit; text-decoration: none; }
 /* ---------- Секция 3: преимущества ---------- */
 
 .advantages {
-  padding: 40px 0 64px;
+  padding: 32px 0 40px;
   background:
     radial-gradient(circle at 8% 0%, rgba(244, 123, 32, .10), transparent 40%),
     radial-gradient(circle at 95% 100%, rgba(61, 183, 232, .10), transparent 40%),
@@ -271,7 +271,7 @@ a { color: inherit; text-decoration: none; }
 
 .section-head {
   max-width: 720px;
-  margin: 0 auto 40px;
+  margin: 0 auto 28px;
   text-align: center;
 }
 
@@ -377,8 +377,8 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 640px) {
-  .advantages { padding: 32px 0 48px; }
-  .section-head { margin-bottom: 24px; }
+  .advantages { padding: 28px 0 32px; }
+  .section-head { margin-bottom: 18px; }
   .adv-grid { grid-template-columns: 1fr; gap: 12px; }
 
   /* На телефоне — компактные строки: иконка слева, текст справа */
@@ -408,7 +408,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- Секция 4: значки с логотипом ---------- */
 
-.products { padding: 56px 0 64px; }
+.products { padding: 36px 0 48px; }
 
 .product-grid {
   display: grid;
@@ -499,7 +499,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 640px) {
-  .products { padding: 36px 0 44px; }
+  .products { padding: 28px 0 36px; }
   .product-grid { gap: 12px; }
   .product-card { border-radius: 14px; }
   .product-card-img { height: 130px; padding: 10px; }
