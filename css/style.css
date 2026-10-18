@@ -181,11 +181,32 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- Адаптив ---------- */
 
+.main-nav-extra { display: none; }
+
 @media (max-width: 1180px) {
   .header-inner { gap: 20px; }
   .main-nav { gap: 18px; font-size: 15px; }
-  .sub-nav a { font-size: 14px; gap: 6px; }
-  .sub-nav svg { width: 18px; height: 18px; }
+
+  /* Оранжевая полоса: пункты по центру, если не влезают — переносятся на вторую строку */
+  .sub-nav-inner {
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 40px;
+    row-gap: 4px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .sub-nav a { font-size: 15px; gap: 8px; padding: 2px 0; }
+  .sub-nav svg { width: 20px; height: 20px; }
+}
+
+/* Когда в одну строку уже не влезает — ровно две строки: 3 пункта + 2 пункта */
+@media (max-width: 900px) {
+  .sub-nav-inner { column-gap: 28px; }
+  .sub-nav a:nth-child(-n+3) { order: 1; }
+  .sub-nav-inner::after { content: ""; flex-basis: 100%; order: 2; }
+  .sub-nav a:nth-child(n+4) { order: 3; }
 }
 
 @media (max-width: 960px) {
@@ -240,14 +261,6 @@ a { color: inherit; text-decoration: none; }
   .main-nav a::after { display: none; }
   .main-nav-order { color: var(--orange); font-weight: 700; }
 
-  .sub-nav-inner {
-    overflow-x: auto;
-    scrollbar-width: none;
-    justify-content: flex-start;
-    gap: 24px;
-  }
-
-  .sub-nav-inner::-webkit-scrollbar { display: none; }
 }
 
 @media (max-width: 640px) {
@@ -257,6 +270,34 @@ a { color: inherit; text-decoration: none; }
   .header-contacts a + a { display: none; }
   .header-contacts { font-size: 14px; font-weight: 600; gap: 6px; }
   .menu-toggle { margin-right: -10px; }
+
+  /* На телефоне оранжевой полосы нет — её пункты в меню-гамбургере */
+  .sub-nav { display: none; }
+  .site-header { border-bottom: 3px solid var(--orange); }
+
+  .main-nav-extra {
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px;
+    padding: 4px 0 0;
+    border-top: 3px solid var(--orange);
+  }
+
+  .main-nav-extra a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+  }
+
+  .main-nav-extra a:first-child { border-top: 0; }
+
+  .main-nav-extra svg {
+    width: 22px;
+    height: 22px;
+    color: var(--orange);
+    flex-shrink: 0;
+  }
   .header-phone-icon { width: 22px; height: 22px; }
   .logo img { width: 130px; }
 
@@ -335,4 +376,10 @@ a { color: inherit; text-decoration: none; }
   }
 
   .hero-mobile .btn { display: none; }
+}
+
+@media (max-width: 360px) {
+  .logo img { width: 108px; }
+  .header-phone-icon { display: none; }
+  .header-contacts { font-size: 13px; }
 }

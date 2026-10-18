@@ -56,6 +56,14 @@
         <a href="#magnets">Магниты</a>
         <a href="#fans">Веера</a>
         <a class="main-nav-order" href="#order">Оформить заказ</a>
+        <!-- Пункты оранжевой полосы: на телефоне она скрыта, и они переезжают в меню -->
+        <div class="main-nav-extra">
+          <a href="#catalog"><svg aria-hidden="true"><use href="#i-catalog"/></svg>Каталог</a>
+          <a href="#calc"><svg aria-hidden="true"><use href="#i-calc"/></svg>Рассчитать заказ</a>
+          <a href="#delivery"><svg aria-hidden="true"><use href="#i-truck"/></svg>Доставка и оплата</a>
+          <a href="#contacts"><svg aria-hidden="true"><use href="#i-contacts"/></svg>Контакты</a>
+          <a href="mailto:sales@promoznachki.ru"><svg aria-hidden="true"><use href="#i-mail"/></svg>sales@promoznachki.ru</a>
+        </div>
       </nav>
 
       <div class="header-contacts">
@@ -114,7 +122,7 @@
         btn.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
       });
       nav.addEventListener('click', function (e) {
-        if (e.target.tagName === 'A') {
+        if (e.target.closest('a')) {
           nav.classList.remove('is-open');
           btn.setAttribute('aria-expanded', 'false');
         }
