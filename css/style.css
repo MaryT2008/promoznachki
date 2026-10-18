@@ -1445,6 +1445,465 @@ a { color: inherit; text-decoration: none; }
   .cta-actions { width: 100%; align-items: stretch; text-align: center; }
 }
 
+/* =========================================================
+   Страница товара: закатные значки
+   ========================================================= */
+
+.pp-hero {
+  padding: 40px 0 48px;
+  background:
+    radial-gradient(circle at 80% 30%, rgba(244, 123, 32, .12), transparent 45%),
+    #f7f7f8;
+  overflow: hidden;
+}
+
+.pp-hero-inner {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  align-items: center;
+  gap: 48px;
+}
+
+.pp-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 0 28px;
+  padding: 0;
+  list-style: none;
+}
+
+.pp-facts li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 10px 10px;
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+}
+
+.pp-facts svg {
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(244, 123, 32, .12);
+  color: var(--orange);
+}
+
+.pp-facts span { font-size: 12px; line-height: 1.25; color: var(--muted); }
+.pp-facts b { display: block; font-size: 15px; color: var(--text); }
+
+/* Значки «парят» в первом экране */
+.pp-hero-media {
+  position: relative;
+  aspect-ratio: 1.15;
+}
+
+.pp-hero-media img {
+  position: absolute;
+  width: auto;
+  border-radius: 50%;
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, .18));
+  animation: float 6s ease-in-out infinite;
+}
+
+.pp-hero-main { left: 14%; top: 4%; height: 82%; }
+.pp-hero-small--a { right: 0; top: 0; height: 38%; animation-delay: -2s; }
+.pp-hero-small--b { left: 0; bottom: 0; height: 36%; animation-delay: -4s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pp-hero-media img { animation: none; }
+}
+
+/* Цены */
+.pp-prices { padding: 40px 0 24px; }
+
+.price-card {
+  padding: 28px;
+  border-radius: 28px;
+  background: var(--white);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .03), 0 20px 60px rgba(0, 0, 0, .07);
+}
+
+.size-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+  padding: 6px;
+  width: fit-content;
+  max-width: 100%;
+  border-radius: 999px;
+  background: #f4f4f6;
+}
+
+.size-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s, color .2s, box-shadow .2s;
+}
+
+.size-tab:hover { color: var(--orange); }
+
+.size-tab.is-active {
+  background: var(--white);
+  color: var(--orange-dark);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+}
+
+/* Кружок, пропорциональный диаметру значка */
+.size-dot {
+  display: inline-block;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.size-dot--25 { width: 8px; height: 8px; }
+.size-dot--38 { width: 11px; height: 11px; }
+.size-dot--56 { width: 15px; height: 15px; }
+.size-dot--78 { width: 19px; height: 19px; }
+
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: fade-in .3s ease;
+}
+
+.tier-grid[hidden] { display: none; }
+
+.tier-grid li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: #f7f7f8;
+  transition: background .2s, transform .2s;
+}
+
+.tier-grid li:hover { background: #fff3e9; transform: translateY(-2px); }
+.tier-grid span { font-size: 13px; color: var(--muted); }
+
+.tier-grid b {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Последние, самые выгодные тиражи */
+.tier-grid li:nth-last-child(-n+2) b { color: var(--orange); }
+
+.price-note { margin: 18px 0 0; font-size: 13px; color: var(--muted); }
+
+.price-table-wrap { margin-top: 16px; }
+
+.price-table-wrap summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-weight: 700;
+  color: var(--orange);
+  cursor: pointer;
+  list-style: none;
+}
+
+.price-table-wrap summary::-webkit-details-marker { display: none; }
+.price-table-wrap summary::after { content: "▾"; transition: transform .2s; }
+.price-table-wrap[open] summary::after { transform: rotate(180deg); }
+
+.price-table-scroll {
+  margin-top: 10px;
+  overflow-x: auto;
+  border: 1px solid #ececef;
+  border-radius: 16px;
+}
+
+.price-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.price-table th,
+.price-table td { padding: 12px 14px; text-align: right; }
+
+.price-table thead th {
+  background: #f7f7f8;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.price-table tbody th { text-align: left; font-weight: 700; }
+.price-table tbody tr + tr { border-top: 1px solid #f0f0f2; }
+.price-table tbody tr:hover { background: #fffaf5; }
+
+.price-table th:first-child {
+  position: sticky;
+  left: 0;
+  background: inherit;
+  text-align: left;
+}
+
+.price-table tbody th:first-child { background: var(--white); }
+
+/* Калькулятор */
+.pp-calc { padding: 24px 0 40px; }
+
+.calc-card {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  border-radius: 28px;
+  background: #f4f4f6;
+  overflow: hidden;
+}
+
+.calc-form { padding: 36px 40px; }
+.calc-form .section-title { margin: 0 0 24px; }
+
+.calc-field + .calc-field { margin-top: 22px; }
+
+.calc-label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.calc-sizes { display: flex; flex-wrap: wrap; gap: 8px; }
+.calc-sizes input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+
+.calc-sizes span {
+  display: inline-block;
+  padding: 10px 18px;
+  border: 1.5px solid #dcdce2;
+  border-radius: 12px;
+  background: var(--white);
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .2s, background .2s, color .2s;
+}
+
+.calc-sizes span:hover { border-color: var(--orange); }
+.calc-sizes input:checked + span { border-color: var(--orange); background: var(--orange); color: var(--white); }
+.calc-sizes input:focus-visible + span { box-shadow: 0 0 0 4px rgba(244, 123, 32, .25); }
+
+.calc-qty {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1.5px solid #dcdce2;
+  border-radius: 14px;
+  background: var(--white);
+  overflow: hidden;
+}
+
+.calc-qty button {
+  width: 48px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.calc-qty button:hover { background: #fff3e9; color: var(--orange); }
+
+.calc-qty input {
+  width: 120px;
+  padding: 12px 0;
+  border: 0;
+  text-align: center;
+  font: inherit;
+  font-size: 20px;
+  font-weight: 700;
+  -moz-appearance: textfield;
+}
+
+.calc-qty input::-webkit-inner-spin-button,
+.calc-qty input::-webkit-outer-spin-button { -webkit-appearance: none; }
+.calc-qty input:focus { outline: none; }
+.calc-qty:focus-within { border-color: var(--orange); box-shadow: 0 0 0 4px rgba(244, 123, 32, .15); }
+
+.calc-presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+.calc-presets button {
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: #e8e8ec;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.calc-presets button:hover { background: var(--orange); color: var(--white); }
+
+.calc-result {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: 36px 40px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 255, 255, .18) 0 140px, transparent 141px),
+    linear-gradient(150deg, #ff8a2b, var(--orange-dark));
+  color: var(--white);
+}
+
+.calc-result-label { font-size: 14px; opacity: .85; }
+
+.calc-total {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 4vw, 48px);
+  line-height: 1.1;
+}
+
+.calc-per { font-size: 16px; font-weight: 600; }
+.calc-hint { min-height: 1.4em; margin: 6px 0 14px; font-size: 14px; opacity: .9; }
+.calc-order { align-self: flex-start; }
+.calc-result small { margin-top: 8px; font-size: 12px; opacity: .8; }
+
+/* Преимущества товара */
+.pp-features { padding: 8px 0 40px; }
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.feature-grid li {
+  padding: 22px;
+  border: 1px solid #ececef;
+  border-radius: 20px;
+}
+
+.feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  background: rgba(244, 123, 32, .12);
+  color: var(--orange);
+}
+
+.feature-icon svg { width: 22px; height: 22px; }
+.feature-grid h3 { margin: 0 0 6px; font-family: var(--font-display); font-size: 15px; font-weight: 700; }
+.feature-grid p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--muted); }
+
+/* Примеры */
+.pp-gallery {
+  padding: 40px 0 32px;
+  background: #f7f7f8;
+}
+
+.pp-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pp-gallery-grid li {
+  aspect-ratio: 1;
+  border-radius: 18px;
+  background: var(--white);
+  overflow: hidden;
+  transition: transform .45s cubic-bezier(.22, .61, .36, 1), box-shadow .45s cubic-bezier(.22, .61, .36, 1);
+}
+
+.pp-gallery-grid img { width: 100%; height: 100%; object-fit: cover; }
+
+.pp-gallery-grid li:hover {
+  position: relative;
+  z-index: 2;
+  transform: scale(1.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .18);
+}
+
+.product-page .about-cta { padding-top: 40px; }
+
+.about-clients-more { margin: 24px 0 0; text-align: center; }
+
+.about-clients-more a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--orange);
+}
+
+.about-clients-more svg { width: 18px; height: 18px; transition: transform .25s; }
+.about-clients-more a:hover svg { transform: translateX(4px); }
+
+@media (max-width: 1100px) {
+  .tier-grid { grid-template-columns: repeat(4, 1fr); }
+  .feature-grid { grid-template-columns: repeat(2, 1fr); }
+  .pp-gallery-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 960px) {
+  .pp-hero-inner { grid-template-columns: 1fr; gap: 28px; }
+  .pp-hero-media { max-width: 520px; width: 100%; margin: 0 auto; }
+  .tier-grid { grid-template-columns: repeat(3, 1fr); }
+  .calc-card { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .pp-hero { padding: 24px 0 32px; }
+  .pp-facts { gap: 8px; }
+  .pp-facts li { padding: 8px 12px 8px 8px; }
+  .pp-facts svg { width: 30px; height: 30px; padding: 6px; }
+  .price-card { padding: 16px; border-radius: 20px; }
+  .size-tabs { width: 100%; justify-content: space-between; gap: 2px; padding: 4px; }
+  .size-tab { flex: 1; justify-content: center; gap: 5px; padding: 9px 4px; font-size: 13px; }
+  .size-dot { display: none; }
+  .tier-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .tier-grid li { padding: 12px 14px; }
+  .tier-grid b { font-size: 17px; }
+  .calc-card { border-radius: 20px; }
+  .calc-form, .calc-result { padding: 24px 20px; }
+  .calc-qty input { width: 100px; }
+  .calc-sizes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .calc-sizes span { display: block; padding: 10px 0; text-align: center; font-size: 14px; }
+  .calc-order { align-self: stretch; text-align: center; }
+  .feature-grid { grid-template-columns: 1fr; gap: 10px; }
+  .feature-grid li { padding: 16px; }
+  .pp-gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .pp-gallery-grid li { border-radius: 14px; }
+}
+
 /* ---------- Адаптив ---------- */
 
 .main-nav-extra { display: none; }
