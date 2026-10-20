@@ -122,7 +122,7 @@
           <p class="about-lead">Бумажные веера с яркой двусторонней печатью и пластиковой ручкой — заметный и полезный сувенир для фестивалей, концертов, летних акций, кафе и клубов. Ваш бренд буквально будет в руках у гостей.</p>
           <ul class="pp-facts pp-facts--grid">
             <li><svg aria-hidden="true"><use href="#i-box"/></svg><span><b>от 100 шт</b>тираж</span></li>
-            <li><svg aria-hidden="true"><use href="#i-clock"/></svg><span><b>10 рабочих дней</b>срок изготовления</span></li>
+            <li><svg aria-hidden="true"><use href="#i-clock"/></svg><span><b>от 10 рабочих дней</b>срок изготовления</span></li>
             <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><b>Ø 150 мм</b>или любая форма</span></li>
             <li><svg aria-hidden="true"><use href="#i-calc"/></svg><span><b>от 62 ₽</b>за штуку</span></li>
           </ul>
@@ -183,6 +183,14 @@
               </div>
             </div>
             <div class="calc-field">
+              <span class="calc-label" id="calc-term-label">Срок изготовления</span>
+              <div class="calc-delivery calc-delivery--2" role="radiogroup" aria-labelledby="calc-term-label">
+                <label><input type="radio" name="calc-term" value="0" data-name="" checked><span>От 10 рабочих дней<small>по прайсу</small></span></label>
+                <label><input type="radio" name="calc-term" value="0.3" data-name="срочно 5–7 рабочих дней"><span>Срочно 5–7 рабочих дней<small>+30% к цене</small></span></label>
+              </div>
+              <p class="calc-term-note" hidden>Возможность срочного изготовления менеджер согласует при обработке вашей заявки.</p>
+            </div>
+            <div class="calc-field">
               <label class="calc-label" for="calc-qty">Количество, шт</label>
               <div class="calc-qty">
                 <button type="button" data-step="-1" aria-label="Меньше">−</button>
@@ -232,7 +240,7 @@
             <span class="calc-breakdown" id="calc-breakdown"></span>
             <p class="calc-hint" id="calc-hint"></p>
             <a class="btn btn--light calc-order" href="index.html#order">Оформить заказ</a>
-            <small>Срок изготовления — 10 рабочих дней. Итоговую цену менеджер подтвердит после согласования макета</small>
+            <small>Срок изготовления — от 10 рабочих дней: точную дату назовёт менеджер, когда заказ будет запущен в работу. Итоговую цену подтвердим после согласования макета</small>
           </div>
         </div>
       </div>
@@ -307,7 +315,7 @@
         <article class="seo-article">
           <h2 class="section-title section-title--left">Промо веера с&nbsp;логотипом на&nbsp;заказ</h2>
           <p><b>Бумажные веера с логотипом</b> — яркий и практичный рекламный носитель. В жаркий день веер не выбрасывают: им пользуются весь праздник, а ваш логотип постоянно на виду у гостей и прохожих.</p>
-          <p>Мы изготавливаем <b>промо веера на заказ</b> из плотной бумаги 300&nbsp;г/м² с полноцветной двусторонней печатью, глянцевой или матовой ламинацией и пластиковой ручкой. Стандартная форма — круг 150&nbsp;мм, по запросу делаем <b>фигурные веера</b> любой формы. Минимальный тираж — 100 штук, срок изготовления — 10 рабочих дней.</p>
+          <p>Мы изготавливаем <b>промо веера на заказ</b> из плотной бумаги 300&nbsp;г/м² с полноцветной двусторонней печатью, глянцевой или матовой ламинацией и пластиковой ручкой. Стандартная форма — круг 150&nbsp;мм, по запросу делаем <b>фигурные веера</b> любой формы. Минимальный тираж — 100 штук, срок изготовления — от 10 рабочих дней, по согласованию — срочно за 5–7 рабочих дней.</p>
           <h3>Где пригодятся рекламные веера</h3>
           <ul>
             <li>летние фестивали, концерты и городские праздники;</li>
@@ -332,7 +340,7 @@
           </details>
           <details class="faq-item">
             <summary>Какой минимальный тираж и срок?</summary>
-            <p>Минимальный тираж — 100 штук. Стандартный срок изготовления — 10 рабочих дней.</p>
+            <p>Минимальный тираж — 100 штук. Срок изготовления — от 10 рабочих дней, точную дату менеджер сообщит при запуске заказа в работу. Если нужно быстрее, возможно срочное изготовление за 5–7 рабочих дней — его возможность согласуем при обработке заявки.</p>
           </details>
           <details class="faq-item">
             <summary>Чем глянцевая ламинация отличается от матовой?</summary>
@@ -376,7 +384,7 @@
           "name": "Какой минимальный тираж и срок?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Минимальный тираж — 100 штук. Стандартный срок изготовления — 10 рабочих дней."
+            "text": "Минимальный тираж — 100 штук. Срок изготовления — от 10 рабочих дней, точную дату менеджер сообщит при запуске заказа в работу. Если нужно быстрее, возможно срочное изготовление за 5–7 рабочих дней — его возможность согласуем при обработке заявки."
           }
         },
         {
@@ -514,7 +522,8 @@
       var orderLink = document.querySelector('.calc-order');
 
       function money(v) {
-        return v.toLocaleString('ru-RU') + '\u00a0₽';
+        var f = v % 1 ? 2 : 0;
+        return v.toLocaleString('ru-RU', { minimumFractionDigits: f, maximumFractionDigits: f }) + '\u00a0₽';
       }
 
       function update() {
@@ -523,8 +532,11 @@
         var count = Math.max(qty, MIN_QTY);
         var idx = 0;
         for (var i = 0; i < QTY.length; i++) if (count >= QTY[i]) idx = i;
-        var price = PRICES[lam][idx];
-        var base = Math.max(price * count, MIN_ORDER);
+        var term = document.querySelector('input[name="calc-term"]:checked');
+        var k = 1 + Number(term.value);
+        var price = Math.round(PRICES[lam][idx] * k * 100) / 100;
+        document.querySelector('.calc-term-note').hidden = !Number(term.value);
+        var base = Math.max(Math.round(price * count), MIN_ORDER);
 
         // Вкладки в блоке цен показывают выбранную ламинацию
         document.querySelectorAll('.size-tab').forEach(function (t) {
@@ -547,11 +559,12 @@
         perEl.textContent = money(price) + ' за штуку';
         breakdownEl.textContent = parts.length ? 'Веера ' + money(base) + ' · ' + parts.join(', ') : '';
         if (qty < MIN_QTY) hintEl.textContent = 'Минимальный тираж — 100 шт, расчёт на 100 шт';
-        else if (idx < QTY.length - 1) hintEl.textContent = 'От ' + QTY[idx + 1].toLocaleString('ru-RU') + ' шт — ' + money(PRICES[lam][idx + 1]) + ' за штуку';
+        else if (idx < QTY.length - 1) hintEl.textContent = 'От ' + QTY[idx + 1].toLocaleString('ru-RU') + ' шт — ' + money(Math.round(PRICES[lam][idx + 1] * k * 100) / 100) + ' за штуку';
         else hintEl.textContent = '';
 
         var params = { item: 'Веера с логотипом (' + NAMES[lam] + ')', size: 'круг 150 мм', qty: String(count), per: money(price), total: money(total) };
-        if (parts.length) params.opts = parts.join(', ');
+        var opts = [term.dataset.name].concat(parts).filter(Boolean);
+        if (opts.length) params.opts = opts.join(', ');
         orderLink.href = 'index.html?' + new URLSearchParams(params).toString() + '#order';
       }
 
@@ -561,7 +574,7 @@
           update();
         });
       });
-      document.querySelectorAll('input[name="calc-size"], input[name="calc-delivery"], #calc-pack').forEach(function (el) {
+      document.querySelectorAll('input[name="calc-size"], input[name="calc-delivery"], input[name="calc-term"], #calc-pack').forEach(function (el) {
         el.addEventListener('change', update);
       });
       qtyInput.addEventListener('input', update);

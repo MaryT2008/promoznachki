@@ -2364,6 +2364,8 @@ a { color: inherit; text-decoration: none; }
 .calc-delivery input:focus-visible + span { box-shadow: 0 0 0 4px rgba(244, 123, 32, .25); }
 
 .calc-presets + .calc-field { margin-top: 22px; }
+.calc-delivery--2 { grid-template-columns: repeat(2, 1fr); }
+.calc-term-note { margin: 8px 0 0; font-size: 13px; color: var(--orange-dark); }
 
 .calc-note {
   display: flex;
