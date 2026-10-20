@@ -2615,7 +2615,7 @@ body.no-scroll { overflow: hidden; }
 .fan-scheme-shape path {
   fill: rgba(255, 255, 255, .16);
   stroke: var(--white);
-  stroke-width: 2.5;
+  stroke-width: 1.6;
 }
 
 
