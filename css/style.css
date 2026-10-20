@@ -2586,7 +2586,7 @@ body.no-scroll { overflow: hidden; }
   mix-blend-mode: multiply;
 }
 
-.mugs-hero-media img:nth-child(2) { width: 36%; }
+.mugs-hero-media img:nth-child(2) { width: 32%; }
 
 .mug-models { padding: 40px 0 8px; }
 
