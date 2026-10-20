@@ -2509,6 +2509,27 @@ body.no-scroll { overflow: hidden; }
   .lightbox-figure { margin-bottom: 60px; }
 }
 
+/* =========================================================
+   Страница: промо веера
+   ========================================================= */
+
+.fans-hero-media img { display: block; width: 100%; height: auto; }
+
+.fans-shapes {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  align-items: center;
+  gap: 40px;
+}
+
+.fans-shapes-text .section-title { margin: 0 0 14px; }
+.fans-shapes-text p { margin: 0 0 22px; font-size: 15px; line-height: 1.65; color: #555; }
+.fans-shapes img { width: 100%; height: auto; }
+
+@media (max-width: 960px) {
+  .fans-shapes { grid-template-columns: 1fr; gap: 24px; }
+}
+
 /* ---------- Адаптив ---------- */
 
 .main-nav-extra { display: none; }
