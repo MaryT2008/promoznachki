@@ -2421,15 +2421,18 @@ a { color: inherit; text-decoration: none; }
 
 .pp-gallery-grid--5 { grid-template-columns: repeat(5, 1fr); }
 .pp-gallery-grid--5 li { aspect-ratio: 3 / 4; }
+.pp-gallery-grid--5.pp-gallery-grid--6 { grid-template-columns: repeat(6, 1fr); }
 
 @media (max-width: 1100px) {
   .tier-grid--10 { grid-template-columns: repeat(2, 1fr); }
-  .pp-gallery-grid--5 { grid-template-columns: repeat(3, 1fr); }
+  .pp-gallery-grid--5,
+  .pp-gallery-grid--5.pp-gallery-grid--6 { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 640px) {
   .tier-grid--10 { grid-template-columns: repeat(2, 1fr); }
-  .pp-gallery-grid--5 { grid-template-columns: repeat(2, 1fr); }
+  .pp-gallery-grid--5,
+  .pp-gallery-grid--5.pp-gallery-grid--6 { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* Просмотр фото «Наших работ» */
