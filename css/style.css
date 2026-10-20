@@ -1692,6 +1692,14 @@ a { color: inherit; text-decoration: none; }
 /* Цены */
 .pp-prices { padding: 40px 0 24px; }
 
+/* Заголовок блока цен — в одну строку и чуть мельче */
+.pp-prices .section-head { max-width: none; }
+.pp-prices .section-title { font-size: clamp(20px, 2.4vw, 28px); text-wrap: nowrap; }
+
+@media (max-width: 640px) {
+  .pp-prices .section-title { text-wrap: balance; }
+}
+
 .price-card {
   padding: 28px;
   border-radius: 28px;
