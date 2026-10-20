@@ -2549,6 +2549,44 @@ body.no-scroll { overflow: hidden; }
 .fans-hero-media img { display: block; width: 100%; height: auto; }
 .fans-shapes-section { background: var(--white); }
 
+/* Скачивание шаблона */
+.template-dl { padding: 0 0 32px; }
+
+.template-card {
+  display: flex;
+  align-items: center;
+  gap: 24px 32px;
+  padding: 24px 32px;
+  border: 1.5px dashed rgba(244, 123, 32, .5);
+  border-radius: 24px;
+  background: #fff9f4;
+}
+
+.template-preview { flex-shrink: 0; width: 84px; }
+.template-preview svg { display: block; width: 100%; height: auto; }
+.template-preview circle { fill: var(--white); stroke: #e5484d; stroke-width: 1.5; }
+.template-preview .bleed { fill: none; stroke-dasharray: 3 3; stroke-width: 1; }
+.template-preview rect { fill: none; stroke: #e5484d; stroke-width: 1.5; }
+
+.template-text { flex: 1; }
+.template-text h2 { margin: 0 0 6px; font-family: var(--font-display); font-size: 20px; font-weight: 700; }
+.template-text p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--muted); }
+
+.template-actions { display: flex; flex-shrink: 0; gap: 10px; }
+.template-actions .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; font-size: 15px; }
+.template-actions svg { width: 18px; height: 18px; }
+
+@media (max-width: 960px) {
+  .template-card { flex-wrap: wrap; }
+  .template-actions { width: 100%; }
+}
+
+@media (max-width: 640px) {
+  .template-card { padding: 20px; flex-direction: column; align-items: flex-start; }
+  .template-actions { flex-direction: column; }
+  .template-actions .btn { justify-content: center; }
+}
+
 /* Схема веера в калькуляторе */
 .fan-scheme { align-self: center; width: 190px; margin-bottom: 12px; }
 .fan-scheme svg { display: block; width: 100%; height: auto; overflow: visible; }
