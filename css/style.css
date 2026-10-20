@@ -2620,18 +2620,20 @@ body.no-scroll { overflow: hidden; }
 
 .mug-card-img { display: block; width: 100%; aspect-ratio: 1; }
 .mug-card-img {
-  --mug-bg: #ffd9bc;
   padding: 8%;
   border-radius: 16px;
-  background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, .55), transparent 60%), var(--mug-bg);
+  background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, .6), transparent 60%), #ececef;
+  transition: background .3s;
 }
 
-/* Цветные подложки — белая кружка на них смотрится ярче */
-.mug-grid li:nth-child(1) .mug-card-img { --mug-bg: #ffb877; }
-.mug-grid li:nth-child(2) .mug-card-img { --mug-bg: #8fd3ff; }
-.mug-grid li:nth-child(3) .mug-card-img { --mug-bg: #9ee6a8; }
-.mug-grid li:nth-child(4) .mug-card-img { --mug-bg: #ffa3c4; }
-.mug-grid li:nth-child(5) .mug-card-img { --mug-bg: #ffe066; }
+/* Подложки в цветах сайта: серая, при наведении — светло-оранжевая, у выбранной — оранжевая */
+.mug-card:hover .mug-card-img {
+  background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, .6), transparent 60%), #ffd9bc;
+}
+
+.mug-card.is-active .mug-card-img {
+  background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, .35), transparent 60%), linear-gradient(150deg, #ff9a4a, var(--orange-dark));
+}
 .mug-card-img img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 14px rgba(0, 0, 0, .12)); }
 .mug-card-title { margin-top: 10px; font-family: var(--font-display); font-size: 14px; font-weight: 600; line-height: 1.3; color: var(--text); }
 .mug-card-price { margin-top: 4px; font-size: 14px; font-weight: 700; color: var(--orange); }
