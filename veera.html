@@ -207,6 +207,22 @@
             </div>
           </div>
           <div class="calc-result" aria-live="polite">
+            <div class="fan-scheme" aria-hidden="true">
+              <svg viewBox="0 0 160 230">
+                <g class="fan-scheme-round">
+                  <circle cx="80" cy="72" r="58"/>
+                  <path class="fan-scheme-dim" d="M22 72H138"/>
+                  <path class="fan-scheme-tick" d="M22 67v10M138 67v10"/>
+                  <text x="80" y="64">Ø 150 мм</text>
+                </g>
+                <g class="fan-scheme-shape">
+                  <path d="M80.0 19.8 Q101.9 4.7 110.7 29.8 Q137.2 30.4 129.6 55.9 Q150.8 72.0 129.6 88.1 Q137.2 113.6 110.7 114.2 Q101.9 139.3 80.0 124.2 Q58.1 139.3 49.3 114.2 Q22.8 113.6 30.4 88.1 Q9.2 72.0 30.4 55.9 Q22.8 30.4 49.3 29.8 Q58.1 4.7 80.0 19.8Z"/>
+                  <text x="80" y="76">ваша форма</text>
+                </g>
+                <path class="fan-scheme-handle" d="M71 120h18a6 6 0 0 1 6 6v8h-4v80a5 5 0 0 1-5 5h-12a5 5 0 0 1-5-5v-80h-4v-8a6 6 0 0 1 6-6z"/>
+                <circle class="fan-scheme-hole" cx="80" cy="210" r="3.5"/>
+              </svg>
+            </div>
             <span class="calc-result-label">Стоимость тиража</span>
             <b class="calc-total" id="calc-total"></b>
             <span class="calc-per" id="calc-per"></span>
@@ -497,6 +513,7 @@
         document.querySelectorAll('.tier-grid').forEach(function (g) { g.hidden = g.dataset.size !== lam; });
 
         var pack = packInput.checked ? STAMP_PRICE : 0;
+        document.querySelector('.fan-scheme').classList.toggle('is-custom', packInput.checked);
         var dl = document.querySelector('input[name="calc-delivery"]:checked');
         var delivery = Number(dl.value);
         var parts = [];

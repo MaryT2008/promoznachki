@@ -2549,6 +2549,41 @@ body.no-scroll { overflow: hidden; }
 .fans-hero-media img { display: block; width: 100%; height: auto; }
 .fans-shapes-section { background: var(--white); }
 
+/* Схема веера в калькуляторе */
+.fan-scheme { align-self: center; width: 150px; margin-bottom: 12px; }
+.fan-scheme svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+.fan-scheme circle:not(.fan-scheme-hole),
+.fan-scheme-shape path {
+  fill: rgba(255, 255, 255, .16);
+  stroke: var(--white);
+  stroke-width: 2.5;
+}
+
+.fan-scheme-dim { stroke: var(--white); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.fan-scheme-tick { stroke: var(--white); stroke-width: 1.5; }
+
+.fan-scheme text {
+  fill: var(--white);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.fan-scheme-handle { fill: var(--white); }
+.fan-scheme-hole { fill: var(--orange-dark); }
+
+.fan-scheme-round,
+.fan-scheme-shape {
+  transform-origin: 80px 72px;
+  transition: opacity .35s, transform .45s cubic-bezier(.22, .61, .36, 1);
+}
+
+.fan-scheme-shape { opacity: 0; transform: scale(.7) rotate(-30deg); }
+.fan-scheme.is-custom .fan-scheme-round { opacity: 0; transform: scale(.7); }
+.fan-scheme.is-custom .fan-scheme-shape { opacity: 1; transform: none; }
+
 /* Крупный просмотр веера */
 .pp-gallery-grid li.flip { cursor: zoom-in; }
 
