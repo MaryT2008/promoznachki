@@ -2549,6 +2549,54 @@ body.no-scroll { overflow: hidden; }
 .fans-hero-media img { display: block; width: 100%; height: auto; }
 .fans-shapes-section { background: var(--white); }
 
+/* Крупный просмотр веера */
+.pp-gallery-grid li.flip { cursor: zoom-in; }
+
+.fan-view {
+  width: min(560px, 80vw, 64vh);
+  aspect-ratio: 3 / 4;
+  padding: 4%;
+  border-radius: 18px;
+  background: var(--white);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .45);
+  perspective: 1400px;
+  cursor: pointer;
+}
+
+.fan-view.is-in { animation: lightbox-in .35s cubic-bezier(.22, .61, .36, 1); }
+
+.fan-view-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .6s cubic-bezier(.45, .05, .25, 1);
+}
+
+.fan-view-inner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.fan-view-back { transform: rotateY(180deg); }
+
+.fan-view.is-flipped .fan-view-inner { transform: rotateY(180deg); }
+
+@media (hover: hover) {
+  .fan-view:hover .fan-view-inner { transform: rotateY(180deg); }
+  .fan-view.is-flipped:hover .fan-view-inner { transform: none; }
+}
+
+@media (max-width: 640px) {
+  .fan-view { width: min(86vw, 62vh); }
+}
+
 .fans-shapes {
   display: grid;
   grid-template-columns: 1fr 1.2fr;

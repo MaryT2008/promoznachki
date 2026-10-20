@@ -237,15 +237,15 @@
         <div class="section-head">
           <span class="section-eyebrow">Примеры</span>
           <h2 class="section-title">Веера, которые мы сделали</h2>
-          <p class="section-sub">Наведите на веер, чтобы увидеть обратную сторону</p>
+          <p class="section-sub">Наведите на веер, чтобы увидеть обратную сторону, нажмите — чтобы рассмотреть крупно</p>
         </div>
         <ul class="pp-gallery-grid pp-gallery-grid--5 pp-gallery-grid--6">
-          <li class="is-cut flip"><span class="flip-inner"><img class="flip-front" src="assets/img/fan-yandex.webp" width="476" height="760" alt="Веер «Яндекс Еда — навевает аппетит»" loading="lazy"><img class="flip-back" src="assets/img/fan-yandex-back.webp" alt="" aria-hidden="true" loading="lazy"></span></li>
-          <li class="is-cut flip"><span class="flip-inner"><img class="flip-front" src="assets/img/fan-shapito.webp" width="488" height="760" alt="Веер с программой и картой фестиваля «Шапито»" loading="lazy"><img class="flip-back" src="assets/img/fan-shapito-back.webp" alt="" aria-hidden="true" loading="lazy"></span></li>
-          <li class="is-cut flip"><span class="flip-inner"><img class="flip-front" src="assets/img/fan-mvideo.webp" width="478" height="760" alt="Веер М.Видео для Samsung Galaxy" loading="lazy"><img class="flip-back" src="assets/img/fan-mvideo-back.webp" alt="" aria-hidden="true" loading="lazy"></span></li>
-          <li class="is-cut flip"><span class="flip-inner"><img class="flip-front" src="assets/img/fan-aeb.webp" width="464" height="760" alt="Веер банка АЭБ с QR-кодом" loading="lazy"><img class="flip-back" src="assets/img/fan-aeb-back.webp" alt="" aria-hidden="true" loading="lazy"></span></li>
-          <li class="is-cut flip"><span class="flip-inner"><img class="flip-front" src="assets/img/fan-hr.webp" width="506" height="760" alt="Веер с логотипом HR" loading="lazy"><img class="flip-back" src="assets/img/fan-hr-back.webp" alt="" aria-hidden="true" loading="lazy"></span></li>
-          <li class="is-cut flip"><span class="flip-inner"><img class="flip-front" src="assets/img/fan-dymov.webp" width="501" height="760" alt="Веер с логотипом «Дымов»" loading="lazy"><img class="flip-back" src="assets/img/fan-dymov-back.webp" alt="" aria-hidden="true" loading="lazy"></span></li>
+          <li class="is-cut flip" data-name="Яндекс Еда"><span class="flip-inner"><img class="flip-front" src="assets/img/fan-yandex.webp" width="476" height="760" alt="Веер «Яндекс Еда — навевает аппетит»" loading="lazy"><img class="flip-back" src="assets/img/fan-yandex-back.webp" alt="" aria-hidden="true" loading="lazy"></span></li>
+          <li class="is-cut flip" data-name="Фестиваль «Шапито»"><span class="flip-inner"><img class="flip-front" src="assets/img/fan-shapito.webp" width="488" height="760" alt="Веер с программой и картой фестиваля «Шапито»" loading="lazy"><img class="flip-back" src="assets/img/fan-shapito-back.webp" alt="" aria-hidden="true" loading="lazy"></span></li>
+          <li class="is-cut flip" data-name="М.Видео"><span class="flip-inner"><img class="flip-front" src="assets/img/fan-mvideo.webp" width="478" height="760" alt="Веер М.Видео для Samsung Galaxy" loading="lazy"><img class="flip-back" src="assets/img/fan-mvideo-back.webp" alt="" aria-hidden="true" loading="lazy"></span></li>
+          <li class="is-cut flip" data-name="Банк АЭБ"><span class="flip-inner"><img class="flip-front" src="assets/img/fan-aeb.webp" width="464" height="760" alt="Веер банка АЭБ с QR-кодом" loading="lazy"><img class="flip-back" src="assets/img/fan-aeb-back.webp" alt="" aria-hidden="true" loading="lazy"></span></li>
+          <li class="is-cut flip" data-name="HRlink"><span class="flip-inner"><img class="flip-front" src="assets/img/fan-hr.webp" width="506" height="760" alt="Веер с логотипом HR" loading="lazy"><img class="flip-back" src="assets/img/fan-hr-back.webp" alt="" aria-hidden="true" loading="lazy"></span></li>
+          <li class="is-cut flip" data-name="Дымов"><span class="flip-inner"><img class="flip-front" src="assets/img/fan-dymov.webp" width="501" height="760" alt="Веер с логотипом «Дымов»" loading="lazy"><img class="flip-back" src="assets/img/fan-dymov-back.webp" alt="" aria-hidden="true" loading="lazy"></span></li>
         </ul>
       </div>
     </section>
@@ -538,6 +538,97 @@
         b.addEventListener('click', function () { qtyInput.value = b.dataset.qty; update(); });
       });
       update();
+    })();
+  </script>
+  <!-- Просмотр вееров крупно -->
+  <div class="lightbox" id="fan-lightbox" role="dialog" aria-modal="true" aria-label="Просмотр веера" hidden>
+    <button class="lightbox-close" type="button" aria-label="Закрыть">×</button>
+    <button class="lightbox-nav lightbox-prev" type="button" aria-label="Предыдущий веер"><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+    <figure class="lightbox-figure">
+      <div class="fan-view" title="Нажмите, чтобы перевернуть">
+        <span class="fan-view-inner">
+          <img class="fan-view-front" src="" alt="">
+          <img class="fan-view-back" src="" alt="" aria-hidden="true">
+        </span>
+      </div>
+      <figcaption class="lightbox-caption"><b></b><span>Наведите или нажмите на веер, чтобы перевернуть</span><small></small></figcaption>
+    </figure>
+    <button class="lightbox-nav lightbox-next" type="button" aria-label="Следующий веер"><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+  </div>
+
+  <script>
+    // Веера: клик открывает крупный просмотр с переворотом и листанием
+    (function () {
+      var items = Array.prototype.slice.call(document.querySelectorAll('.pp-gallery-grid .flip'));
+      var box = document.getElementById('fan-lightbox');
+      var view = box.querySelector('.fan-view');
+      var front = box.querySelector('.fan-view-front');
+      var back = box.querySelector('.fan-view-back');
+      var cap = box.querySelector('.lightbox-caption');
+      var current = 0;
+      var lastFocus = null;
+
+      function show(i) {
+        current = (i + items.length) % items.length;
+        var f = items[current].querySelector('.flip-front');
+        var b = items[current].querySelector('.flip-back');
+        view.classList.remove('is-flipped', 'is-in');
+        void view.offsetWidth;
+        front.src = f.currentSrc || f.src;
+        front.alt = f.alt;
+        back.src = b.currentSrc || b.src;
+        cap.querySelector('b').textContent = items[current].dataset.name || f.alt;
+        cap.querySelector('small').textContent = (current + 1) + ' / ' + items.length;
+        view.classList.add('is-in');
+      }
+
+      function open(i) {
+        lastFocus = document.activeElement;
+        box.hidden = false;
+        document.body.classList.add('no-scroll');
+        requestAnimationFrame(function () { box.classList.add('is-open'); });
+        show(i);
+        box.querySelector('.lightbox-close').focus();
+      }
+
+      function close() {
+        box.classList.remove('is-open');
+        document.body.classList.remove('no-scroll');
+        setTimeout(function () { box.hidden = true; }, 250);
+        if (lastFocus) lastFocus.focus();
+      }
+
+      items.forEach(function (it, i) {
+        it.tabIndex = 0;
+        it.setAttribute('role', 'button');
+        it.setAttribute('aria-label', 'Открыть крупно: ' + it.querySelector('.flip-front').alt);
+        it.addEventListener('click', function () { open(i); });
+        it.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); }
+        });
+      });
+
+      view.addEventListener('click', function () { view.classList.toggle('is-flipped'); });
+      box.querySelector('.lightbox-prev').addEventListener('click', function () { show(current - 1); });
+      box.querySelector('.lightbox-next').addEventListener('click', function () { show(current + 1); });
+      box.querySelector('.lightbox-close').addEventListener('click', close);
+      box.addEventListener('click', function (e) { if (e.target === box) close(); });
+
+      document.addEventListener('keydown', function (e) {
+        if (box.hidden) return;
+        if (e.key === 'Escape') close();
+        else if (e.key === 'ArrowLeft') show(current - 1);
+        else if (e.key === 'ArrowRight') show(current + 1);
+      });
+
+      var startX = null;
+      box.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+      box.addEventListener('touchend', function (e) {
+        if (startX === null) return;
+        var dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+        startX = null;
+      });
     })();
   </script>
 </body>
