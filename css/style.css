@@ -2549,6 +2549,32 @@ body.no-scroll { overflow: hidden; }
 .fans-hero-media img { display: block; width: 100%; height: auto; }
 .fans-shapes-section { background: var(--white); }
 
+/* Галерея вееров: 6 плиток в ряд, веер целиком на белом фоне */
+.works--fans .works-grid { grid-template-columns: repeat(6, 1fr); }
+.works--fans .work { background: var(--white); }
+.works--fans .work img { object-fit: contain; padding: 6%; }
+.works--fans .work:nth-child(6n+1) { transform-origin: left center; }
+.works--fans .work:nth-child(6n) { transform-origin: right center; }
+.works--fans .work:nth-child(4n+1):not(:nth-child(6n+1)),
+.works--fans .work:nth-child(4n):not(:nth-child(6n)) { transform-origin: center; }
+
+@media (max-width: 960px) {
+  .works--fans .works-grid { grid-template-columns: repeat(3, 1fr); }
+  .works--fans .work:nth-child(n) { transform-origin: center; }
+  .works--fans .work:nth-child(3n+1) { transform-origin: left center; }
+  .works--fans .work:nth-child(3n) { transform-origin: right center; }
+}
+
+@media (max-width: 640px) {
+  .works--fans .works-grid { grid-template-columns: repeat(2, 1fr); }
+  .works--fans .work:nth-child(n) { transform-origin: center; }
+  .works--fans .work:nth-child(odd) { transform-origin: left center; }
+  .works--fans .work:nth-child(even) { transform-origin: right center; }
+}
+
+/* В окне просмотра веер показываем целиком */
+.lightbox-img.is-contain { object-fit: contain; padding: 4%; }
+
 .fans-shapes {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
