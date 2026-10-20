@@ -154,7 +154,7 @@
           <ul class="tier-grid tier-grid--5" data-size="r5070" hidden><li><span>50–199 шт</span><b>90&nbsp;₽</b></li><li><span>200–399 шт</span><b>60&nbsp;₽</b></li><li><span>400–599 шт</span><b>46,50&nbsp;₽</b></li><li><span>600–799 шт</span><b>33&nbsp;₽</b></li><li><span>от 800 шт</span><b>27&nbsp;₽</b></li></ul>
           <ul class="tier-grid tier-grid--5" data-size="s70" hidden><li><span>50–199 шт</span><b>105&nbsp;₽</b></li><li><span>200–399 шт</span><b>66&nbsp;₽</b></li><li><span>400–599 шт</span><b>52,50&nbsp;₽</b></li><li><span>600–799 шт</span><b>36&nbsp;₽</b></li><li><span>от 800 шт</span><b>31,50&nbsp;₽</b></li></ul>
           <ul class="tier-grid tier-grid--5" data-size="r70100" hidden><li><span>50–199 шт</span><b>112,50&nbsp;₽</b></li><li><span>200–399 шт</span><b>72&nbsp;₽</b></li><li><span>400–599 шт</span><b>55,50&nbsp;₽</b></li><li><span>600–799 шт</span><b>40,50&nbsp;₽</b></li><li><span>от 800 шт</span><b>34,50&nbsp;₽</b></li></ul>
-          <p class="price-note">Цены в рублях за одну штуку. Магниты фигурной формы по контуру изображения — по запросу.</p>
+          <p class="price-note">Цены в рублях за одну штуку. Магниты фигурной формы по контуру изображения — с индивидуальным штампом, +3&nbsp;000&nbsp;₽ к заказу.</p>
         </div>
 
         <details class="price-table-wrap">
@@ -194,6 +194,10 @@
               <label class="calc-check">
                 <input type="checkbox" id="calc-pack">
                 <span>Индивидуальная упаковка в пакет <b>+5&nbsp;₽/шт</b></span>
+              </label>
+              <label class="calc-check">
+                <input type="checkbox" id="calc-stamp">
+                <span>Индивидуальный штамп (фигурная форма) <b>+3&nbsp;000&nbsp;₽</b></span>
               </label>
             </div>
             <div class="calc-field">
@@ -257,7 +261,7 @@
           </details>
           <details class="faq-item">
             <summary>Какие размеры можно заказать?</summary>
-            <p>Круглые и квадратные 50×50 и 70×70 мм, прямоугольные 50×70, 50×90 и 70×100 мм. Магниты фигурной формы по контуру изображения — по запросу.</p>
+            <p>Круглые и квадратные 50×50 и 70×70 мм, прямоугольные 50×70, 50×90 и 70×100 мм. Магниты фигурной формы по контуру изображения — с индивидуальным штампом, +3&nbsp;000&nbsp;₽ к заказу.</p>
           </details>
           <details class="faq-item">
             <summary>Какой минимальный тираж?</summary>
@@ -293,7 +297,7 @@
           "name": "Какие размеры можно заказать?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Круглые и квадратные 50×50 и 70×70 мм, прямоугольные 50×70, 50×90 и 70×100 мм. Магниты фигурной формы по контуру изображения — по запросу."
+            "text": "Круглые и квадратные 50×50 и 70×70 мм, прямоугольные 50×70, 50×90 и 70×100 мм. Магниты фигурной формы по контуру изображения — с индивидуальным штампом, +3&nbsp;000&nbsp;₽ к заказу."
           }
         },
         {
@@ -421,6 +425,8 @@
       var MIN_QTY = 50;
       var MIN_ORDER = 3000;
       var PACK_PRICE = 5;
+      var STAMP_PRICE = 3000;
+      var stampInput = document.getElementById('calc-stamp');
 
       var qtyInput = document.getElementById('calc-qty');
       var totalEl = document.getElementById('calc-total');
@@ -452,12 +458,14 @@
         document.querySelectorAll('.tier-grid').forEach(function (g) { g.hidden = g.dataset.size !== size; });
 
         var pack = packInput.checked ? PACK_PRICE * count : 0;
+        var stamp = stampInput.checked ? STAMP_PRICE : 0;
         var dl = document.querySelector('input[name="calc-delivery"]:checked');
         var delivery = Number(dl.value);
         var parts = [];
+        if (stamp) parts.push('индивидуальный штамп +' + money(stamp));
         if (pack) parts.push('упаковка в пакет +' + money(pack));
         if (delivery) parts.push(dl.dataset.name + ' +' + money(delivery));
-        var total = base + pack + delivery;
+        var total = base + stamp + pack + delivery;
 
         totalEl.textContent = money(total);
         perEl.textContent = money(price) + ' за штуку';
@@ -478,7 +486,7 @@
           update();
         });
       });
-      document.querySelectorAll('input[name="calc-size"], input[name="calc-delivery"], #calc-pack').forEach(function (el) {
+      document.querySelectorAll('input[name="calc-size"], input[name="calc-delivery"], #calc-pack, #calc-stamp').forEach(function (el) {
         el.addEventListener('change', update);
       });
       qtyInput.addEventListener('input', update);
