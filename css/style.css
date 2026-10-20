@@ -2053,7 +2053,8 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 960px) {
-  .pp-hero-inner { grid-template-columns: 1fr; gap: 28px; }
+  .pp-hero-inner,
+  .pp-hero-inner--wide { grid-template-columns: 1fr; gap: 28px; }
   .pp-hero-media { max-width: 520px; width: 100%; margin: 0 auto; }
   .tier-grid { grid-template-columns: repeat(3, 1fr); }
   .calc-card { grid-template-columns: 1fr; }
@@ -2546,7 +2547,24 @@ body.no-scroll { overflow: hidden; }
    Страница: промо веера
    ========================================================= */
 
-.fans-hero-media img { display: block; width: 100%; height: auto; }
+.fans-hero-media {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4%;
+}
+
+@media (min-width: 961px) {
+  .pp-hero-inner--wide { grid-template-columns: 1fr 1.25fr; gap: 32px; }
+}
+
+/* Три веера в ряд, с промежутками */
+.fans-hero-media img {
+  display: block;
+  width: 30.5%;
+  height: auto;
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, .16));
+}
 .fans-shapes-section { background: var(--white); }
 
 /* Скачивание шаблона */
