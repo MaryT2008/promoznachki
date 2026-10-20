@@ -2626,8 +2626,11 @@ body.no-scroll { overflow: hidden; }
   transition: background .3s;
 }
 
-/* Подложки в цветах сайта: серая, при наведении и у выбранной — оранжевая */
-.mug-card:hover .mug-card-img,
+/* Подложки в цветах сайта: серая, при наведении — тёмно-серая, у выбранной — оранжевая */
+.mug-card:hover .mug-card-img {
+  background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, .18), transparent 60%), #4a4a52;
+}
+
 .mug-card.is-active .mug-card-img {
   background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, .35), transparent 60%), linear-gradient(150deg, #ff9a4a, var(--orange-dark));
 }
