@@ -2569,6 +2569,30 @@ body.no-scroll { overflow: hidden; }
 }
 .fans-shapes-section { background: var(--white); }
 
+/* Страница магнитов */
+.magnets-hero-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8%;
+}
+
+.magnets-hero-media img {
+  width: 36%;
+  height: auto;
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, .16));
+}
+
+.magnets-hero-media img:first-child { transform: rotate(-6deg); }
+.magnets-hero-media img:last-child { transform: rotate(5deg); }
+
+.tier-grid--5 { grid-template-columns: repeat(5, 1fr); }
+.tier-grid--5 li:last-child b { color: var(--orange); }
+
+@media (max-width: 640px) {
+  .tier-grid--5 { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* Скачивание шаблона */
 .template-dl { padding: 0 0 32px; }
 
