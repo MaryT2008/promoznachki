@@ -2364,7 +2364,7 @@ body.no-scroll { overflow: hidden; }
 /* Фото на 50% крупнее плитки галереи */
 .lightbox-img {
   display: block;
-  width: min(500px, 78vw, 70vh);
+  width: min(750px, 78vw, 74vh);
   aspect-ratio: 1;
   border-radius: 18px;
   object-fit: cover;
