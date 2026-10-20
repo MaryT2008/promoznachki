@@ -2544,6 +2544,7 @@ body.no-scroll { overflow: hidden; }
    ========================================================= */
 
 .fans-hero-media img { display: block; width: 100%; height: auto; }
+.fans-shapes-section { background: var(--white); }
 
 .fans-shapes {
   display: grid;
