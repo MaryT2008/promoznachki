@@ -2550,7 +2550,7 @@ body.no-scroll { overflow: hidden; }
 .fans-shapes-section { background: var(--white); }
 
 /* Схема веера в калькуляторе */
-.fan-scheme { align-self: center; width: 150px; margin-bottom: 12px; }
+.fan-scheme { align-self: center; width: 190px; margin-bottom: 12px; }
 .fan-scheme svg { display: block; width: 100%; height: auto; overflow: visible; }
 
 .fan-scheme circle:not(.fan-scheme-hole),
