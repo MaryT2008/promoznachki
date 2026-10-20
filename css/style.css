@@ -2626,7 +2626,7 @@ body.no-scroll { overflow: hidden; }
 }
 
 /* Подпись размера рядом с веером; у нестандартной формы скрывается */
-.fan-scheme .fan-scheme-label { font-size: 12px; text-anchor: start; transition: opacity .3s; }
+.fan-scheme .fan-scheme-label { font-size: 14px; transition: opacity .3s; }
 .fan-scheme.is-custom .fan-scheme-label { opacity: 0; }
 
 .fan-scheme-handle { fill: var(--white); }
