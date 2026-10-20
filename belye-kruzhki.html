@@ -237,13 +237,6 @@
               <div class="calc-presets"><button type="button" data-qty="10">10</button><button type="button" data-qty="50">50</button><button type="button" data-qty="100">100</button><button type="button" data-qty="200">200</button><button type="button" data-qty="300">300</button><button type="button" data-qty="500">500</button></div>
             </div>
             <div class="calc-field">
-              <span class="calc-label">Дополнительно</span>
-              <label class="calc-check">
-                <input type="checkbox" id="calc-pack">
-                <span>Индивидуальная упаковка в пакет <b>+5&nbsp;₽/шт</b></span>
-              </label>
-            </div>
-            <div class="calc-field">
               <span class="calc-label" id="calc-delivery-label">Доставка</span>
               <div class="calc-delivery" role="radiogroup" aria-labelledby="calc-delivery-label">
                 <label><input type="radio" name="calc-delivery" value="0" data-name="" checked><span>Самовывоз<small>бесплатно</small></span></label>
@@ -295,7 +288,7 @@
             <li>призы для конкурсов и промоакций.</li>
           </ul>
           <h3>Как заказать кружки</h3>
-          <p>Выберите модель и тираж в калькуляторе, при необходимости добавьте упаковку и доставку — стоимость посчитается сразу. Нажмите «Оформить заказ» и приложите логотип или макет: мы подготовим изображение под печать, согласуем его и запустим <b>изготовление кружек с логотипом</b>. Доставим курьером по Москве или отправим транспортной компанией в любой город России.</p>
+          <p>Выберите модель и тираж в калькуляторе, при необходимости добавьте доставку — стоимость посчитается сразу. Нажмите «Оформить заказ» и приложите логотип или макет: мы подготовим изображение под печать, согласуем его и запустим <b>изготовление кружек с логотипом</b>. Доставим курьером по Москве или отправим транспортной компанией в любой город России.</p>
         </article>
 
         <div class="faq">
@@ -318,7 +311,7 @@
           </details>
           <details class="faq-item">
             <summary>Как рассчитать стоимость?</summary>
-            <p>Выберите кружку и тираж в калькуляторе на этой странице, отметьте упаковку и доставку — сумма посчитается сразу. Кнопка «Оформить заказ» перенесёт расчёт в форму заявки.</p>
+            <p>Выберите кружку и тираж в калькуляторе на этой странице, отметьте доставку — сумма посчитается сразу. Кнопка «Оформить заказ» перенесёт расчёт в форму заявки.</p>
           </details>
           <details class="faq-item">
             <summary>Можно ли сделать разные надписи в одном заказе?</summary>
@@ -370,7 +363,7 @@
           "name": "Как рассчитать стоимость?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Выберите кружку и тираж в калькуляторе на этой странице, отметьте упаковку и доставку — сумма посчитается сразу. Кнопка «Оформить заказ» перенесёт расчёт в форму заявки."
+            "text": "Выберите кружку и тираж в калькуляторе на этой странице, отметьте доставку — сумма посчитается сразу. Кнопка «Оформить заказ» перенесёт расчёт в форму заявки."
           }
         },
         {
@@ -482,14 +475,12 @@
       var NAMES = {"330": "Белая кружка 330 мл", "420": "Белая кружка 420 мл", "latte350": "Кружка латте 350 мл", "latte480": "Кружка латте 480 мл", "beer500": "Пивная кружка 500 мл"};
       var MIN_QTY = 10;
       var MIN_ORDER = 3000;
-      var PACK_PRICE = 5;
 
       var qtyInput = document.getElementById('calc-qty');
       var totalEl = document.getElementById('calc-total');
       var perEl = document.getElementById('calc-per');
       var hintEl = document.getElementById('calc-hint');
       var breakdownEl = document.getElementById('calc-breakdown');
-      var packInput = document.getElementById('calc-pack');
       var orderLink = document.querySelector('.calc-order');
       var calcMug = document.querySelector('.calc-mug');
 
@@ -524,12 +515,10 @@
           for (var i = 0; i < QTY.length; i++) if (count >= QTY[i]) idx = i;
           var price = PRICES[size][idx];
           var base = Math.max(price * count, MIN_ORDER);
-          var pack = packInput.checked ? PACK_PRICE * count : 0;
           var delivery = Number(dl.value);
           var parts = [];
-          if (pack) parts.push('упаковка в пакет +' + money(pack));
           if (delivery) parts.push(dl.dataset.name + ' +' + money(delivery));
-          var total = base + pack + delivery;
+          var total = base + delivery;
           totalEl.textContent = money(total);
           perEl.textContent = money(price) + ' за кружку';
           breakdownEl.textContent = parts.length ? 'Кружки ' + money(base) + ' · ' + parts.join(', ') : '';
@@ -558,7 +547,7 @@
           document.getElementById('calc').scrollIntoView({ behavior: 'smooth' });
         });
       });
-      document.querySelectorAll('input[name="calc-size"], input[name="calc-delivery"], #calc-pack').forEach(function (el) {
+      document.querySelectorAll('input[name="calc-size"], input[name="calc-delivery"]').forEach(function (el) {
         el.addEventListener('change', update);
       });
       qtyInput.addEventListener('input', update);
