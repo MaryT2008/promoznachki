@@ -2329,6 +2329,113 @@ a { color: inherit; text-decoration: none; }
   .pp-gallery-grid--5 { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* Просмотр фото «Наших работ» */
+.work { cursor: zoom-in; }
+.work:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+
+body.no-scroll { overflow: hidden; }
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 24px;
+  background: rgba(20, 20, 24, .82);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity .25s;
+}
+
+.lightbox.is-open { opacity: 1; }
+.lightbox[hidden] { display: none; }
+
+.lightbox-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Фото на 50% крупнее плитки галереи */
+.lightbox-img {
+  display: block;
+  width: min(500px, 78vw, 70vh);
+  aspect-ratio: 1;
+  border-radius: 18px;
+  object-fit: cover;
+  background: #fff;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .45);
+}
+
+.lightbox-img.is-in { animation: lightbox-in .35s cubic-bezier(.22, .61, .36, 1); }
+
+@keyframes lightbox-in {
+  from { opacity: 0; transform: scale(.67); }
+  to { opacity: 1; transform: none; }
+}
+
+.lightbox-caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: var(--white);
+  text-align: center;
+}
+
+.lightbox-caption b { font-family: var(--font-display); font-size: 17px; font-weight: 600; }
+.lightbox-caption span { font-size: 14px; opacity: .85; }
+.lightbox-caption small { margin-top: 4px; font-size: 12px; opacity: .6; }
+
+.lightbox-nav,
+.lightbox-close {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .14);
+  color: var(--white);
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+
+.lightbox-nav { width: 52px; height: 52px; }
+.lightbox-nav svg { width: 24px; height: 24px; }
+.lightbox-prev svg { transform: rotate(180deg); }
+.lightbox-nav:hover, .lightbox-close:hover { background: var(--orange); }
+.lightbox-nav:hover { transform: scale(1.08); }
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  font-size: 28px;
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .lightbox { gap: 0; padding: 16px; }
+  .lightbox-img { width: min(92vw, 70vh); }
+  .lightbox-nav {
+    position: absolute;
+    bottom: 24px;
+    width: 46px;
+    height: 46px;
+  }
+  .lightbox-prev { left: calc(50% - 60px); }
+  .lightbox-next { right: calc(50% - 60px); }
+  .lightbox-figure { margin-bottom: 60px; }
+}
+
 /* ---------- Адаптив ---------- */
 
 .main-nav-extra { display: none; }
