@@ -3211,3 +3211,9 @@ body.no-scroll { overflow: hidden; }
 .chameleon-step-num--warm { background: var(--orange); }
 .chameleon-step-num--hot { background: #e5262e; }
 @media (max-width: 860px) { .chameleon-steps { grid-template-columns: 1fr; } }
+.template-preview--bottle { width: 54px; }
+.template-preview--bottle .body { fill: var(--white); stroke: #9a9aa2; stroke-width: 1.5; }
+.template-preview--bottle .area { fill: rgba(229, 72, 77, .12); stroke: #e5484d; stroke-width: 1; stroke-dasharray: 3 2; }
+.mugs-hero-media--tall { display: flex; justify-content: center; }
+.mugs-hero-media--tall img { width: auto; max-width: 100%; max-height: 540px; margin: 0; }
+@media (max-width: 640px) { .mugs-hero-media--tall img { max-height: 380px; } }
