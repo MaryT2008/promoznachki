@@ -215,6 +215,10 @@
             </div>
           </div>
           <div class="calc-result" aria-live="polite">
+            <div class="badge-scheme" aria-hidden="true">
+              <span class="badge-scheme-ghost" style="--d:78"></span>
+              <span class="badge-scheme-circle" style="--d:56"><b class="badge-scheme-label">Ø 56 мм</b></span>
+            </div>
             <span class="calc-result-label">Стоимость тиража</span>
             <b class="calc-total" id="calc-total">5&nbsp;370&nbsp;₽</b>
             <span class="calc-per" id="calc-per">53,70&nbsp;₽ за штуку</span>
@@ -510,6 +514,11 @@
 
       function update() {
         var size = document.querySelector('input[name="calc-size"]:checked').value;
+        // Круг в натуральной пропорции к выбранному диаметру
+        var circle = document.querySelector('.badge-scheme-circle');
+        circle.style.setProperty('--d', size);
+        circle.classList.toggle('is-small', Number(size) < 38);
+        circle.querySelector('.badge-scheme-label').textContent = 'Ø ' + size + ' мм';
         var qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
         var idx = 0;
         for (var i = 0; i < QTY.length; i++) if (qty >= QTY[i]) idx = i;

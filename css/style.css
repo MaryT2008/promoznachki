@@ -2583,6 +2583,58 @@ body.no-scroll { overflow: hidden; }
 }
 .fans-shapes-section { background: var(--white); }
 
+/* Схема значка в калькуляторе: круг в масштабе выбранного диаметра */
+.badge-scheme {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 240px;
+  height: 240px;
+  margin-bottom: 14px;
+}
+
+.badge-scheme-ghost,
+.badge-scheme-circle {
+  position: absolute;
+  width: calc(var(--d) * 3px);
+  height: calc(var(--d) * 3px);
+  border-radius: 50%;
+}
+
+/* Контур самого большого значка 78 мм — для сравнения */
+.badge-scheme-ghost { border: 1.5px dashed rgba(255, 255, 255, .45); }
+
+.badge-scheme-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--white);
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, .55) 0 12%, transparent 45%),
+    rgba(255, 255, 255, .18);
+  box-shadow: 0 14px 30px rgba(120, 40, 0, .25);
+  transition: width .45s cubic-bezier(.22, .61, .36, 1), height .45s cubic-bezier(.22, .61, .36, 1);
+}
+
+.badge-scheme-label {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  white-space: nowrap;
+}
+
+/* У маленького значка подпись выносим под круг */
+.badge-scheme-circle.is-small .badge-scheme-label { position: absolute; top: 100%; margin-top: 10px; }
+
+@media (max-width: 640px) {
+  .badge-scheme { width: 190px; height: 190px; }
+  .badge-scheme-ghost, .badge-scheme-circle { width: calc(var(--d) * 2.35px); height: calc(var(--d) * 2.35px); }
+  .badge-scheme-label { font-size: 14px; }
+}
+
 /* Страница белых кружек */
 .mugs-hero-media {
   display: flex;
