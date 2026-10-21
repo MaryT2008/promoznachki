@@ -3123,16 +3123,16 @@ body.no-scroll { overflow: hidden; }
 /* Тарелка на панели калькулятора */
 .calc-plate-wrap { position: relative; align-self: center; margin-bottom: 8px; transition: transform .35s ease, margin-bottom .35s ease; }
 .calc-plate-wrap .calc-plate { position: relative; z-index: 1; margin-bottom: 0; }
-/* Подставка прячется за тарелкой и выезжает снизу, когда отмечена опция */
+/* Подставка: задняя часть за тарелкой, передние лапки поверх — тарелка стоит на них */
 .calc-plate-stand {
   position: absolute;
   left: 50%;
-  top: 40%;
-  width: 72%;
+  top: 30%;
+  width: 75%;
   transform: translate(-50%, -12%);
   opacity: 0;
-  filter: drop-shadow(0 10px 14px rgba(120, 40, 0, .25));
   transition: opacity .35s ease, transform .35s ease;
 }
-.calc-plate-wrap.has-stand { margin-bottom: 40px; }
+.calc-plate-stand--front { z-index: 2; }
+.calc-plate-wrap.has-stand { margin-bottom: 22px; }
 .calc-plate-wrap.has-stand .calc-plate-stand { opacity: 1; transform: translate(-50%, 0); }
