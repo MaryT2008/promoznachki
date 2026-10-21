@@ -3254,3 +3254,27 @@ body.no-scroll { overflow: hidden; }
 .dp-section { scroll-margin-top: 150px; }
 .dp-section .faq-group-title { margin-bottom: 20px; }
 .dp-section + .dp-section { padding-top: 24px; }
+
+/* Политика конфиденциальности */
+.policy-date { margin: 12px 0 0; font-size: 14px; color: var(--muted); }
+.policy-layout { display: grid; grid-template-columns: 280px 1fr; gap: 48px; align-items: start; padding: 40px 0 64px; }
+.policy-toc { position: sticky; top: 160px; padding: 22px; border-radius: 20px; background: #f7f7f8; font-size: 14px; }
+.policy-toc b { display: block; margin-bottom: 10px; font-family: var(--font-display); font-size: 16px; font-weight: 600; }
+.policy-toc ol { margin: 0; padding: 0; list-style: none; }
+.policy-toc li + li { margin-top: 8px; }
+.policy-toc a { color: var(--text); text-decoration: none; line-height: 1.4; }
+.policy-toc a:hover { color: var(--orange); }
+.policy { max-width: 820px; font-size: 15px; line-height: 1.7; }
+.policy-sec { scroll-margin-top: 150px; }
+.policy-sec + .policy-sec { margin-top: 32px; padding-top: 28px; border-top: 1px solid #ececf0; }
+.policy h2 { margin: 0 0 14px; font-family: var(--font-display); font-size: 22px; font-weight: 600; }
+.policy p { margin: 0 0 10px; color: #3a3a40; }
+.policy p b { color: var(--orange-dark); font-weight: 600; }
+.policy ul { margin: 0 0 12px; padding-left: 22px; color: #3a3a40; }
+.policy li + li { margin-top: 4px; }
+.policy li::marker { color: var(--orange); }
+.policy a, .request-consent a { color: var(--orange-dark); }
+@media (max-width: 960px) {
+  .policy-layout { grid-template-columns: 1fr; gap: 24px; }
+  .policy-toc { position: static; }
+}
