@@ -517,6 +517,8 @@
         colorWhat.textContent = model === 'rim' ? 'Цвет ободка и ручки' : 'Цвет ручки и внутренней части';
         var src = mugSrc(model, color.value);
         if (mugImg.getAttribute('src') !== src) mugImg.src = src;
+        // Золото и серебро — вырезанное фото без белой карточки
+        mugImg.classList.toggle('calc-mug--card', colored);
 
         var idx = 0;
         for (var i = 0; i < m.qty.length; i++) if (count >= m.qty[i]) idx = i;
