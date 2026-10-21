@@ -3136,3 +3136,6 @@ body.no-scroll { overflow: hidden; }
 .calc-plate-stand--front { z-index: 2; }
 .calc-plate-wrap.has-stand { margin-bottom: 22px; }
 .calc-plate-wrap.has-stand .calc-plate-stand { opacity: 1; transform: translate(-50%, 0); }
+.plate-shot { cursor: zoom-in; }
+.plate-shot img { transition: transform .45s cubic-bezier(.22, .61, .36, 1); }
+.plate-shot:hover img { transform: scale(1.06); }
