@@ -190,6 +190,14 @@
               <div class="calc-presets"><button type="button" data-qty="10">10</button><button type="button" data-qty="30">30</button><button type="button" data-qty="50">50</button><button type="button" data-qty="100">100</button><button type="button" data-qty="300">300</button><button type="button" data-qty="500">500</button></div>
             </div>
             <div class="calc-field">
+              <span class="calc-label">Дополнительно</span>
+              <label class="calc-check calc-check--box">
+                <input type="checkbox" id="calc-stand">
+                <span>Подставка под тарелку — прозрачная, складная <b>+70&nbsp;₽/шт</b></span>
+                <img src="assets/img/plate-stand.webp" width="240" height="240" alt="Прозрачная пластиковая подставка под тарелку" loading="lazy">
+              </label>
+            </div>
+            <div class="calc-field">
               <span class="calc-label" id="calc-delivery-label">Доставка</span>
               <div class="calc-delivery" role="radiogroup" aria-labelledby="calc-delivery-label">
                 <label><input type="radio" name="calc-delivery" value="0" data-name="" checked><span>Самовывоз<small>бесплатно</small></span></label>
@@ -446,9 +454,11 @@
 
         var dl = document.querySelector('input[name="calc-delivery"]:checked');
         var delivery = Number(dl.value);
+        var stand = document.getElementById('calc-stand').checked ? 70 * count : 0;
         var parts = [];
+        if (stand) parts.push('подставки +' + money(stand));
         if (delivery) parts.push(dl.dataset.name + ' +' + money(delivery));
-        var total = base + delivery;
+        var total = base + stand + delivery;
 
         totalEl.textContent = money(total);
         perEl.textContent = money(price) + ' за тарелку';
@@ -468,7 +478,7 @@
           update();
         });
       });
-      document.querySelectorAll('input[name="calc-size"], input[name="calc-delivery"]').forEach(function (el) {
+      document.querySelectorAll('input[name="calc-size"], input[name="calc-delivery"], #calc-stand').forEach(function (el) {
         el.addEventListener('change', update);
       });
       qtyInput.addEventListener('input', update);
