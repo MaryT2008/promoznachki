@@ -3194,4 +3194,4 @@ body.no-scroll { overflow: hidden; }
   mask-image: linear-gradient(to bottom, transparent, #000 45%);
   pointer-events: none;
 }
-@media (max-width: 860px) { .calc-result:has(.calc-mug--color)::after { display: none; } }
+@media (max-width: 960px) { .calc-result:has(.calc-mug--color)::after { display: none; } }
