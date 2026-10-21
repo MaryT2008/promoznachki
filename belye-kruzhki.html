@@ -181,6 +181,11 @@
                 <input type="checkbox" id="calc-personal">
                 <span>Персонализация — именные кружки, своё имя или надпись на&nbsp;каждой кружке <b>+30% к&nbsp;цене</b></span>
               </label>
+              <label class="calc-check calc-check--box">
+                <input type="checkbox" id="calc-box">
+                <span>Индивидуальная упаковка — белая подарочная коробка с&nbsp;окошком <b>+50&nbsp;₽/шт</b></span>
+                <img src="assets/img/mug-box-red.webp" width="240" height="240" alt="Белая подарочная коробка для кружки с окошком" loading="lazy">
+              </label>
             </div>
             <div class="calc-field">
               <span class="calc-label" id="calc-delivery-label">Доставка</span>
@@ -447,9 +452,11 @@
         var price = Math.round(PRICES[size][idx] * k);
         var base = Math.max(price * count, MIN_ORDER);
         var delivery = Number(dl.value);
+        var box = document.getElementById('calc-box').checked ? 50 * count : 0;
         var parts = [];
+        if (box) parts.push('упаковка в коробку +' + money(box));
         if (delivery) parts.push(dl.dataset.name + ' +' + money(delivery));
-        var total = base + delivery;
+        var total = base + box + delivery;
         totalEl.textContent = money(total);
         perEl.textContent = money(price) + ' за кружку';
         breakdownEl.textContent = parts.length ? 'Кружки ' + money(base) + ' · ' + parts.join(', ') : '';
@@ -469,6 +476,7 @@
       }
 
       document.getElementById('calc-personal').addEventListener('change', update);
+      document.getElementById('calc-box').addEventListener('change', update);
       document.querySelectorAll('input[name="calc-delivery"]').forEach(function (el) {
         el.addEventListener('change', update);
       });

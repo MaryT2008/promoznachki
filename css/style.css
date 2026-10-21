@@ -2334,6 +2334,8 @@ a { color: inherit; text-decoration: none; }
 
 .calc-check b { color: var(--orange-dark); white-space: nowrap; }
 .calc-check + .calc-check { margin-top: 10px; }
+.calc-check--box { align-items: center; }
+.calc-check--box img { flex-shrink: 0; width: 56px; height: 56px; margin-left: auto; border-radius: 10px; background: var(--white); object-fit: contain; }
 .calc-check:has(input:checked) span { font-weight: 600; }
 
 .calc-delivery {
