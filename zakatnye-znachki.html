@@ -200,6 +200,10 @@
             <div class="calc-field">
               <span class="calc-label">Дополнительно</span>
               <label class="calc-check">
+                <input type="checkbox" id="calc-personal">
+                <span>Персонализация — разные имена, номера или надписи в&nbsp;одном тираже <b>+30% к&nbsp;цене</b></span>
+              </label>
+              <label class="calc-check">
                 <input type="checkbox" id="calc-pack">
                 <span>Индивидуальная упаковка в пакет <b>+5&nbsp;₽/шт</b></span>
               </label>
@@ -505,6 +509,7 @@
       }
 
       packInput.addEventListener('change', function () { update(); });
+      document.getElementById('calc-personal').addEventListener('change', update);
       document.querySelectorAll('input[name="calc-term"]').forEach(function (r) { r.addEventListener('change', function () { update(); }); });
       document.querySelectorAll('input[name="calc-delivery"]').forEach(function (r) { r.addEventListener('change', function () { update(); }); });
 
@@ -523,7 +528,10 @@
         var idx = 0;
         for (var i = 0; i < QTY.length; i++) if (qty >= QTY[i]) idx = i;
         var term = document.querySelector('input[name="calc-term"]:checked');
-        var price = Math.round(PRICES[size][idx] * (1 + Number(term.value)) * 100) / 100;
+        var personal = document.getElementById('calc-personal').checked;
+        // Наценки за срочность и персонализацию складываются
+        var k = 1 + Number(term.value) + (personal ? 0.3 : 0);
+        var price = Math.round(PRICES[size][idx] * k * 100) / 100;
         var total = Math.round(price * qty);
         var base = Math.max(total, MIN_ORDER);
         var ex = extras(qty);
@@ -534,7 +542,7 @@
         if (total < MIN_ORDER) hint = 'Минимальная сумма заказа — 3000 ₽';
         else if (idx < QTY.length - 1) {
           var next = QTY[idx + 1];
-          hint = 'От ' + next.toLocaleString('ru-RU') + ' шт — ' + money(Math.round(PRICES[size][idx + 1] * (1 + Number(term.value)) * 100) / 100, 2) + ' за штуку';
+          hint = 'От ' + next.toLocaleString('ru-RU') + ' шт — ' + money(Math.round(PRICES[size][idx + 1] * k * 100) / 100, 2) + ' за штуку';
         }
         hintEl.textContent = hint;
 
@@ -546,7 +554,7 @@
           per: money(price, 2),
           total: money(base + ex.sum, 0)
         });
-        var opts = [term.dataset.name, ex.text].filter(Boolean).join(', ');
+        var opts = [term.dataset.name, personal ? 'персонализация (разные имена/номера)' : '', ex.text].filter(Boolean).join(', ');
         if (opts) params.set('opts', opts);
         orderLink.href = 'index.html?' + params.toString() + '#order';
       }

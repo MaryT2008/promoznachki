@@ -2317,21 +2317,24 @@ a { color: inherit; text-decoration: none; }
 /* Дополнительные услуги в калькуляторе */
 .calc-check {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   font-size: 15px;
   cursor: pointer;
 }
 
 .calc-check input {
+  flex-shrink: 0;
   width: 20px;
   height: 20px;
-  margin: 0;
+  margin: 1px 0 0;
   accent-color: var(--orange);
   cursor: pointer;
 }
 
 .calc-check b { color: var(--orange-dark); white-space: nowrap; }
+.calc-check + .calc-check { margin-top: 10px; }
+.calc-check:has(input:checked) span { font-weight: 600; }
 
 .calc-delivery {
   display: grid;
