@@ -195,6 +195,14 @@
               <div class="calc-presets"><button type="button" data-qty="10">10</button><button type="button" data-qty="20">20</button><button type="button" data-qty="50">50</button><button type="button" data-qty="100">100</button><button type="button" data-qty="200">200</button><button type="button" data-qty="300">300</button><button type="button" data-qty="500">500</button></div>
             </div>
             <div class="calc-field">
+              <span class="calc-label" id="calc-term-label">Срок изготовления</span>
+              <div class="calc-delivery calc-delivery--2" role="radiogroup" aria-labelledby="calc-term-label">
+                <label><input type="radio" name="calc-term" value="0" data-name="" checked><span>5–7 рабочих дней<small>стандартный срок</small></span></label>
+                <label><input type="radio" name="calc-term" value="0.5" data-name="срочное изготовление за 2 рабочих дня"><span>Срочно за 2 рабочих дня<small>+50% к стоимости</small></span></label>
+              </div>
+              <p class="calc-term-note">Возможность срочного изготовления зависит от загрузки производства — менеджер подтвердит её при обработке заявки.</p>
+            </div>
+            <div class="calc-field">
               <span class="calc-label">Дополнительно</span>
               <label class="calc-check">
                 <input type="checkbox" id="calc-personal">
@@ -223,7 +231,7 @@
             <span class="calc-breakdown" id="calc-breakdown"></span>
             <p class="calc-hint" id="calc-hint"></p>
             <a class="btn btn--light calc-order" href="index.html#order">Оформить заказ</a>
-            <small>Срок изготовления назовёт менеджер при обработке заявки. Итоговую цену подтвердим после согласования макета</small>
+            <small>Итоговую цену подтвердим после согласования макета</small>
           </div>
         </div>
       </div>
@@ -521,7 +529,9 @@
         var idx = 0;
         for (var i = 0; i < m.qty.length; i++) if (count >= m.qty[i]) idx = i;
         var personal = document.getElementById('calc-personal').checked;
-        var k = personal ? 1.3 : 1;
+        var term = document.querySelector('input[name="calc-term"]:checked');
+        document.querySelector('.calc-term-note').classList.toggle('is-visible', !!Number(term.value));
+        var k = 1 + Number(term.value) + (personal ? 0.3 : 0);
         var price = Math.round(m.prices[idx] * k);
         var base = Math.max(price * count, MIN_ORDER);
         var dl = document.querySelector('input[name="calc-delivery"]:checked');
@@ -545,7 +555,7 @@
 
         var size = '330 мл, ' + m.name.toLowerCase() + (colored ? ', цвет: ' + color.dataset.name : '');
         var params = { item: 'Цветные кружки с нанесением', size: size, qty: String(count), per: money(price), total: money(total) };
-        var opts = [personal ? 'именные кружки (разные имена/надписи)' : ''].concat(parts).filter(Boolean);
+        var opts = [term.dataset.name, personal ? 'именные кружки (разные имена/надписи)' : ''].concat(parts).filter(Boolean);
         if (opts.length) params.opts = opts.join(', ');
         orderLink.href = 'index.html?' + new URLSearchParams(params).toString() + '#order';
       }
@@ -556,7 +566,7 @@
           update();
         });
       });
-      document.querySelectorAll('input[name="calc-size"], input[name="calc-color"], input[name="calc-delivery"], #calc-personal, #calc-box').forEach(function (el) {
+      document.querySelectorAll('input[name="calc-size"], input[name="calc-color"], input[name="calc-delivery"], input[name="calc-term"], #calc-personal, #calc-box').forEach(function (el) {
         el.addEventListener('change', update);
       });
       qtyInput.addEventListener('input', update);

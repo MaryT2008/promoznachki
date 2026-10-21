@@ -190,6 +190,14 @@
               <div class="calc-presets"><button type="button" data-qty="10">10</button><button type="button" data-qty="30">30</button><button type="button" data-qty="50">50</button><button type="button" data-qty="100">100</button><button type="button" data-qty="300">300</button><button type="button" data-qty="500">500</button></div>
             </div>
             <div class="calc-field">
+              <span class="calc-label" id="calc-term-label">Срок изготовления</span>
+              <div class="calc-delivery calc-delivery--2" role="radiogroup" aria-labelledby="calc-term-label">
+                <label><input type="radio" name="calc-term" value="0" data-name="" checked><span>5–7 рабочих дней<small>стандартный срок</small></span></label>
+                <label><input type="radio" name="calc-term" value="0.5" data-name="срочное изготовление за 2 рабочих дня"><span>Срочно за 2 рабочих дня<small>+50% к стоимости</small></span></label>
+              </div>
+              <p class="calc-term-note">Возможность срочного изготовления зависит от загрузки производства — менеджер подтвердит её при обработке заявки.</p>
+            </div>
+            <div class="calc-field">
               <span class="calc-label">Дополнительно</span>
               <label class="calc-check calc-check--box">
                 <input type="checkbox" id="calc-stand">
@@ -214,7 +222,7 @@
             <span class="calc-breakdown" id="calc-breakdown"></span>
             <p class="calc-hint" id="calc-hint"></p>
             <a class="btn btn--light calc-order" href="index.html#order">Оформить заказ</a>
-            <small>Срок изготовления назовёт менеджер при обработке заявки. Итоговую цену подтвердим после согласования макета</small>
+            <small>Итоговую цену подтвердим после согласования макета</small>
           </div>
         </div>
       </div>
@@ -488,7 +496,10 @@
         var count = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
         var idx = 0;
         for (var i = 0; i < QTY.length; i++) if (count >= QTY[i]) idx = i;
-        var price = PRICES[size][idx];
+        var term = document.querySelector('input[name="calc-term"]:checked');
+        document.querySelector('.calc-term-note').classList.toggle('is-visible', !!Number(term.value));
+        var k = 1 + Number(term.value);
+        var price = Math.round(PRICES[size][idx] * k);
         var base = Math.max(price * count, MIN_ORDER);
 
         document.querySelectorAll('.size-tab').forEach(function (t) {
@@ -513,11 +524,12 @@
         perEl.textContent = money(price) + ' за тарелку';
         breakdownEl.textContent = parts.length ? 'Тарелки ' + money(base) + ' · ' + parts.join(', ') : '';
         if (base === MIN_ORDER && price * count < MIN_ORDER) hintEl.textContent = 'Минимальная сумма заказа — 3000 ₽';
-        else if (idx < QTY.length - 1) hintEl.textContent = 'От ' + QTY[idx + 1] + ' шт — ' + money(PRICES[size][idx + 1]) + ' за тарелку';
+        else if (idx < QTY.length - 1) hintEl.textContent = 'От ' + QTY[idx + 1] + ' шт — ' + money(Math.round(PRICES[size][idx + 1] * k)) + ' за тарелку';
         else hintEl.textContent = '';
 
         var params = { item: 'Тарелки с нанесением', size: NAMES[size], qty: String(count), per: money(price), total: money(total) };
-        if (parts.length) params.opts = parts.join(', ');
+        var opts = [term.dataset.name].concat(parts).filter(Boolean);
+        if (opts.length) params.opts = opts.join(', ');
         orderLink.href = 'index.html?' + new URLSearchParams(params).toString() + '#order';
       }
 
@@ -527,7 +539,7 @@
           update();
         });
       });
-      document.querySelectorAll('input[name="calc-size"], input[name="calc-delivery"], #calc-stand').forEach(function (el) {
+      document.querySelectorAll('input[name="calc-size"], input[name="calc-delivery"], input[name="calc-term"], #calc-stand').forEach(function (el) {
         el.addEventListener('change', update);
       });
       qtyInput.addEventListener('input', update);
