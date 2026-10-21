@@ -3175,3 +3175,7 @@ body.no-scroll { overflow: hidden; }
   .calc-sizes--row { grid-template-columns: repeat(2, 1fr); }
   .calc-sizes--row span { padding: 10px 6px; white-space: normal; }
 }
+/* Цветные кружки на панели итога — крупнее */
+.calc-mug--color { width: min(100%, 460px); height: auto; aspect-ratio: 400 / 320; margin: -10px 0 4px; }
+.calc-result:has(.calc-mug--color) { justify-content: flex-start; padding-top: 44px; }
+@media (max-width: 640px) { .calc-mug--color { width: min(100%, 300px); height: auto; margin: 0 0 4px; } }
