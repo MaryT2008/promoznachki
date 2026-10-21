@@ -3139,3 +3139,10 @@ body.no-scroll { overflow: hidden; }
 .plate-shot { cursor: zoom-in; }
 .plate-shot img { transition: transform .45s cubic-bezier(.22, .61, .36, 1); }
 .plate-shot:hover img { transform: scale(1.06); }
+
+/* Превью шаблона тарелки */
+.template-preview--plate { width: 84px; }
+.template-preview--plate circle { fill: none; stroke: #9a9aa2; stroke-width: 1; }
+.template-preview--plate circle:first-child { fill: var(--white); stroke-width: 1.5; }
+.template-preview--plate path { fill: none; stroke: #9a9aa2; stroke-width: .8; }
+.template-preview--plate .cut { fill: #e5484d; stroke: none; }
