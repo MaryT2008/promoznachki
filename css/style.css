@@ -2611,10 +2611,11 @@ body.no-scroll { overflow: hidden; }
   align-items: center;
   justify-content: center;
   border: 2px solid var(--white);
+  /* Серый градиент с бликом — как металлический значок */
   background:
-    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, .55) 0 12%, transparent 45%),
-    rgba(255, 255, 255, .18);
-  box-shadow: 0 14px 30px rgba(120, 40, 0, .25);
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, .9) 0 8%, transparent 40%),
+    linear-gradient(145deg, #f4f4f6 0%, #d3d3d9 45%, #9d9da6 100%);
+  box-shadow: 0 14px 30px rgba(120, 40, 0, .3), inset 0 -6px 14px rgba(0, 0, 0, .12);
   transition: width .45s cubic-bezier(.22, .61, .36, 1), height .45s cubic-bezier(.22, .61, .36, 1);
 }
 
@@ -2622,12 +2623,12 @@ body.no-scroll { overflow: hidden; }
   font-family: var(--font-display);
   font-size: 16px;
   font-weight: 700;
-  color: var(--white);
+  color: #3a3a40;
   white-space: nowrap;
 }
 
 /* У маленького значка подпись выносим под круг */
-.badge-scheme-circle.is-small .badge-scheme-label { position: absolute; top: 100%; margin-top: 10px; }
+.badge-scheme-circle.is-small .badge-scheme-label { position: absolute; top: 100%; margin-top: 10px; color: var(--white); }
 
 @media (max-width: 640px) {
   .badge-scheme { width: 190px; height: 190px; }
