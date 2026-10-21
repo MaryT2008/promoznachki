@@ -207,7 +207,7 @@
             </div>
           </div>
           <div class="calc-result" aria-live="polite">
-            <img class="calc-mug calc-plate" src="assets/img/plate-calc.webp" alt="" aria-hidden="true">
+            <div class="calc-plate-wrap" aria-hidden="true"><img class="calc-plate-stand" src="assets/img/plate-stand-cut.webp" alt=""><img class="calc-mug calc-plate" src="assets/img/plate-calc.webp" alt=""></div>
             <span class="calc-result-label">Стоимость тиража</span>
             <b class="calc-total" id="calc-total"></b>
             <span class="calc-per" id="calc-per"></span>
@@ -429,7 +429,7 @@
       var hintEl = document.getElementById('calc-hint');
       var breakdownEl = document.getElementById('calc-breakdown');
       var orderLink = document.querySelector('.calc-order');
-      var plateImg = document.querySelector('.calc-plate');
+      var plateImg = document.querySelector('.calc-plate-wrap');
 
       function money(v) {
         return v.toLocaleString('ru-RU') + '\u00a0₽';
@@ -455,6 +455,7 @@
         var dl = document.querySelector('input[name="calc-delivery"]:checked');
         var delivery = Number(dl.value);
         var stand = document.getElementById('calc-stand').checked ? 70 * count : 0;
+        plateImg.classList.toggle('has-stand', stand > 0);
         var parts = [];
         if (stand) parts.push('подставки +' + money(stand));
         if (delivery) parts.push(dl.dataset.name + ' +' + money(delivery));
