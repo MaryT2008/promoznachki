@@ -3251,3 +3251,6 @@ body.no-scroll { overflow: hidden; }
 .delivery-note p + p { margin-top: 8px; }
 .delivery-note a { color: var(--orange-dark); font-weight: 600; }
 @media (max-width: 860px) { .delivery-grid { grid-template-columns: 1fr; } }
+.dp-section { scroll-margin-top: 150px; }
+.dp-section .faq-group-title { margin-bottom: 20px; }
+.dp-section + .dp-section { padding-top: 24px; }
