@@ -3146,3 +3146,21 @@ body.no-scroll { overflow: hidden; }
 .template-preview--plate circle:first-child { fill: var(--white); stroke-width: 1.5; }
 .template-preview--plate path { fill: none; stroke: #9a9aa2; stroke-width: .8; }
 .template-preview--plate .cut { fill: #e5484d; stroke: none; }
+
+/* Выбор цвета цветной кружки */
+.calc-colors { display: flex; flex-wrap: wrap; gap: 10px; }
+.calc-colors input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.calc-colors span {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12), 0 0 0 3px var(--white), 0 0 0 4.5px #dcdce2;
+  cursor: pointer;
+  transition: box-shadow .2s, transform .2s;
+}
+.calc-colors span:hover { transform: scale(1.08); }
+.calc-colors input:checked + span { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12), 0 0 0 3px var(--white), 0 0 0 5.5px var(--orange); }
+.calc-colors input:focus-visible + span { outline: 3px solid rgba(244, 123, 32, .35); outline-offset: 6px; }
+.calc-label b { font-weight: 600; color: var(--orange); }
