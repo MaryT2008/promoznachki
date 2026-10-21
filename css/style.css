@@ -3231,3 +3231,23 @@ body.no-scroll { overflow: hidden; }
 .faq-group-title .feature-icon { width: 44px; height: 44px; margin: 0; }
 .faq--page { position: static; }
 @media (max-width: 860px) { .faq-groups { grid-template-columns: 1fr; } }
+
+/* Страница «Доставка» */
+.delivery-options { padding: 40px 0 16px; }
+.delivery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin: 0; padding: 0; list-style: none; }
+.delivery-card { padding: 28px; border-radius: 24px; background: #f7f7f8; }
+.delivery-card h2 { margin: 0 0 6px; font-family: var(--font-display); font-size: 22px; font-weight: 600; }
+.delivery-price { display: block; margin-bottom: 12px; font-family: var(--font-display); font-size: 28px; font-weight: 600; color: var(--orange); }
+.delivery-card p { margin: 0 0 10px; font-size: 15px; line-height: 1.6; color: var(--muted); }
+.delivery-card p:last-child { margin-bottom: 0; }
+.delivery-card a { color: var(--orange-dark); }
+.delivery-card--accent { background: linear-gradient(150deg, #ff8a2b, var(--orange-dark)); color: var(--white); }
+.delivery-card--accent .delivery-price, .delivery-card--accent p { color: var(--white); }
+.delivery-card--accent .feature-icon { background: rgba(255, 255, 255, .2); color: var(--white); }
+.delivery-steps { padding: 32px 0 24px; }
+.delivery-steps-list { margin-top: 0; }
+.delivery-note { max-width: 1100px; margin: 22px auto 0; padding: 20px 24px; border-radius: 18px; background: #fff4ea; border: 1px solid #fbd3b1; }
+.delivery-note p { margin: 0; font-size: 15px; line-height: 1.6; }
+.delivery-note p + p { margin-top: 8px; }
+.delivery-note a { color: var(--orange-dark); font-weight: 600; }
+@media (max-width: 860px) { .delivery-grid { grid-template-columns: 1fr; } }
