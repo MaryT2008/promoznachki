@@ -216,7 +216,7 @@
             </div>
           </div>
           <div class="calc-result" aria-live="polite">
-            <img class="calc-mug calc-mug--card" src="assets/img/mugc-inner-blue.webp" alt="" aria-hidden="true">
+            <img class="calc-mug" src="assets/img/mugc-inner-blue.webp" alt="" aria-hidden="true">
             <span class="calc-result-label">Стоимость тиража</span>
             <b class="calc-total" id="calc-total"></b>
             <span class="calc-per" id="calc-per"></span>
@@ -517,8 +517,6 @@
         colorWhat.textContent = model === 'rim' ? 'Цвет ободка и ручки' : 'Цвет ручки и внутренней части';
         var src = mugSrc(model, color.value);
         if (mugImg.getAttribute('src') !== src) mugImg.src = src;
-        // Золото и серебро — вырезанное фото без белой карточки
-        mugImg.classList.toggle('calc-mug--card', colored);
 
         var idx = 0;
         for (var i = 0; i < m.qty.length; i++) if (count >= m.qty[i]) idx = i;
