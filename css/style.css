@@ -3198,3 +3198,16 @@ body.no-scroll { overflow: hidden; }
   pointer-events: none;
 }
 @media (max-width: 960px) { .calc-result--pattern::after { display: none; } }
+
+/* Как работает кружка-хамелеон */
+.chameleon-how { padding: 40px 0 8px; }
+.chameleon-how-img { display: block; width: 100%; max-width: 1100px; height: auto; margin: 0 auto; }
+.chameleon-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 1100px; margin: 24px auto 0; padding: 0; list-style: none; }
+.chameleon-steps li { display: flex; gap: 14px; align-items: flex-start; padding: 18px 20px; border-radius: 18px; background: #f7f7f8; }
+.chameleon-steps h3 { margin: 2px 0 4px; font-family: var(--font-display); font-size: 17px; font-weight: 600; }
+.chameleon-steps p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--muted); }
+.chameleon-step-num { flex-shrink: 0; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; color: #fff; font-weight: 700; }
+.chameleon-step-num--cold { background: #1a7ee0; }
+.chameleon-step-num--warm { background: var(--orange); }
+.chameleon-step-num--hot { background: #e5262e; }
+@media (max-width: 860px) { .chameleon-steps { grid-template-columns: 1fr; } }
