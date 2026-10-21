@@ -120,10 +120,10 @@
           </nav>
           <span class="section-eyebrow">Кружки с логотипом</span>
           <h1 class="about-title">Цветные кружки <span class="about-title-accent">с&nbsp;логотипом</span></h1>
-          <p class="about-lead">Белая кружка с цветной ручкой и цветной внутренней частью — яркий корпоративный сувенир. Подберите цвет под фирменный стиль: синий, красный, зелёный, жёлтый или чёрный. Логотип и дизайн печатаем полноцветно методом сублимации.</p>
+          <p class="about-lead">Белая кружка с цветной ручкой и цветной внутренней частью — яркий корпоративный сувенир. Подберите один из 10 цветов под фирменный стиль — или выберите кружку с цветным ободком, золотую или серебряную. Логотип и дизайн печатаем полноцветно методом сублимации.</p>
           <ul class="pp-facts pp-facts--grid">
             <li><svg aria-hidden="true"><use href="#i-box"/></svg><span><b>от 10 шт</b>тираж</span></li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><b>5 цветов</b>ручка и внутри</span></li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><b>10 цветов</b>ручки и внутри</span></li>
             <li><svg aria-hidden="true"><use href="#i-clip"/></svg><span><b>330 мл</b>керамика</span></li>
             <li><svg aria-hidden="true"><use href="#i-calc"/></svg><span><b>от 315 ₽</b>за кружку</span></li>
           </ul>
@@ -182,8 +182,8 @@
               <div class="calc-sizes calc-sizes--many" role="radiogroup" aria-labelledby="calc-size-label"><label><input type="radio" name="calc-size" value="inner" checked><span>Цветная внутри и ручка</span></label><label><input type="radio" name="calc-size" value="rim"><span>Цветной ободок и ручка</span></label><label><input type="radio" name="calc-size" value="gold"><span>Золото</span></label><label><input type="radio" name="calc-size" value="silver"><span>Серебро</span></label></div>
             </div>
             <div class="calc-field" id="calc-color-field">
-              <span class="calc-label" id="calc-color-label">Цвет ручки и внутренней части: <b id="calc-color-name">синий</b></span>
-              <div class="calc-colors" role="radiogroup" aria-labelledby="calc-color-label"><label><input type="radio" name="calc-color" value="blue" data-name="синий" checked><span style="--c:#1f5fbf" title="Синий"></span></label><label><input type="radio" name="calc-color" value="red" data-name="красный"><span style="--c:#e0262b" title="Красный"></span></label><label><input type="radio" name="calc-color" value="green" data-name="зелёный"><span style="--c:#5cb82e" title="Зелёный"></span></label><label><input type="radio" name="calc-color" value="yellow" data-name="жёлтый"><span style="--c:#f7c600" title="Жёлтый"></span></label><label><input type="radio" name="calc-color" value="black" data-name="чёрный"><span style="--c:#1d1d1f" title="Чёрный"></span></label></div>
+              <span class="calc-label" id="calc-color-label"><span id="calc-color-what">Цвет ручки и внутренней части</span>: <b id="calc-color-name">синий</b></span>
+              <div class="calc-colors" role="radiogroup" aria-labelledby="calc-color-label"><label><input type="radio" name="calc-color" value="black" data-name="чёрный"><span style="--c:#2b2b2b" title="Чёрный"></span></label><label><input type="radio" name="calc-color" value="blue" data-name="синий" checked><span style="--c:#1f2fa0" title="Синий"></span></label><label><input type="radio" name="calc-color" value="burgundy" data-name="бордовый"><span style="--c:#6b0f24" title="Бордовый"></span></label><label><input type="radio" name="calc-color" value="lightblue" data-name="голубой"><span style="--c:#2aa7d9" title="Голубой"></span></label><label><input type="radio" name="calc-color" value="green" data-name="зелёный"><span style="--c:#0f6b5a" title="Зелёный"></span></label><label><input type="radio" name="calc-color" value="orange" data-name="оранжевый"><span style="--c:#e8541a" title="Оранжевый"></span></label><label><input type="radio" name="calc-color" value="red" data-name="красный"><span style="--c:#c8102e" title="Красный"></span></label><label><input type="radio" name="calc-color" value="pink" data-name="розовый"><span style="--c:#e8a3b8" title="Розовый"></span></label><label><input type="radio" name="calc-color" value="lime" data-name="салатовый"><span style="--c:#8fcf4a" title="Салатовый"></span></label><label><input type="radio" name="calc-color" value="yellow" data-name="жёлтый"><span style="--c:#d4c04a" title="Жёлтый"></span></label></div>
             </div>
             <div class="calc-field">
               <label class="calc-label" for="calc-qty">Количество, шт</label>
@@ -216,7 +216,7 @@
             </div>
           </div>
           <div class="calc-result" aria-live="polite">
-            <img class="calc-mug" src="assets/img/mugc-blue.webp" alt="" aria-hidden="true">
+            <img class="calc-mug calc-mug--card" src="assets/img/mugc-inner-blue.webp" alt="" aria-hidden="true">
             <span class="calc-result-label">Стоимость тиража</span>
             <b class="calc-total" id="calc-total"></b>
             <span class="calc-per" id="calc-per"></span>
@@ -265,7 +265,7 @@
       <div class="container">
         <ul class="feature-grid">
           <li><span class="feature-icon"><svg aria-hidden="true"><use href="#i-check"/></svg></span><h3>Печать по кругу</h3><p>Изображение можно разместить на всей поверхности кружки</p></li>
-          <li><span class="feature-icon"><svg aria-hidden="true"><use href="#i-box"/></svg></span><h3>Цвет под ваш бренд</h3><p>Синие, красные, зелёные, жёлтые и чёрные ручки и внутренняя часть</p></li>
+          <li><span class="feature-icon"><svg aria-hidden="true"><use href="#i-box"/></svg></span><h3>Цвет под ваш бренд</h3><p>10 цветов ручки и внутренней части или ободка — от чёрного до салатового</p></li>
           <li><span class="feature-icon"><svg aria-hidden="true"><use href="#i-clip"/></svg></span><h3>Не боится посудомойки</h3><p>Сублимационная печать впекается в покрытие и не теряет яркости после мытья</p></li>
           <li><span class="feature-icon"><svg aria-hidden="true"><use href="#i-clock"/></svg></span><h3>Разные надписи</h3><p>В одном заказе — персональные имена и пожелания для каждого, от 10 штук</p></li>
         </ul>
@@ -295,7 +295,7 @@
           <h2 class="faq-title">Частые вопросы</h2>
           <details class="faq-item">
             <summary>Какие цветные кружки можно заказать?</summary>
-            <p>Керамическую кружку 330 мл с цветной ручкой и внутренней частью или с цветным ободком и ручкой, а также кружки с золотым и серебряным покрытием. Цвета: синий, красный, зелёный, жёлтый и чёрный.</p>
+            <p>Керамическую кружку 330 мл с цветной ручкой и внутренней частью или с цветным ободком и ручкой, а также кружки с золотым и серебряным покрытием. Цвета: чёрный, синий, бордовый, голубой, зелёный, оранжевый, красный, розовый, салатовый и жёлтый.</p>
           </details>
           <details class="faq-item">
             <summary>Каким способом наносится изображение?</summary>
@@ -331,7 +331,7 @@
           "name": "Какие цветные кружки можно заказать?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Керамическую кружку 330 мл с цветной ручкой и внутренней частью или с цветным ободком и ручкой, а также кружки с золотым и серебряным покрытием. Цвета: синий, красный, зелёный, жёлтый и чёрный."
+            "text": "Керамическую кружку 330 мл с цветной ручкой и внутренней частью или с цветным ободком и ручкой, а также кружки с золотым и серебряным покрытием. Цвета: чёрный, синий, бордовый, голубой, зелёный, оранжевый, красный, розовый, салатовый и жёлтый."
           }
         },
         {
@@ -471,7 +471,10 @@
     // Цены и калькулятор цветных кружек
     (function () {
       var MODELS = {"inner": {"qty": [10, 20, 51, 101, 201, 301, 501], "prices": [650, 600, 460, 440, 420, 400, 315], "name": "Цветная внутри и ручка"}, "rim": {"qty": [10, 20, 51, 101, 201, 301, 501], "prices": [650, 600, 460, 440, 420, 400, 315], "name": "Цветной ободок и ручка"}, "gold": {"qty": [10, 51, 101, 201, 301, 501], "prices": [700, 640, 620, 600, 560, 560], "name": "Золото"}, "silver": {"qty": [10, 51, 101, 201, 301, 501], "prices": [700, 640, 620, 600, 560, 560], "name": "Серебро"}};
-      var MUGS = {"blue": "assets/img/mugc-blue.webp", "red": "assets/img/mugc-red.webp", "green": "assets/img/mugc-green.webp", "yellow": "assets/img/mugc-yellow.webp", "black": "assets/img/mugc-black.webp"};
+      var COLORS = ["black", "blue", "burgundy", "lightblue", "green", "orange", "red", "pink", "lime", "yellow"];
+      function mugSrc(model, color) {
+        return 'assets/img/mugc-' + (model === 'gold' || model === 'silver' ? model : model + '-' + color) + '.webp';
+      }
       var MIN_QTY = 10;
       var MIN_ORDER = 3000;
 
@@ -485,8 +488,11 @@
       var colorField = document.getElementById('calc-color-field');
       var colorName = document.getElementById('calc-color-name');
 
-      // Заранее подгружаем фото всех цветов, чтобы смена была мгновенной
-      Object.keys(MUGS).forEach(function (k) { new Image().src = MUGS[k]; });
+      var colorWhat = document.getElementById('calc-color-what');
+
+      // Заранее подгружаем фото всех кружек, чтобы смена была мгновенной
+      ['inner', 'rim'].forEach(function (m) { COLORS.forEach(function (c) { new Image().src = mugSrc(m, c); }); });
+      new Image().src = mugSrc('gold'); new Image().src = mugSrc('silver');
 
       function money(v) {
         return v.toLocaleString('ru-RU') + '\u00a0₽';
@@ -508,7 +514,8 @@
         document.querySelectorAll('.tier-grid').forEach(function (g) { g.hidden = g.dataset.size !== model; });
         colorField.hidden = !colored;
         colorName.textContent = color.dataset.name;
-        var src = MUGS[color.value];
+        colorWhat.textContent = model === 'rim' ? 'Цвет ободка и ручки' : 'Цвет ручки и внутренней части';
+        var src = mugSrc(model, color.value);
         if (mugImg.getAttribute('src') !== src) mugImg.src = src;
 
         var idx = 0;
