@@ -2780,6 +2780,11 @@ body.no-scroll { overflow: hidden; }
 .template-preview .bleed { fill: none; stroke-dasharray: 3 3; stroke-width: 1; }
 .template-preview rect { fill: none; stroke: #e5484d; stroke-width: 1.5; }
 .template-preview--mug { width: 110px; }
+.template-card + .template-card { margin-top: 14px; }
+.template-thumb { flex-shrink: 0; width: 150px; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 18px rgba(0, 0, 0, .12); transition: transform .25s; }
+.template-thumb:hover { transform: scale(1.04); }
+.template-thumb img { display: block; width: 100%; height: auto; }
+@media (max-width: 640px) { .template-thumb { width: 100%; } }
 .template-preview--mug rect { fill: var(--white); stroke: #9a9aa2; }
 .template-preview--mug .bleed { fill: none; stroke: #17a2b8; stroke-dasharray: 3 2; }
 .template-preview--mug path { fill: none; stroke: #9a9aa2; stroke-width: 1; stroke-dasharray: 3 2; }
