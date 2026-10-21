@@ -3119,3 +3119,6 @@ body.no-scroll { overflow: hidden; }
   .header-phone-icon { display: none; }
   .header-contacts { font-size: 13px; }
 }
+
+/* Тарелка на панели калькулятора */
+.calc-plate { transition: transform .35s ease; }
