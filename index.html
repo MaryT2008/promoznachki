@@ -632,6 +632,12 @@
       // Расчёт из калькулятора на странице товара: ?item=…&size=…&qty=…&per=…&total=…
       (function () {
         var q = new URLSearchParams(location.search);
+        // Заявка из блока «Нужны … с логотипом?» на странице товара — подставляем тему в запрос
+        if (q.get('need') && !q.get('item')) {
+          if (!message.value.trim()) message.value = q.get('need') + '. ';
+          history.replaceState(null, '', location.pathname + '#order');
+          return;
+        }
         if (!q.get('item')) return;
         var box = form.querySelector('.order-summary');
         var hidden = box.querySelector('input');
