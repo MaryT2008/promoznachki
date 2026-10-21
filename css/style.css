@@ -3177,12 +3177,12 @@ body.no-scroll { overflow: hidden; }
 }
 /* Цветные кружки на панели итога — крупнее */
 .calc-mug--color { width: min(100%, 360px); height: auto; aspect-ratio: 400 / 320; margin: -10px 0 4px; }
-.calc-result:has(.calc-mug--color) { justify-content: flex-start; padding-top: 44px; }
+.calc-result--pattern { justify-content: flex-start; padding-top: 44px; }
 @media (max-width: 640px) { .calc-mug--color { width: min(100%, 255px); height: auto; margin: 0 0 4px; } }
 
 /* Узор из кружек на свободной части оранжевой панели */
-.calc-result:has(.calc-mug--color) { position: relative; isolation: isolate; }
-.calc-result:has(.calc-mug--color)::after {
+.calc-result--pattern { position: relative; isolation: isolate; }
+.calc-result--pattern::after {
   content: "";
   position: absolute;
   inset: auto 0 0 0;
@@ -3194,4 +3194,4 @@ body.no-scroll { overflow: hidden; }
   mask-image: linear-gradient(to bottom, transparent, #000 45%);
   pointer-events: none;
 }
-@media (max-width: 960px) { .calc-result:has(.calc-mug--color)::after { display: none; } }
+@media (max-width: 960px) { .calc-result--pattern::after { display: none; } }
