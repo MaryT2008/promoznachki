@@ -3168,3 +3168,10 @@ body.no-scroll { overflow: hidden; }
 .calc-mug--card { border-radius: 24px; background: var(--white); box-shadow: 0 16px 34px rgba(120, 40, 0, .25); filter: none; }
 .calc-delivery--2 { grid-template-columns: repeat(2, 1fr); }
 @media (max-width: 520px) { .calc-delivery--2 { grid-template-columns: 1fr; } }
+/* Модели кружек — компактно в одну строку */
+.calc-sizes--row { flex-wrap: nowrap; gap: 6px; }
+.calc-sizes--row span { padding: 8px 11px; font-size: 13px; white-space: nowrap; }
+@media (max-width: 640px) {
+  .calc-sizes--row { grid-template-columns: repeat(2, 1fr); }
+  .calc-sizes--row span { padding: 10px 6px; white-space: normal; }
+}
