@@ -151,8 +151,8 @@
             <span class="price-card-note">Стекло, полноцветная печать</span>
           </div>
           <div class="size-tabs" role="tablist" aria-label="Вид стекла"><button type="button" role="tab" class="size-tab is-active" aria-selected="true" data-size="matte">Матовое стекло</button><button type="button" role="tab" class="size-tab" aria-selected="false" data-size="clear">Прозрачное стекло</button></div>
-          <ul class="tier-grid tier-grid--6" data-size="matte"><li><span>10–50 шт</span><b>600&nbsp;₽</b></li><li><span>51–100 шт</span><b>540&nbsp;₽</b></li><li><span>101–200 шт</span><b>520&nbsp;₽</b></li><li><span>201–300 шт</span><b>500&nbsp;₽</b></li><li><span>301–500 шт</span><b>480&nbsp;₽</b></li><li><span>от 501 шт</span><b>290&nbsp;₽</b></li></ul>
-          <ul class="tier-grid tier-grid--6" data-size="clear" hidden><li><span>10–50 шт</span><b>600&nbsp;₽</b></li><li><span>51–100 шт</span><b>540&nbsp;₽</b></li><li><span>101–200 шт</span><b>520&nbsp;₽</b></li><li><span>201–300 шт</span><b>500&nbsp;₽</b></li><li><span>301–500 шт</span><b>480&nbsp;₽</b></li><li><span>от 501 шт</span><b>290&nbsp;₽</b></li></ul>
+          <ul class="tier-grid tier-grid--7" data-size="matte"><li><span>10–19 шт</span><b>600&nbsp;₽</b></li><li><span>20–50 шт</span><b>550&nbsp;₽</b></li><li><span>51–100 шт</span><b>540&nbsp;₽</b></li><li><span>101–200 шт</span><b>520&nbsp;₽</b></li><li><span>201–300 шт</span><b>500&nbsp;₽</b></li><li><span>301–500 шт</span><b>480&nbsp;₽</b></li><li><span>от 501 шт</span><b>290&nbsp;₽</b></li></ul>
+          <ul class="tier-grid tier-grid--7" data-size="clear" hidden><li><span>10–19 шт</span><b>600&nbsp;₽</b></li><li><span>20–50 шт</span><b>550&nbsp;₽</b></li><li><span>51–100 шт</span><b>540&nbsp;₽</b></li><li><span>101–200 шт</span><b>520&nbsp;₽</b></li><li><span>201–300 шт</span><b>500&nbsp;₽</b></li><li><span>301–500 шт</span><b>480&nbsp;₽</b></li><li><span>от 501 шт</span><b>290&nbsp;₽</b></li></ul>
           <p class="price-note">Цены в рублях за одну кружку с полноцветным нанесением. Чем больше тираж, тем дешевле кружка.</p>
         </div>
 
@@ -160,8 +160,8 @@
           <summary>Показать всю таблицу цен</summary>
           <div class="price-table-scroll">
             <table class="price-table">
-              <thead><tr><th scope="col">Вид \ тираж, шт</th><th scope="col">10–50</th><th scope="col">51–100</th><th scope="col">101–200</th><th scope="col">201–300</th><th scope="col">301–500</th><th scope="col">от 501</th></tr></thead>
-              <tbody><tr><th scope="row">Матовое стекло 330&nbsp;мл</th><td>600</td><td>540</td><td>520</td><td>500</td><td>480</td><td>290</td></tr><tr><th scope="row">Прозрачное стекло 330&nbsp;мл</th><td>600</td><td>540</td><td>520</td><td>500</td><td>480</td><td>290</td></tr></tbody>
+              <thead><tr><th scope="col">Вид \ тираж, шт</th><th scope="col">10–19</th><th scope="col">20–50</th><th scope="col">51–100</th><th scope="col">101–200</th><th scope="col">201–300</th><th scope="col">301–500</th><th scope="col">от 501</th></tr></thead>
+              <tbody><tr><th scope="row">Матовое стекло 330&nbsp;мл</th><td>600</td><td>550</td><td>540</td><td>520</td><td>500</td><td>480</td><td>290</td></tr><tr><th scope="row">Прозрачное стекло 330&nbsp;мл</th><td>600</td><td>550</td><td>540</td><td>520</td><td>500</td><td>480</td><td>290</td></tr></tbody>
             </table>
           </div>
         </details>
@@ -472,7 +472,7 @@
   <script>
     // Цены и калькулятор стеклянных кружек
     (function () {
-      var MODELS = {"matte": {"qty": [10, 51, 101, 201, 301, 501], "prices": [600, 540, 520, 500, 480, 290], "name": "Матовое стекло"}, "clear": {"qty": [10, 51, 101, 201, 301, 501], "prices": [600, 540, 520, 500, 480, 290], "name": "Прозрачное стекло"}};
+      var MODELS = {"matte": {"qty": [10, 20, 51, 101, 201, 301, 501], "prices": [600, 550, 540, 520, 500, 480, 290], "name": "Матовое стекло"}, "clear": {"qty": [10, 20, 51, 101, 201, 301, 501], "prices": [600, 550, 540, 520, 500, 480, 290], "name": "Прозрачное стекло"}};
       var MIN_QTY = 10;
       var MIN_ORDER = 3000;
 
