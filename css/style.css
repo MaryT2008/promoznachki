@@ -2366,6 +2366,8 @@ a { color: inherit; text-decoration: none; }
 .calc-presets + .calc-field { margin-top: 22px; }
 .calc-delivery--2 { grid-template-columns: repeat(2, 1fr); }
 .calc-term-note { margin: 8px 0 0; font-size: 13px; color: var(--orange-dark); }
+.calc-term-note { visibility: hidden; opacity: 0; transition: opacity .25s; }
+.calc-term-note.is-visible { visibility: visible; opacity: 1; }
 
 .calc-note {
   display: flex;
@@ -2390,7 +2392,8 @@ a { color: inherit; text-decoration: none; }
 }
 
 .calc-breakdown { font-size: 13px; opacity: .9; }
-.calc-breakdown:empty { display: none; }
+/* Строка разбивки всегда занимает место — картинка в панели не прыгает */
+.calc-breakdown { min-height: 2.8em; }
 
 @media (max-width: 640px) {
   .calc-delivery { grid-template-columns: 1fr; }

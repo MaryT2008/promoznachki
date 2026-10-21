@@ -187,7 +187,7 @@
                 <label><input type="radio" name="calc-term" value="0" data-name="" checked><span>10–12 рабочих дней<small>по прайсу</small></span></label>
                 <label><input type="radio" name="calc-term" value="0.3" data-name="изготовление за 5–7 рабочих дней"><span>5–7 рабочих дней<small>+30% к цене</small></span></label>
               </div>
-              <p class="calc-term-note" hidden>Возможность изготовления за 5–7 рабочих дней менеджер согласует при обработке вашей заявки.</p>
+              <p class="calc-term-note">Возможность изготовления за 5–7 рабочих дней менеджер согласует при обработке вашей заявки.</p>
             </div>
             <div class="calc-field">
               <label class="calc-label" for="calc-qty">Количество, шт</label>
@@ -534,7 +534,8 @@
         var term = document.querySelector('input[name="calc-term"]:checked');
         var k = 1 + Number(term.value);
         var price = Math.round(PRICES[lam][idx] * k * 100) / 100;
-        document.querySelector('.calc-term-note').hidden = !Number(term.value);
+        // Пояснение занимает место всегда, чтобы панель с веером не смещалась
+        document.querySelector('.calc-term-note').classList.toggle('is-visible', !!Number(term.value));
         var base = Math.max(Math.round(price * count), MIN_ORDER);
 
         // Вкладки в блоке цен показывают выбранную ламинацию
