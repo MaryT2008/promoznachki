@@ -149,7 +149,7 @@
         </div>
         <ul class="mug-grid">
           <li>
-            <button type="button" class="mug-card is-active" data-size="330">
+            <button type="button" class="mug-card" data-size="330">
               <span class="mug-card-img"><img src="assets/img/mugw-330.webp" alt="Белая кружка 330 мл" loading="lazy"></span>
               <span class="mug-card-title">Белая кружка 330&nbsp;мл</span>
               <span class="mug-card-price">от 315&nbsp;₽</span>
@@ -487,15 +487,20 @@
         return v.toLocaleString('ru-RU') + '\u00a0₽';
       }
 
+      var chosen = false; // карточку подсвечиваем только после выбора пользователем
+
       function update() {
         var size = document.querySelector('input[name="calc-size"]:checked').value;
         var qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
         var count = Math.max(qty, MIN_QTY);
 
-        document.querySelectorAll('.size-tab, .mug-card').forEach(function (t) {
+        document.querySelectorAll('.size-tab').forEach(function (t) {
           var on = t.dataset.size === size;
           t.classList.toggle('is-active', on);
-          if (t.classList.contains('size-tab')) t.setAttribute('aria-selected', on);
+          t.setAttribute('aria-selected', on);
+        });
+        document.querySelectorAll('.mug-card').forEach(function (c) {
+          c.classList.toggle('is-active', chosen && c.dataset.size === size);
         });
         document.querySelectorAll('.tier-grid').forEach(function (g) { g.hidden = g.dataset.size !== size; });
         calcMug.src = 'assets/img/mugw-' + size + '.webp';
@@ -529,6 +534,7 @@
       }
 
       function pick(size) {
+        chosen = true;
         document.querySelector('input[name="calc-size"][value="' + size + '"]').checked = true;
         update();
       }
@@ -542,7 +548,10 @@
           document.getElementById('calc').scrollIntoView({ behavior: 'smooth' });
         });
       });
-      document.querySelectorAll('input[name="calc-size"], input[name="calc-delivery"]').forEach(function (el) {
+      document.querySelectorAll('input[name="calc-size"]').forEach(function (el) {
+        el.addEventListener('change', function () { chosen = true; update(); });
+      });
+      document.querySelectorAll('input[name="calc-delivery"]').forEach(function (el) {
         el.addEventListener('change', update);
       });
       qtyInput.addEventListener('input', update);
