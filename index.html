@@ -440,11 +440,11 @@
 
             <label class="upload" id="upload">
               <input type="file" name="attachment" id="f-files" multiple
-                     accept=".jpg,.jpeg,.png,.gif,.webp,.heic,.tif,.tiff,.bmp,.svg,.pdf,.ai,.eps,.cdr,.psd">
+                     accept=".jpg,.jpeg,.png,.gif,.webp,.heic,.tif,.tiff,.bmp,.svg,.pdf,.ai,.eps,.cdr,.psd,.doc,.docx,.rtf,.odt,.txt,.xls,.xlsx">
               <span class="upload-icon"><svg aria-hidden="true"><use href="#i-clip"/></svg></span>
               <span class="upload-text">
-                <b>Прикрепите макет или логотип</b> — перетащите файлы сюда или нажмите, чтобы выбрать
-                <small>JPG, PNG, SVG, PDF, AI, EPS, CDR, PSD, TIFF · до 5 файлов, всего до 10&nbsp;МБ</small>
+                <b>Прикрепите макет, логотип или реквизиты компании</b> — перетащите файлы сюда или нажмите, чтобы выбрать
+                <small>Макеты: JPG, PNG, SVG, PDF, AI, EPS, CDR, PSD, TIFF · реквизиты: DOC, DOCX, PDF, XLS, XLSX, TXT · до 5 файлов, всего до 10&nbsp;МБ</small>
               </span>
             </label>
             <p class="upload-error" role="alert"></p>
@@ -557,7 +557,7 @@
       // ---- Файлы ----
       var MAX_FILES = 5;
       var MAX_TOTAL = 10 * 1024 * 1024;
-      var ALLOWED = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic', 'tif', 'tiff', 'bmp', 'svg', 'pdf', 'ai', 'eps', 'cdr', 'psd'];
+      var ALLOWED = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic', 'tif', 'tiff', 'bmp', 'svg', 'pdf', 'ai', 'eps', 'cdr', 'psd', 'doc', 'docx', 'rtf', 'odt', 'txt', 'xls', 'xlsx'];
       var upload = document.getElementById('upload');
       var fileInput = form.elements['attachment'];
       var fileList = form.querySelector('.upload-list');
