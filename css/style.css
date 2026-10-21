@@ -2567,6 +2567,17 @@ body.no-scroll { overflow: hidden; }
   height: auto;
   filter: drop-shadow(0 14px 22px rgba(0, 0, 0, .16));
 }
+
+/* Два крупных веера */
+.fans-hero-media--2 { gap: 7%; }
+.fans-hero-media--2 img { width: 42%; }
+.fans-hero-media--2 img:first-child { transform: rotate(-5deg); }
+.fans-hero-media--2 img:last-child { transform: rotate(5deg); margin-top: 4%; }
+
+@media (max-width: 640px) {
+  .fans-hero-media--2 { gap: 6%; padding: 0 4%; }
+  .fans-hero-media--2 img { width: 40%; }
+}
 .fans-shapes-section { background: var(--white); }
 
 /* Страница белых кружек */
