@@ -2591,7 +2591,7 @@ body.no-scroll { overflow: hidden; }
 .fans-shapes-section { background: var(--white); }
 
 /* Страница тарелок */
-.plates-hero-media img { display: block; width: 100%; height: auto; border-radius: 28px; box-shadow: 0 20px 50px rgba(0, 0, 0, .12); }
+.plates-hero-media img { display: block; width: 100%; height: auto; filter: drop-shadow(0 18px 30px rgba(0, 0, 0, .16)); }
 
 /* Схема значка в калькуляторе: круг в масштабе выбранного диаметра */
 .badge-scheme {
