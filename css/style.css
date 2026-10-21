@@ -2655,6 +2655,14 @@ body.no-scroll { overflow: hidden; }
 
 .mugs-hero-media img:nth-child(2) { width: 32%; }
 
+/* Одно крупное фото кружек — без подложки, на всю колонку */
+.mugs-hero-media--photo { padding: 0; background: none; }
+.mugs-hero-media--photo img { width: 108%; max-width: none; margin-right: -4%; mix-blend-mode: normal; filter: drop-shadow(0 18px 28px rgba(0, 0, 0, .14)); }
+
+@media (max-width: 960px) {
+  .mugs-hero-media--photo img { width: 100%; margin: 0; }
+}
+
 .mug-models { padding: 40px 0 8px; }
 
 .mug-grid {
