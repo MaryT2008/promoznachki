@@ -2779,6 +2779,11 @@ body.no-scroll { overflow: hidden; }
 .template-preview circle { fill: var(--white); stroke: #e5484d; stroke-width: 1.5; }
 .template-preview .bleed { fill: none; stroke-dasharray: 3 3; stroke-width: 1; }
 .template-preview rect { fill: none; stroke: #e5484d; stroke-width: 1.5; }
+.template-preview--mug { width: 110px; }
+.template-preview--mug rect { fill: var(--white); stroke: #9a9aa2; }
+.template-preview--mug .bleed { fill: none; stroke: #17a2b8; stroke-dasharray: 3 2; }
+.template-preview--mug path { fill: none; stroke: #9a9aa2; stroke-width: 1; stroke-dasharray: 3 2; }
+.template-preview--mug .handle { stroke-dasharray: none; stroke-width: 1.5; }
 
 .template-text { flex: 1; }
 .template-text h2 { margin: 0 0 6px; font-family: var(--font-display); font-size: 20px; font-weight: 700; }
