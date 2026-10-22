@@ -1,3 +1,13 @@
+/* Запасной шрифт с метриками Montserrat — меньше «прыжков» текста, пока грузится веб-шрифт */
+@font-face {
+  font-family: "Montserrat Fallback";
+  src: local("Arial");
+  size-adjust: 113%;
+  ascent-override: 85.6%;
+  descent-override: 22.2%;
+  line-gap-override: 0%;
+}
+
 :root {
   --orange: #f47b20;
   --orange-dark: #d9650f;
@@ -6,7 +16,7 @@
   --bg-soft: #f1f1f1;
   --white: #fff;
   --container: 1200px;
-  --font: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --font: "Montserrat", "Montserrat Fallback", "Helvetica Neue", Arial, sans-serif;
   --font-display: "Onest", "Montserrat", Arial, sans-serif;
 }
 
@@ -3038,7 +3048,7 @@ body.no-scroll { overflow: hidden; }
     flex-shrink: 0;
   }
   .header-phone-icon { width: 22px; height: 22px; }
-  .logo img { width: 146px; }
+  .logo img { width: 138px; }
 
   /* На телефоне баннер с мелкими надписями заменяем текстовой версией */
   .hero-banner { display: none; }
@@ -3278,7 +3288,7 @@ body.no-scroll { overflow: hidden; }
   .policy-layout { grid-template-columns: 1fr; gap: 24px; }
   .policy-toc { position: static; }
 }
-@media (max-width: 389px) and (min-width: 361px) { .logo img { width: 124px; } }
+@media (max-width: 389px) and (min-width: 361px) { .logo img { width: 118px; } }
 
 /* Страница «Контакты» */
 .contacts-page { padding: 40px 0 24px; }
@@ -3312,3 +3322,4 @@ body.no-scroll { overflow: hidden; }
   .faq-hero { padding-bottom: 24px; }
   .faq-groups, .policy-layout, .delivery-options, .contacts-page { padding-top: 20px; }
 }
+@media (max-width: 340px) { .logo img { width: 100px; } }
