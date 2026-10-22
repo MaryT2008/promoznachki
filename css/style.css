@@ -3422,3 +3422,7 @@ body.no-scroll { overflow: hidden; }
   .sticky-calc svg { width: 20px; height: 20px; }
   .sticky-calc.is-visible { opacity: 1; visibility: visible; transform: none; }
 }
+
+/* Появление блоков при прокрутке (классы ставит js/reveal.js) */
+:root .reveal { opacity: 0; translate: 0 26px; transition: opacity .7s cubic-bezier(.22, .61, .36, 1), translate .7s cubic-bezier(.22, .61, .36, 1); }
+:root .reveal.is-in { opacity: 1; translate: 0 0; }
