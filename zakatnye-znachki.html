@@ -220,9 +220,14 @@
                 <input type="checkbox" id="calc-personal">
                 <span>Персонализация — разные имена, номера или надписи в&nbsp;одном тираже <b>+30% к&nbsp;цене</b></span>
               </label>
+              <label class="calc-check calc-check--box">
+                <input type="checkbox" id="calc-magnet">
+                <span>Крепление магнит Ø&nbsp;12×2&nbsp;мм вместо булавки — не оставляет следов на одежде <b>+30&nbsp;₽/шт</b></span>
+                <img src="assets/img/pin-magnet.webp" width="240" height="240" alt="Магнитное крепление для значка диаметром 12 мм" loading="lazy" decoding="async">
+              </label>
               <label class="calc-check">
                 <input type="checkbox" id="calc-pack">
-                <span>Индивидуальная упаковка в пакет <b>+5&nbsp;₽/шт</b></span>
+                <span>Индивидуальная упаковка в пакет <b>+5&nbsp;₽/шт</b><small class="calc-pack-note" hidden>обязательна для значков на магните</small></span>
               </label>
             </div>
             <div class="calc-field">
@@ -510,16 +515,29 @@
       // Дополнительные услуги: упаковка (за штуку) и доставка (за заказ)
       var PACK_PRICE = 5;
       var packInput = document.getElementById('calc-pack');
+      var MAGNET_PRICE = 30;
+      var magnetInput = document.getElementById('calc-magnet');
+      var packNote = document.querySelector('.calc-pack-note');
+
+      // Магнит отдельно от значка не передать — с ним упаковка в пакет обязательна
+      magnetInput.addEventListener('change', function () {
+        if (magnetInput.checked) packInput.checked = true;
+        packInput.disabled = magnetInput.checked;
+        packNote.hidden = !magnetInput.checked;
+        update();
+      });
       var breakdownEl = document.getElementById('calc-breakdown');
 
       function extras(count) {
+        var magnet = magnetInput.checked ? MAGNET_PRICE * count : 0;
         var pack = packInput.checked ? PACK_PRICE * count : 0;
         var dl = document.querySelector('input[name="calc-delivery"]:checked');
         var delivery = Number(dl.value);
         var parts = [];
+        if (magnet) parts.push('крепление магнит +' + money(magnet, 0));
         if (pack) parts.push('упаковка в пакет +' + money(pack, 0));
         if (delivery) parts.push(dl.dataset.name + ' +' + money(delivery, 0));
-        return { sum: pack + delivery, text: parts.join(', ') };
+        return { sum: magnet + pack + delivery, text: parts.join(', ') };
       }
 
       function showBreakdown(base, ex) {
