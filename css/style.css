@@ -3301,3 +3301,14 @@ body.no-scroll { overflow: hidden; }
 .contacts-req p { margin: 16px 0 0; font-size: 14px; color: var(--muted); }
 @media (max-width: 960px) { .contacts-layout { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .contacts-cards, .contacts-req dl { grid-template-columns: 1fr; } }
+/* Компактные отступы на служебных страницах */
+.faq-hero { padding-bottom: 32px; }
+.faq-groups, .policy-layout { padding-top: 28px; }
+.delivery-options, .contacts-page { padding-top: 28px; }
+.delivery-options { padding-bottom: 8px; }
+.delivery-steps { padding-top: 24px; }
+.contacts-req { margin-top: 24px; }
+@media (max-width: 640px) {
+  .faq-hero { padding-bottom: 24px; }
+  .faq-groups, .policy-layout, .delivery-options, .contacts-page { padding-top: 20px; }
+}
