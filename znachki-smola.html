@@ -599,5 +599,27 @@
       update();
     })();
   </script>
+  <!-- Закреплённая кнопка «Рассчитать» на телефоне -->
+  <a class="sticky-calc" href="#calc" aria-hidden="true" tabindex="-1"><svg aria-hidden="true"><use href="#i-calc"/></svg>Рассчитать стоимость</a>
+  <script>
+    // Кнопка появляется, когда пролистали первый экран, и прячется у калькулятора и в подвале
+    (function () {
+      var btn = document.querySelector('.sticky-calc');
+      var calc = document.getElementById('calc');
+      var footer = document.querySelector('.site-footer');
+      var hero = document.querySelector('.pp-hero');
+      if (!btn || !calc || !('IntersectionObserver' in window)) return;
+      var past = false, nearCalc = false, nearFooter = false;
+      function sync() {
+        var on = past && !nearCalc && !nearFooter;
+        btn.classList.toggle('is-visible', on);
+        btn.setAttribute('aria-hidden', on ? 'false' : 'true');
+        btn.tabIndex = on ? 0 : -1;
+      }
+      new IntersectionObserver(function (e) { past = !e[0].isIntersecting && e[0].boundingClientRect.top < 0; sync(); }).observe(hero || document.querySelector('main'));
+      new IntersectionObserver(function (e) { nearCalc = e[0].isIntersecting; sync(); }, { rootMargin: '0px 0px -20% 0px' }).observe(calc);
+      if (footer) new IntersectionObserver(function (e) { nearFooter = e[0].isIntersecting; sync(); }).observe(footer);
+    })();
+  </script>
 </body>
 </html>

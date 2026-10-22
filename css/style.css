@@ -3392,3 +3392,33 @@ body.no-scroll { overflow: hidden; }
   .nav-drop-menu small { display: none; }
   .nav-drop-menu a:hover { background: none; }
 }
+
+/* Закреплённая кнопка «Рассчитать стоимость» на телефоне */
+.sticky-calc { display: none; }
+@media (max-width: 640px) {
+  .sticky-calc {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 20px;
+    border-radius: 999px;
+    background: var(--orange);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    box-shadow: 0 12px 30px rgba(244, 123, 32, .45);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(24px);
+    transition: opacity .25s, transform .25s, visibility .25s;
+  }
+  .sticky-calc svg { width: 20px; height: 20px; }
+  .sticky-calc.is-visible { opacity: 1; visibility: visible; transform: none; }
+}
