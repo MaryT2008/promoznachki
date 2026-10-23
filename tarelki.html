@@ -239,7 +239,11 @@
             </div>
             <div class="calc-field">
               <span class="calc-label">Дополнительно</span>
-              <p class="calc-item-note" hidden>Подставка выбирается для позиции, отмеченной выше пунктиром. Срок — для всего заказа.</p>
+              <p class="calc-item-note" hidden>Персонализация и подставка выбираются для позиции, отмеченной выше пунктиром. Срок — для всего заказа.</p>
+              <label class="calc-check">
+                <input type="checkbox" id="calc-personal">
+                <span>Персонализация — своё имя, надпись или фото на&nbsp;каждой тарелке <b>+30% к&nbsp;цене</b></span>
+              </label>
               <label class="calc-check calc-check--box">
                 <input type="checkbox" id="calc-stand">
                 <span>Подставка под тарелку — прозрачная, складная <b>+70&nbsp;₽/шт</b></span>
@@ -540,7 +544,7 @@
       var itemsEl = document.querySelector('.calc-items');
       var addBtn = document.querySelector('.calc-add');
       var noteEl = document.querySelector('.calc-item-note');
-      var FLAGS = [{ id: 'calc-stand', key: 'stand', tag: 'с подставкой', price: 70, opt: 'подставки' }];
+      var FLAGS = [{ id: 'calc-personal', key: 'personal', tag: 'персонализация', markup: 0.3, single: 'персонализация (разные имена/надписи)' }, { id: 'calc-stand', key: 'stand', tag: 'с подставкой', price: 70, opt: 'подставки' }];
       function table(m) { return { qty: QTY, prices: PRICES[m] }; }
       function current() {
         var c = { model: document.querySelector('input[name="calc-size"]:checked').value, qty: Math.max(1, Math.floor(Number(qtyInput.value) || 0)) };
@@ -655,7 +659,7 @@
           update();
         });
       });
-      document.querySelectorAll('input[name="calc-size"], input[name="calc-delivery"], input[name="calc-term"], #calc-stand').forEach(function (el) {
+      document.querySelectorAll('input[name="calc-size"], input[name="calc-delivery"], input[name="calc-term"], #calc-stand, #calc-personal').forEach(function (el) {
         el.addEventListener('change', update);
       });
       qtyInput.addEventListener('input', update);
