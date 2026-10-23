@@ -303,9 +303,9 @@
   <a class="msg-float msg-float--wa" href="https://wa.me/qr/CG5LBFJK6QRCH1" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg aria-hidden="true"><use href="#i-wa"/></svg><span>WhatsApp</span></a>
   <a class="msg-float" href="https://max.ru/u/f9LHodD0cOIUJK19XiIwKd3uW_x30U4Qt7683yFB2-2XNrdhEBmbESW0N_A" target="_blank" rel="noopener" aria-label="Написать в MAX"><svg aria-hidden="true"><use href="#i-max"/></svg><span>Написать в MAX</span></a>
   <script id="msg-float-js">
-    // В подвале кнопку MAX прячем: там есть своя ссылка, и не закрываем «Наверх»
+    // Прячем кнопки, только когда видны ссылки на мессенджеры в подвале
     (function () {
-      var b = document.querySelectorAll('.msg-float'), f = document.querySelector('.site-footer');
+      var b = document.querySelectorAll('.msg-float'), f = document.querySelector('.footer-wa') || document.querySelector('.site-footer');
       if (!b.length || !f || !('IntersectionObserver' in window)) return;
       new IntersectionObserver(function (e) { b.forEach(function (x) { x.classList.toggle('is-hidden', e[0].isIntersecting); }); }).observe(f);
     })();
