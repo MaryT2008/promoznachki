@@ -3652,3 +3652,4 @@ body.no-scroll { overflow: hidden; }
   .mag-scheme { width: 200px; height: 165px; }
   .mag-scheme-ghost { width: calc(100 * 1.8px); height: calc(70 * 1.8px); }
 }
+.calc-check-note { display: block; margin-top: 3px; font-size: 12.5px; line-height: 1.4; color: var(--muted); }
