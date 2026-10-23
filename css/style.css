@@ -3701,3 +3701,6 @@ body.no-scroll { overflow: hidden; }
 .mag-scheme.is-custom .mag-scheme-shape { opacity: 0; transform: translate(-50%, -58%) scale(.6); }
 .mag-scheme-shape { transition: width .45s cubic-bezier(.22, .61, .36, 1), height .45s cubic-bezier(.22, .61, .36, 1), border-radius .35s, opacity .3s, transform .35s; }
 @media (max-width: 640px) { .mag-scheme-custom { width: calc(108 * 1.8px); } }
+/* Оборот значка на магните — фото с магнитом, рисованный магнит больше не нужен */
+.badge-scheme-circle.is-magnet { background-image: url("../assets/img/pin-back-magnet.webp"); box-shadow: 0 14px 30px rgba(120, 40, 0, .32), inset 0 0 0 2px rgba(255, 255, 255, .55), inset 0 -6px 12px rgba(0, 0, 0, .12); }
+.badge-scheme-circle .badge-scheme-magnet { display: none; }
