@@ -63,6 +63,10 @@
     <symbol id="i-up" viewBox="0 0 24 24">
       <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 19V5M6 11l6-6 6 6"/>
     </symbol>
+    <symbol id="i-max" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 2.5c-5.3 0-9.5 3.9-9.5 8.8 0 2.7 1.3 5.1 3.4 6.7l-.6 3.4c-.1.5.4.8.8.6l3.6-1.9c.7.1 1.5.2 2.3.2 5.3 0 9.5-3.9 9.5-8.8S17.3 2.5 12 2.5z"/>
+      <path fill="var(--max-m, #fff)" d="M7.6 14.2V8.3h1.5l2 3 2-3h1.4v5.9h-1.5v-3.5l-1.9 2.8h-.1L9.1 10.7v3.5z"/>
+    </symbol>
     <symbol id="i-check" viewBox="0 0 24 24">
       <path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/>
     </symbol>
@@ -102,6 +106,7 @@
           <a href="dostavka-i-oplata.html"><svg aria-hidden="true"><use href="#i-truck"/></svg>Доставка и оплата</a>
           <a href="kontakty.html"><svg aria-hidden="true"><use href="#i-contacts"/></svg>Контакты</a>
           <a href="mailto:sales@promoznachki.ru"><svg aria-hidden="true"><use href="#i-mail"/></svg>sales@promoznachki.ru</a>
+          <a href="https://max.ru/u/f9LHodD0cOIUJK19XiIwKd3uW_x30U4Qt7683yFB2-2XNrdhEBmbESW0N_A" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-max"/></svg>Написать в MAX</a>
         </div>
       </nav>
 
@@ -411,6 +416,7 @@
             <li><a href="tel:+74993945984">+7 (499) 394-59-84</a></li>
             <li><a href="tel:+79266764435">+7 (926) 676-44-35</a></li>
             <li><a href="mailto:sales@promoznachki.ru">sales@promoznachki.ru</a></li>
+            <li><a class="footer-max" href="https://max.ru/u/f9LHodD0cOIUJK19XiIwKd3uW_x30U4Qt7683yFB2-2XNrdhEBmbESW0N_A" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-max"/></svg>Написать в MAX</a></li>
             <li>Москва, ул.&nbsp;Нижегородская, д.&nbsp;32, стр.&nbsp;6, оф.&nbsp;1</li>
             <li>Пн–Пт, 10:00–19:00</li>
           </ul>
@@ -564,6 +570,16 @@
       new IntersectionObserver(function (e) { past = !e[0].isIntersecting && e[0].boundingClientRect.top < 0; sync(); }).observe(hero || document.querySelector('main'));
       new IntersectionObserver(function (e) { nearCalc = e[0].isIntersecting; sync(); }, { rootMargin: '0px 0px -20% 0px' }).observe(calc);
       if (footer) new IntersectionObserver(function (e) { nearFooter = e[0].isIntersecting; sync(); }).observe(footer);
+    })();
+  </script>
+  <!-- Плавающая кнопка мессенджера MAX -->
+  <a class="msg-float" href="https://max.ru/u/f9LHodD0cOIUJK19XiIwKd3uW_x30U4Qt7683yFB2-2XNrdhEBmbESW0N_A" target="_blank" rel="noopener" aria-label="Написать в MAX"><svg aria-hidden="true"><use href="#i-max"/></svg><span>Написать в MAX</span></a>
+  <script id="msg-float-js">
+    // В подвале кнопку MAX прячем: там есть своя ссылка, и не закрываем «Наверх»
+    (function () {
+      var b = document.querySelector('.msg-float'), f = document.querySelector('.site-footer');
+      if (!b || !f || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver(function (e) { b.classList.toggle('is-hidden', e[0].isIntersecting); }).observe(f);
     })();
   </script>
 </body>

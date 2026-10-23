@@ -3528,3 +3528,36 @@ body.no-scroll { overflow: hidden; }
   .badge-scheme-circle .badge-scheme-label,
   .badge-scheme-circle.is-small .badge-scheme-label { top: calc(50% + 98px); }
 }
+
+/* Мессенджер MAX */
+.footer-max { display: inline-flex; align-items: center; gap: 8px; }
+.footer-max svg { width: 20px; height: 20px; color: #6a3cf5; }
+.msg-float {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px 12px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3c8bff, #7a3cf5);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  box-shadow: 0 12px 28px rgba(90, 60, 230, .4);
+  transition: transform .25s, box-shadow .25s, bottom .3s;
+}
+.msg-float svg { width: 30px; height: 30px; color: #fff; }
+.msg-float { --max-m: #6a4cf0; }
+.msg-float.is-hidden { opacity: 0; visibility: hidden; transform: translateY(16px); }
+.msg-float { transition: transform .25s, box-shadow .25s, bottom .3s, opacity .25s, visibility .25s; }
+.msg-float:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(90, 60, 230, .5); }
+@media (max-width: 640px) {
+  .msg-float { right: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); padding: 12px; }
+  .msg-float span { display: none; }
+  /* Не перекрываем кнопку «Рассчитать стоимость» */
+  .sticky-calc.is-visible ~ .msg-float { bottom: calc(86px + env(safe-area-inset-bottom)); }
+}
