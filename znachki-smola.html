@@ -240,10 +240,10 @@
             </div>
             <div class="calc-field">
               <span class="calc-label">Дополнительно</span>
-              <p class="calc-item-note" hidden>Упаковка выбирается для позиции, отмеченной выше пунктиром.</p>
+              
               <label class="calc-check">
-                <input type="checkbox" id="calc-pack">
-                <span>Индивидуальная упаковка в пакет <b>+5&nbsp;₽/шт</b></span>
+                <input type="checkbox" id="calc-pack" checked disabled>
+                <span>Индивидуальная упаковка в пакет <b>+5&nbsp;₽/шт</b><small class="calc-check-note">обязательна для значков со смолой</small></span>
               </label>
             </div>
             <div class="calc-field">
@@ -256,6 +256,11 @@
             </div>
           </div>
           <div class="calc-result calc-result--badges" aria-live="polite">
+            <div class="resin-scheme" aria-hidden="true">
+              <span class="resin-scheme-ghost"></span>
+              <img class="resin-scheme-badge" src="assets/img/resin-calc.webp" alt="" style="--d:35">
+              <b class="resin-scheme-label">Ø 35 мм</b>
+            </div>
             <span class="calc-result-label">Стоимость тиража</span>
             <b class="calc-total" id="calc-total"></b>
             <span class="calc-per" id="calc-per"></span>
@@ -540,7 +545,7 @@
         var pk = packInput.checked;
         var same = items.filter(function (it) { return it.size === size && it.pack === pk; })[0];
         if (same) same.qty += qty; else items.push({ size: size, qty: qty, pack: pk });
-        packInput.checked = false;
+        packInput.checked = true;
         var free = Object.keys(PRICES).filter(function (s) { return !items.some(function (it) { return it.size === s; }); });
         document.querySelector('input[name="calc-size"][value="' + (free[0] || size) + '"]').checked = true;
         qtyInput.value = MIN_QTY;
@@ -587,6 +592,9 @@
         var size = document.querySelector('input[name="calc-size"]:checked').value;
         var qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
         var tiers = PRICES[size];
+        // Значок на оранжевой панели — в пропорции к выбранному диаметру
+        document.querySelector('.resin-scheme-badge').style.setProperty('--d', size);
+        document.querySelector('.resin-scheme-label').textContent = 'Ø ' + size + ' мм';
         var params = { item: 'Значки с заливкой смолой', size: size + ' мм', qty: String(qty) };
 
         document.querySelectorAll('.size-circle').forEach(function (c) {
@@ -613,7 +621,6 @@
           var count = Math.max(qty, MIN_QTY);
           if (items.length) return updateMulti(size, count);
           itemsEl.hidden = true;
-          document.querySelector('.calc-item-note').hidden = true;
           var idx = 0;
           for (var i = 0; i < QTY.length; i++) if (count >= QTY[i]) idx = i;
           var price = tiers[idx];
@@ -643,7 +650,6 @@
         var totalQty = 0, sum = 0;
         all.forEach(function (it) { it.price = tierPrice(it.size, it.qty); it.sum = Math.round(it.price * it.qty); totalQty += it.qty; sum += it.sum; });
         itemsEl.hidden = false;
-        document.querySelector('.calc-item-note').hidden = false;
         itemsEl.innerHTML = '<li class="calc-items-head">В заказе</li>' + items.map(function (it, i) {
           return '<li data-edit="' + i + '" title="Нажмите, чтобы изменить"><span>Ø ' + it.size + ' мм × ' + it.qty.toLocaleString('ru-RU') + ' шт' + (it.pack ? ' <small>в пакете</small>' : '') + '</span><b>' + money(Math.round(tierPrice(it.size, it.qty) * it.qty), 0) + '</b><button type="button" data-i="' + i + '" aria-label="Убрать позицию">×</button></li>';
         }).join('') + '<li class="is-current"><span>Ø ' + size + ' мм × ' + count.toLocaleString('ru-RU') + ' шт' + (curPk ? ' <small>в пакете</small>' : '') + ' <small>выбрано выше</small></span><b>' + money(Math.round(tierPrice(size, count) * count), 0) + '</b></li>';
