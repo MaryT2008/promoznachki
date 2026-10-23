@@ -3788,3 +3788,5 @@ body.no-scroll { overflow: hidden; }
 .calc-items .calc-items-head { padding: 0; border: 0; background: none; font-size: 13px; font-weight: 600; color: var(--muted); }
 .calc-items li.is-current { border-style: dashed; border-color: var(--orange); background: #fff8f2; padding-right: 50px; }
 .calc-items li small { margin-left: 6px; font-weight: 400; font-size: 12px; color: var(--muted); }
+.calc-item-note { margin: -2px 0 10px; font-size: 13px; line-height: 1.45; color: var(--orange-dark); }
+.calc-item-note[hidden] { display: none; }

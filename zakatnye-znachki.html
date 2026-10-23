@@ -242,6 +242,7 @@
             </div>
             <div class="calc-field">
               <span class="calc-label">Дополнительно</span>
+              <p class="calc-item-note" hidden>Магнит и упаковка выбираются для позиции, отмеченной выше пунктиром. Персонализация и срок — для всего заказа.</p>
               <label class="calc-check">
                 <input type="checkbox" id="calc-personal">
                 <span>Персонализация — разные имена, номера или надписи в&nbsp;одном тираже <b>+30% к&nbsp;цене</b></span>
@@ -602,8 +603,12 @@
       addBtn.addEventListener('click', function () {
         var size = document.querySelector('input[name="calc-size"]:checked').value;
         var qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
-        var same = items.filter(function (it) { return it.size === size; })[0];
-        if (same) same.qty += qty; else items.push({ size: size, qty: qty });
+        var mg = magnetInput.checked, pk = packInput.checked;
+        // Одинаковыми считаем позиции с тем же размером и тем же креплением/упаковкой
+        var same = items.filter(function (it) { return it.size === size && it.magnet === mg && it.pack === pk; })[0];
+        if (same) same.qty += qty; else items.push({ size: size, qty: qty, magnet: mg, pack: pk });
+        // Для следующей позиции — снова булавка без пакета
+        magnetInput.checked = false; packInput.checked = false; packInput.disabled = false; packNote.hidden = true;
         // Следующий размер, которого ещё нет в заказе
         var sizes = Object.keys(PRICES);
         var free = sizes.filter(function (s) { return !items.some(function (it) { return it.size === s; }); });
@@ -620,9 +625,16 @@
         update();
       });
 
-      function extras(count) {
-        var magnet = magnetInput.checked ? MAGNET_PRICE * count : 0;
-        var pack = packInput.checked ? PACK_PRICE * count : 0;
+      function tags(it) {
+        return (it.magnet ? ' <small>на магните</small>' : '') + (it.pack ? ' <small>в пакете</small>' : '');
+      }
+
+      function extras(list) {
+        var magnet = 0, pack = 0;
+        list.forEach(function (it) {
+          if (it.magnet) magnet += MAGNET_PRICE * it.qty;
+          if (it.pack) pack += PACK_PRICE * it.qty;
+        });
         var dl = document.querySelector('input[name="calc-delivery"]:checked');
         var delivery = Number(dl.value);
         var parts = [];
@@ -667,9 +679,10 @@
         var price = cur.price;
 
         // Все позиции заказа: сохранённые + текущая (одинаковый размер объединяем)
-        var all = items.map(function (it) { return { size: it.size, qty: it.qty }; });
-        var mine = all.filter(function (it) { return it.size === size; })[0];
-        if (mine) mine.qty += qty; else all.push({ size: size, qty: qty });
+        var curMg = magnetInput.checked, curPk = packInput.checked;
+        var all = items.map(function (it) { return { size: it.size, qty: it.qty, magnet: it.magnet, pack: it.pack }; });
+        var mine = all.filter(function (it) { return it.size === size && it.magnet === curMg && it.pack === curPk; })[0];
+        if (mine) mine.qty += qty; else all.push({ size: size, qty: qty, magnet: curMg, pack: curPk });
         var totalQty = 0, total = 0;
         all.forEach(function (it) {
           var p = priceFor(it.size, it.qty, k);
@@ -683,17 +696,18 @@
 
         // Список уже добавленных размеров
         itemsEl.hidden = !items.length;
+        document.querySelector('.calc-item-note').hidden = !items.length;
         itemsEl.innerHTML = '<li class="calc-items-head">В заказе</li>' + items.map(function (it, i) {
           var p = priceFor(it.size, it.qty, k).price;
-          return '<li><span>Ø ' + it.size + ' мм × ' + it.qty.toLocaleString('ru-RU') + ' шт</span><b>' + money(Math.round(p * it.qty), 0) +
+          return '<li><span>Ø ' + it.size + ' мм × ' + it.qty.toLocaleString('ru-RU') + ' шт' + tags(it) + '</span><b>' + money(Math.round(p * it.qty), 0) +
             '</b><button type="button" data-i="' + i + '" aria-label="Убрать позицию">×</button></li>';
-        }).join('') + '<li class="is-current"><span>Ø ' + size + ' мм × ' + qty.toLocaleString('ru-RU') + ' шт <small>выбрано выше</small></span><b>' +
+        }).join('') + '<li class="is-current"><span>Ø ' + size + ' мм × ' + qty.toLocaleString('ru-RU') + ' шт' + tags({ magnet: curMg, pack: curPk }) + ' <small>выбрано выше</small></span><b>' +
           money(Math.round(priceFor(size, qty, k).price * qty), 0) + '</b></li>';
         addBtn.querySelector('span').nextSibling.textContent = ' Добавить ещё размер';
 
         // Минимальная сумма — на весь заказ, допы и доставка — один раз
         var base = Math.max(total, MIN_ORDER);
-        var ex = extras(totalQty);
+        var ex = extras(all);
         totalEl.textContent = money(base + ex.sum, 0);
         showBreakdown(base, ex);
         perEl.textContent = multi ? totalQty.toLocaleString('ru-RU') + ' шт · ' + all.length + ' ' + (all.length < 5 ? 'размера' : 'размеров') : money(price, 2) + ' за штуку';
@@ -717,7 +731,7 @@
           params.delete('size');
           params.delete('per');
           params.set('lines', all.map(function (it) {
-            return it.size + ' мм × ' + it.qty + ' шт по ' + money(it.price, 2) + ' = ' + money(it.sum, 0);
+            return it.size + ' мм × ' + it.qty + ' шт' + (it.magnet ? ' на магните' : '') + (it.pack ? ', в пакете' : '') + ' по ' + money(it.price, 2) + ' = ' + money(it.sum, 0);
           }).join('; '));
         }
         var opts = [term.dataset.name, personal ? 'персонализация (разные имена/номера)' : '', ex.text].filter(Boolean).join(', ');
