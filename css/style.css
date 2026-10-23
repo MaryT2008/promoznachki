@@ -3790,3 +3790,8 @@ body.no-scroll { overflow: hidden; }
 .calc-items li small { margin-left: 6px; font-weight: 400; font-size: 12px; color: var(--muted); }
 .calc-item-note { margin: -2px 0 10px; font-size: 13px; line-height: 1.45; color: var(--orange-dark); }
 .calc-item-note[hidden] { display: none; }
+
+/* Позиции заказа можно открыть для правки */
+.calc-items li[data-edit] { cursor: pointer; transition: border-color .2s, background .2s; }
+.calc-items li[data-edit]:hover { border-color: var(--orange); background: #fffaf5; }
+.calc-items li[data-edit] b::after { content: "изменить"; display: block; font-size: 11px; font-weight: 500; color: var(--muted); text-align: right; }

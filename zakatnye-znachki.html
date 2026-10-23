@@ -620,8 +620,22 @@
 
       itemsEl.addEventListener('click', function (e) {
         var btn = e.target.closest('button[data-i]');
-        if (!btn) return;
-        items.splice(Number(btn.dataset.i), 1);
+        if (btn) { items.splice(Number(btn.dataset.i), 1); update(); return; }
+        // Клик по строке — переключаемся на неё для правки, текущая позиция встаёт на её место
+        var li = e.target.closest('li[data-edit]');
+        if (!li) return;
+        var i = Number(li.dataset.edit), it = items[i];
+        items[i] = {
+          size: document.querySelector('input[name="calc-size"]:checked').value,
+          qty: Math.max(1, Math.floor(Number(qtyInput.value) || 0)),
+          magnet: magnetInput.checked, pack: packInput.checked
+        };
+        document.querySelector('input[name="calc-size"][value="' + it.size + '"]').checked = true;
+        qtyInput.value = it.qty;
+        magnetInput.checked = it.magnet;
+        packInput.checked = it.pack || it.magnet;
+        packInput.disabled = it.magnet;
+        packNote.hidden = !it.magnet;
         update();
       });
 
@@ -699,7 +713,7 @@
         document.querySelector('.calc-item-note').hidden = !items.length;
         itemsEl.innerHTML = '<li class="calc-items-head">В заказе</li>' + items.map(function (it, i) {
           var p = priceFor(it.size, it.qty, k).price;
-          return '<li><span>Ø ' + it.size + ' мм × ' + it.qty.toLocaleString('ru-RU') + ' шт' + tags(it) + '</span><b>' + money(Math.round(p * it.qty), 0) +
+          return '<li data-edit="' + i + '" title="Нажмите, чтобы изменить"><span>Ø ' + it.size + ' мм × ' + it.qty.toLocaleString('ru-RU') + ' шт' + tags(it) + '</span><b>' + money(Math.round(p * it.qty), 0) +
             '</b><button type="button" data-i="' + i + '" aria-label="Убрать позицию">×</button></li>';
         }).join('') + '<li class="is-current"><span>Ø ' + size + ' мм × ' + qty.toLocaleString('ru-RU') + ' шт' + tags({ magnet: curMg, pack: curPk }) + ' <small>выбрано выше</small></span><b>' +
           money(Math.round(priceFor(size, qty, k).price * qty), 0) + '</b></li>';

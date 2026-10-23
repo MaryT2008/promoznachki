@@ -524,7 +524,16 @@
       });
       itemsEl.addEventListener('click', function (e) {
         var b = e.target.closest('button[data-i]');
-        if (b) { items.splice(Number(b.dataset.i), 1); update(); }
+        if (b) { items.splice(Number(b.dataset.i), 1); update(); return; }
+        // Клик по строке — переключаемся на неё для правки
+        var li = e.target.closest('li[data-edit]');
+        if (!li) return;
+        var i = Number(li.dataset.edit), it = items[i], c = current();
+        items[i] = { size: c.size, key: c.key, label: c.label, qty: Math.max(MIN_QTY, Math.floor(Number(qtyInput.value) || 0)) };
+        document.querySelector('input[name="calc-size"][value="' + it.size + '"]').checked = true;
+        document.querySelector('input[name="calc-shape"][value="' + it.key.split('-')[1] + '"]').checked = true;
+        qtyInput.value = it.qty;
+        update();
       });
 
       function money(v) {
@@ -565,7 +574,7 @@
         all.forEach(function (it) { it.price = tierPrice(it.size, it.qty); it.sum = Math.round(it.price * it.qty); totalQty += it.qty; sum += it.sum; });
         itemsEl.hidden = !items.length;
         itemsEl.innerHTML = items.length ? '<li class="calc-items-head">В заказе</li>' + items.map(function (it, i) {
-          return '<li><span>' + it.label + ' × ' + it.qty.toLocaleString('ru-RU') + ' шт</span><b>' + money(Math.round(tierPrice(it.size, it.qty) * it.qty)) + '</b><button type="button" data-i="' + i + '" aria-label="Убрать позицию">×</button></li>';
+          return '<li data-edit="' + i + '" title="Нажмите, чтобы изменить"><span>' + it.label + ' × ' + it.qty.toLocaleString('ru-RU') + ' шт</span><b>' + money(Math.round(tierPrice(it.size, it.qty) * it.qty)) + '</b><button type="button" data-i="' + i + '" aria-label="Убрать позицию">×</button></li>';
         }).join('') + '<li class="is-current"><span>' + cur.label + ' × ' + count.toLocaleString('ru-RU') + ' шт <small>выбрано выше</small></span><b>' + money(Math.round(tierPrice(size, count) * count)) + '</b></li>' : '';
         if (!multi) sum = Math.round(price * count);
         var base = Math.max(sum, MIN_ORDER);

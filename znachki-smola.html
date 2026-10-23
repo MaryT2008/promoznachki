@@ -545,7 +545,15 @@
       });
       itemsEl.addEventListener('click', function (e) {
         var b = e.target.closest('button[data-i]');
-        if (b) { items.splice(Number(b.dataset.i), 1); update(); }
+        if (b) { items.splice(Number(b.dataset.i), 1); update(); return; }
+        // Клик по строке — переключаемся на неё для правки
+        var li = e.target.closest('li[data-edit]');
+        if (!li) return;
+        var i = Number(li.dataset.edit), it = items[i];
+        items[i] = { size: document.querySelector('input[name="calc-size"]:checked').value, qty: Math.max(MIN_QTY, Math.floor(Number(qtyInput.value) || 0)) };
+        document.querySelector('input[name="calc-size"][value="' + it.size + '"]').checked = true;
+        qtyInput.value = it.qty;
+        update();
       });
 
       function extras(count) {
@@ -628,7 +636,7 @@
         all.forEach(function (it) { it.price = tierPrice(it.size, it.qty); it.sum = Math.round(it.price * it.qty); totalQty += it.qty; sum += it.sum; });
         itemsEl.hidden = false;
         itemsEl.innerHTML = '<li class="calc-items-head">В заказе</li>' + items.map(function (it, i) {
-          return '<li><span>Ø ' + it.size + ' мм × ' + it.qty.toLocaleString('ru-RU') + ' шт</span><b>' + money(Math.round(tierPrice(it.size, it.qty) * it.qty), 0) + '</b><button type="button" data-i="' + i + '" aria-label="Убрать позицию">×</button></li>';
+          return '<li data-edit="' + i + '" title="Нажмите, чтобы изменить"><span>Ø ' + it.size + ' мм × ' + it.qty.toLocaleString('ru-RU') + ' шт</span><b>' + money(Math.round(tierPrice(it.size, it.qty) * it.qty), 0) + '</b><button type="button" data-i="' + i + '" aria-label="Убрать позицию">×</button></li>';
         }).join('') + '<li class="is-current"><span>Ø ' + size + ' мм × ' + count.toLocaleString('ru-RU') + ' шт <small>выбрано выше</small></span><b>' + money(Math.round(tierPrice(size, count) * count), 0) + '</b></li>';
         var base = Math.max(sum, MIN_ORDER);
         var ex = extras(totalQty);
