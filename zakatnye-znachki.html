@@ -659,6 +659,10 @@
       // На компьютере клик показывает QR-код, а не открывает ссылку
       var desktop = window.matchMedia('(hover: hover) and (pointer: fine)');
       b.forEach(function (x) {
+        // При наведении на другую кнопку закреплённый QR соседней закрываем
+        x.addEventListener('mouseenter', function () {
+          b.forEach(function (y) { if (y !== x) y.classList.remove('is-qr'); });
+        });
         x.addEventListener('click', function (ev) {
           if (!desktop.matches || ev.target.closest('.msg-qr')) return;
           ev.preventDefault();
