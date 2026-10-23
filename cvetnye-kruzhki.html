@@ -230,6 +230,9 @@
                 <button type="button" data-step="1" aria-label="Больше">+</button>
               </div>
               <div class="calc-presets"><button type="button" data-qty="10">10</button><button type="button" data-qty="20">20</button><button type="button" data-qty="50">50</button><button type="button" data-qty="100">100</button><button type="button" data-qty="200">200</button><button type="button" data-qty="300">300</button><button type="button" data-qty="500">500</button></div>
+              <!-- Несколько позиций: разные модели, цвета, с персонализацией и без -->
+              <ul class="calc-items" hidden></ul>
+              <button type="button" class="calc-add"><span aria-hidden="true">+</span> Добавить ещё позицию</button>
             </div>
             <div class="calc-field">
               <span class="calc-label" id="calc-term-label">Срок изготовления</span>
@@ -241,6 +244,7 @@
             </div>
             <div class="calc-field">
               <span class="calc-label">Дополнительно</span>
+              <p class="calc-item-note" hidden>Персонализация и упаковка выбираются для позиции, отмеченной выше пунктиром. Срок — для всего заказа, цена за кружку — по общему тиражу.</p>
               <label class="calc-check">
                 <input type="checkbox" id="calc-personal">
                 <span>Персонализация — именные кружки, своё имя или надпись на&nbsp;каждой кружке <b>+30% к&nbsp;цене</b></span>
@@ -557,13 +561,54 @@
         return v.toLocaleString('ru-RU') + '\u00a0₽';
       }
 
+      // Позиции заказа: разные модели и цвета, с персонализацией и без
+      var items = [];
+      var itemsEl = document.querySelector('.calc-items');
+      var addBtn = document.querySelector('.calc-add');
+      var noteEl = document.querySelector('.calc-item-note');
+      var personalInput = document.getElementById('calc-personal');
+      var boxInput = document.getElementById('calc-box');
+      function current() {
+        var model = document.querySelector('input[name="calc-size"]:checked').value;
+        var color = document.querySelector('input[name="calc-color"]:checked');
+        var colored = model === 'inner' || model === 'rim';
+        return { model: model, color: colored ? color.value : '', colorName: colored ? color.dataset.name : '',
+          qty: Math.max(1, Math.floor(Number(qtyInput.value) || 0)), personal: personalInput.checked, box: boxInput.checked };
+      }
+      function key(it) { return [it.model, it.color, it.personal, it.box].join('|'); }
+      function title(it) { return MODELS[it.model].name + (it.colorName ? ', ' + it.colorName : ''); }
+      function label(it) {
+        return title(it) + ' × ' + it.qty.toLocaleString('ru-RU') + ' шт' + (it.personal ? ' <small>персонализация</small>' : '') + (it.box ? ' <small>в коробке</small>' : '');
+      }
+      addBtn.addEventListener('click', function () {
+        var c = current();
+        var same = items.filter(function (it) { return key(it) === key(c); })[0];
+        if (same) same.qty += c.qty; else items.push(c);
+        personalInput.checked = false;
+        boxInput.checked = false;
+        qtyInput.value = 10;
+        update();
+      });
+      itemsEl.addEventListener('click', function (e) {
+        var b = e.target.closest('button[data-i]');
+        if (b) { items.splice(Number(b.dataset.i), 1); update(); return; }
+        var li = e.target.closest('li[data-edit]');
+        if (!li) return;
+        var i = Number(li.dataset.edit), it = items[i];
+        items[i] = current();
+        document.querySelector('input[name="calc-size"][value="' + it.model + '"]').checked = true;
+        if (it.color) document.querySelector('input[name="calc-color"][value="' + it.color + '"]').checked = true;
+        qtyInput.value = it.qty;
+        personalInput.checked = it.personal;
+        boxInput.checked = it.box;
+        update();
+      });
+
       function update() {
         var model = document.querySelector('input[name="calc-size"]:checked').value;
         var m = MODELS[model];
         var colored = model === 'inner' || model === 'rim';
         var color = document.querySelector('input[name="calc-color"]:checked');
-        var qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
-        var count = Math.max(qty, MIN_QTY);
 
         document.querySelectorAll('.size-tab').forEach(function (t) {
           var on = t.dataset.size === model;
@@ -577,36 +622,59 @@
         var src = mugSrc(model, color.value);
         if (mugImg.getAttribute('src') !== src) mugImg.src = src;
 
-        var idx = 0;
-        for (var i = 0; i < m.qty.length; i++) if (count >= m.qty[i]) idx = i;
-        var personal = document.getElementById('calc-personal').checked;
         var term = document.querySelector('input[name="calc-term"]:checked');
         document.querySelector('.calc-term-note').classList.toggle('is-visible', !!Number(term.value));
-        var k = 1 + Number(term.value) + (personal ? 0.3 : 0);
-        var price = Math.round(m.prices[idx] * k);
-        var base = Math.max(price * count, MIN_ORDER);
+        var kt = 1 + Number(term.value);
+        var c = current();
+        var all = items.map(function (it) { return Object.assign({}, it); });
+        var mine = all.filter(function (it) { return key(it) === key(c); })[0];
+        if (mine) mine.qty += c.qty; else { mine = Object.assign({}, c); all.push(mine); }
+        var multi = all.length > 1;
+        var totalQty = all.reduce(function (s, it) { return s + it.qty; }, 0);
+        var count = Math.max(totalQty, MIN_QTY);
+        if (!multi) mine.qty = count;
+        // Цена — по общему тиражу заказа, по таблице своей модели
+        function tier(md) { var t = 0; for (var i = 0; i < MODELS[md].qty.length; i++) if (count >= MODELS[md].qty[i]) t = i; return t; }
+        function unitPrice(it) { return Math.round(MODELS[it.model].prices[tier(it.model)] * (kt + (it.personal ? 0.3 : 0))); }
+        var sum = 0, boxSum = 0;
+        all.forEach(function (it) { it.price = unitPrice(it); it.sum = it.price * it.qty; sum += it.sum; if (it.box) boxSum += 50 * it.qty; });
+        var price = mine.price, idx = tier(model), k = multi ? kt : kt + (c.personal ? 0.3 : 0);
+
+        itemsEl.hidden = !items.length;
+        noteEl.hidden = !items.length;
+        itemsEl.innerHTML = items.length ? '<li class="calc-items-head">В заказе</li>' + items.map(function (it, n) {
+          return '<li data-edit="' + n + '" title="Нажмите, чтобы изменить"><span>' + label(it) + '</span><b>' + money(unitPrice(it) * it.qty) +
+            '</b><button type="button" data-i="' + n + '" aria-label="Убрать позицию">×</button></li>';
+        }).join('') + '<li class="is-current"><span>' + label(c) + ' <small>выбрано выше</small></span><b>' + money(unitPrice(c) * c.qty) + '</b></li>' : '';
+
+        var base = Math.max(sum, MIN_ORDER);
         var dl = document.querySelector('input[name="calc-delivery"]:checked');
         var delivery = Number(dl.value);
-        var box = document.getElementById('calc-box').checked ? 50 * count : 0;
         var parts = [];
-        if (box) parts.push('упаковка в коробку +' + money(box));
+        if (boxSum) parts.push('упаковка в коробку +' + money(boxSum));
         if (delivery) parts.push(dl.dataset.name + ' +' + money(delivery));
-        var total = base + box + delivery;
+        var total = base + boxSum + delivery;
         totalEl.textContent = money(total);
-        perEl.textContent = money(price) + ' за кружку';
+        perEl.textContent = multi ? count.toLocaleString('ru-RU') + ' шт · ' + all.length + ' ' + (all.length < 5 ? 'позиции' : 'позиций') : money(price) + ' за кружку';
         breakdownEl.textContent = parts.length ? 'Кружки ' + money(base) + ' · ' + parts.join(', ') : '';
-        if (qty < MIN_QTY) hintEl.textContent = 'Минимальный тираж — 10 шт, расчёт на 10 шт';
-        else if (base === MIN_ORDER && price * count < MIN_ORDER) hintEl.textContent = 'Минимальная сумма заказа — 3000 ₽';
+        if (totalQty < MIN_QTY) hintEl.textContent = 'Минимальный тираж — 10 шт, расчёт на 10 шт';
+        else if (sum < MIN_ORDER) hintEl.textContent = 'Минимальная сумма заказа — 3000 ₽';
         else {
           // Подсказка о ближайшем тираже, где кружка дешевле
           var next = idx + 1;
-          while (next < m.qty.length && Math.round(m.prices[next] * k) >= price) next++;
-          hintEl.textContent = next < m.qty.length ? 'От ' + m.qty[next] + ' шт — ' + money(Math.round(m.prices[next] * k)) + ' за кружку' : '';
+          while (next < m.qty.length && m.prices[next] >= m.prices[idx]) next++;
+          hintEl.textContent = next < m.qty.length ? (multi ? 'При общем тираже от ' : 'От ') + m.qty[next] + ' шт — ' + money(Math.round(m.prices[next] * k)) + ' за кружку' + (multi ? ' (' + m.name.toLowerCase() + ')' : '') : '';
         }
 
-        var size = '330 мл, ' + m.name.toLowerCase() + (colored ? ', цвет: ' + color.dataset.name : '');
-        var params = { item: 'Цветные кружки с нанесением', size: size, qty: String(count), per: money(price), total: money(total) };
-        var opts = [term.dataset.name, personal ? 'именные кружки (разные имена/надписи)' : ''].concat(parts).filter(Boolean);
+        var params;
+        if (multi) {
+          params = { item: 'Цветные кружки 330 мл с нанесением', qty: String(count), total: money(total),
+            lines: all.map(function (it) { return title(it) + ' × ' + it.qty + ' шт' + (it.personal ? ', персонализация' : '') + (it.box ? ', в коробке' : '') + ' по ' + money(it.price) + ' = ' + money(it.sum); }).join('; ') };
+        } else {
+          var size = '330 мл, ' + m.name.toLowerCase() + (colored ? ', цвет: ' + color.dataset.name : '');
+          params = { item: 'Цветные кружки с нанесением', size: size, qty: String(count), per: money(price), total: money(total) };
+        }
+        var opts = [term.dataset.name, !multi && c.personal ? 'именные кружки (разные имена/надписи)' : ''].concat(parts).filter(Boolean);
         if (opts.length) params.opts = opts.join(', ');
         orderLink.href = 'index.html?' + new URLSearchParams(params).toString() + '#order';
       }
