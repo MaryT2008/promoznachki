@@ -3736,3 +3736,35 @@ body.no-scroll { overflow: hidden; }
 .msg-link--tg svg { color: #2aabee; }
 .msg-link--wa svg { color: #25d366; }
 .msg-link--max svg { color: #6a3cf5; }
+
+/* Контакты: иллюстрация справа в шапке */
+.kt-hero .container { position: relative; }
+.kt-art { position: absolute; right: 24px; top: 50%; width: 420px; height: 260px; transform: translateY(-50%); pointer-events: none; }
+.kt-ring { position: absolute; left: 50%; top: 50%; border-radius: 50%; border: 1.5px dashed rgba(244, 123, 32, .3); transform: translate(-50%, -50%); }
+.kt-ring--1 { width: 230px; height: 230px; }
+.kt-ring--2 { width: 360px; height: 360px; border-color: rgba(244, 123, 32, .16); }
+.kt-bubble { position: absolute; display: grid; place-items: center; border-radius: 50%; background: var(--white); box-shadow: 0 12px 28px rgba(120, 60, 20, .14); animation: kt-float 5s ease-in-out infinite; }
+.kt-bubble svg { width: 55%; height: 55%; }
+.kt-bubble--phone { left: 172px; top: 92px; width: 76px; height: 76px; background: linear-gradient(135deg, #ff8a2b, var(--orange-dark)); color: #fff; animation-delay: -1s; }
+.kt-bubble--mail { left: 52px; top: 30px; width: 56px; height: 56px; color: var(--orange); animation-delay: -2s; }
+.kt-bubble--tg { left: 300px; top: 20px; width: 58px; height: 58px; color: #2aabee; animation-delay: -3s; }
+.kt-bubble--wa { left: 330px; top: 160px; width: 54px; height: 54px; color: #25d366; animation-delay: -.5s; }
+.kt-bubble--max { left: 70px; top: 176px; width: 50px; height: 50px; color: #6a3cf5; animation-delay: -4s; }
+.kt-bubble--pin { left: 236px; top: 200px; width: 44px; height: 44px; color: var(--orange); animation-delay: -2.5s; }
+.kt-bubble--tg svg, .kt-bubble--wa svg, .kt-bubble--max svg { width: 70%; height: 70%; }
+.kt-chat { position: absolute; left: -40px; top: -6px; padding: 9px 14px; border-radius: 16px 16px 16px 4px; background: var(--white); font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; box-shadow: 0 10px 24px rgba(120, 60, 20, .12); animation: kt-float 6s ease-in-out infinite; }
+.kt-chat--me { left: auto; right: -10px; top: auto; bottom: -4px; border-radius: 16px 16px 4px 16px; background: var(--orange); color: #fff; animation-delay: -3s; }
+@keyframes kt-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+@media (prefers-reduced-motion: reduce) { .kt-bubble, .kt-chat { animation: none; } }
+@media (max-width: 1180px) { .kt-art { right: 0; transform: translateY(-50%) scale(.8); transform-origin: right center; } }
+@media (max-width: 960px) { .kt-art { display: none; } }
+.kt-chat { top: 18px; left: -30px; }
+.kt-chat--me { top: auto; bottom: 18px; right: 40px; left: auto; }
+.kt-bubble--pin { left: 150px; top: 196px; }
+.kt-bubble--mail { top: 70px; left: 40px; }
+.kt-bubble--tg { top: 62px; }
+.kt-bubble--wa { top: 150px; left: 340px; }
+.kt-bubble--max { top: 150px; left: 64px; }
+.kt-chat--me { right: 70px; bottom: 26px; }
+.kt-bubble--pin { left: 236px; top: 214px; }
+.kt-bubble--pin { left: 140px; top: 214px; }
