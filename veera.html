@@ -736,13 +736,27 @@
     })();
   </script>
   <!-- Плавающая кнопка мессенджера MAX -->
-  <a class="msg-float msg-float--wa" href="https://wa.me/qr/CG5LBFJK6QRCH1" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg aria-hidden="true"><use href="#i-wa"/></svg><span>WhatsApp</span></a>
-  <a class="msg-float" href="https://max.ru/u/f9LHodD0cOIUJK19XiIwKd3uW_x30U4Qt7683yFB2-2XNrdhEBmbESW0N_A" target="_blank" rel="noopener" aria-label="Написать в MAX"><svg aria-hidden="true"><use href="#i-max"/></svg><span>Написать в MAX</span></a>
+  <a class="msg-float msg-float--wa" href="https://wa.me/qr/CG5LBFJK6QRCH1" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg aria-hidden="true"><use href="#i-wa"/></svg><span>WhatsApp</span><span class="msg-qr" aria-hidden="true"><img src="assets/img/qr-wa.svg" width="140" height="140" alt="" loading="lazy"><b>WhatsApp</b><small>Наведите камеру телефона на&nbsp;QR-код</small></span></a>
+  <a class="msg-float" href="https://max.ru/u/f9LHodD0cOIUJK19XiIwKd3uW_x30U4Qt7683yFB2-2XNrdhEBmbESW0N_A" target="_blank" rel="noopener" aria-label="Написать в MAX"><svg aria-hidden="true"><use href="#i-max"/></svg><span>Написать в MAX</span><span class="msg-qr" aria-hidden="true"><img src="assets/img/qr-max.svg" width="140" height="140" alt="" loading="lazy"><b>MAX</b><small>Наведите камеру телефона на&nbsp;QR-код</small></span></a>
   <script id="msg-float-js">
     // Прячем кнопки, только когда видны ссылки на мессенджеры в подвале
     (function () {
       var b = document.querySelectorAll('.msg-float'), f = document.querySelector('.footer-wa') || document.querySelector('.site-footer');
       if (!b.length || !f || !('IntersectionObserver' in window)) return;
+      // На компьютере клик показывает QR-код, а не открывает ссылку
+      var desktop = window.matchMedia('(hover: hover) and (pointer: fine)');
+      b.forEach(function (x) {
+        x.addEventListener('click', function (ev) {
+          if (!desktop.matches || ev.target.closest('.msg-qr')) return;
+          ev.preventDefault();
+          var open = !x.classList.contains('is-qr');
+          b.forEach(function (y) { y.classList.remove('is-qr'); });
+          x.classList.toggle('is-qr', open);
+        });
+      });
+      document.addEventListener('click', function (ev) {
+        if (!ev.target.closest('.msg-float')) b.forEach(function (y) { y.classList.remove('is-qr'); });
+      });
       new IntersectionObserver(function (e) { b.forEach(function (x) { x.classList.toggle('is-hidden', e[0].isIntersecting); }); }).observe(f);
     })();
   </script>
