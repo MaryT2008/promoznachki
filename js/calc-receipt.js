@@ -39,7 +39,7 @@
       q.get('lines').split('; ').forEach(function (l) {
         var parts = l.split(' = ');
         var qm = parts[0].match(/× ([\d\s\u00a0]+) шт/);
-        goods.push({ name: parts[0].replace(/ по [\d\s,\u00a0]+₽$/, '').replace(/,? (на магните|в пакете)/g, ''), raw: parts[0], qty: qm ? num(qm[1]) : 0, sum: num(parts[1]), subs: [] });
+        goods.push({ name: parts[0].replace(/ по [\d\s,\u00a0]+₽$/, '').replace(/,? (на магните|в пакете|персонализация)/g, ''), raw: parts[0], qty: qm ? num(qm[1]) : 0, sum: num(parts[1]), subs: [] });
       });
     } else {
       var qty = Number(q.get('qty')) || 0;
@@ -50,11 +50,15 @@
     var cap = function (s) { return s.replace(/^./, function (c) { return c.toUpperCase(); }); };
 
     // Наценки — под каждой позицией, своей суммой
+    var multi = !!q.get('lines');
+    var pRate = p || (personalBox ? ((personalBox.parentNode.textContent || '').match(/\+(\d+)\s*%/) || [0, 30])[1] / 100 : 0);
     goods.forEach(function (g) {
-      g.base = Math.round(g.sum / k);
+      // В сборном заказе персонализация — только у позиций с пометкой
+      var gp = multi ? (g.raw.indexOf('персонализация') > -1 ? pRate : 0) : p;
+      g.base = Math.round(g.sum / (1 + t + gp));
       var ts = Math.round(g.base * t);
       if (t && term) g.subs.push([cap(term.dataset.name || 'срочное изготовление') + ' (+' + Math.round(t * 100) + '%)', ts]);
-      if (p) g.subs.push(['Персонализация (+' + Math.round(p * 100) + '%)', g.sum - g.base - ts]);
+      if (gp) g.subs.push(['Персонализация (+' + Math.round(gp * 100) + '%)', g.sum - g.base - ts]);
     });
 
     // Допуслуги: штучные (магнит, упаковка, подставки) — под позициями, остальные — в конце
