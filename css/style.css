@@ -3704,3 +3704,5 @@ body.no-scroll { overflow: hidden; }
 /* Оборот значка на магните — фото с магнитом, рисованный магнит больше не нужен */
 .badge-scheme-circle.is-magnet { background-image: url("../assets/img/pin-back-magnet.webp"); box-shadow: 0 14px 30px rgba(120, 40, 0, .32), inset 0 0 0 2px rgba(255, 255, 255, .55), inset 0 -6px 12px rgba(0, 0, 0, .12); }
 .badge-scheme-circle .badge-scheme-magnet { display: none; }
+/* 25 и 38 мм на магните — заготовка как у значка с булавкой, но с магнитом */
+.badge-scheme-circle.is-magnet.is-mini { background-image: url("../assets/img/pin-back-magnet-small.webp"); box-shadow: 0 14px 30px rgba(120, 40, 0, .32); }

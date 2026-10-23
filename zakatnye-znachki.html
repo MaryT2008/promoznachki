@@ -581,6 +581,7 @@
         circle.classList.toggle('is-small', Number(size) < 38);
         // Оборот значка: на булавке или на магните
         circle.classList.toggle('is-magnet', document.getElementById('calc-magnet').checked);
+        circle.classList.toggle('is-mini', Number(size) <= 38);
         circle.querySelector('.badge-scheme-label').textContent = 'Ø ' + size + ' мм';
         var qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
         var idx = 0;
