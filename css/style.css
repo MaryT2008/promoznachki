@@ -3612,3 +3612,12 @@ body.no-scroll { overflow: hidden; }
   .msg-float:hover .msg-qr, .msg-float.is-qr .msg-qr { opacity: 1; visibility: visible; transform: none; }
   .msg-float:hover { transform: none; }
 }
+
+/* Telegram */
+.footer-tg svg { color: #2aabee; }
+.msg-float--tg { bottom: 158px; background: linear-gradient(135deg, #37b6f5, #1c8ad6); box-shadow: 0 12px 28px rgba(30, 140, 215, .4); --tg-i: #229ed9; }
+.msg-float--tg svg { color: #fff; }
+@media (max-width: 640px) {
+  .msg-float--tg { bottom: calc(144px + env(safe-area-inset-bottom)); }
+  .sticky-calc.is-visible ~ .msg-float--tg { bottom: calc(214px + env(safe-area-inset-bottom)); }
+}
