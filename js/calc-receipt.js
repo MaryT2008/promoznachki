@@ -96,5 +96,18 @@
   }
 
   new MutationObserver(render).observe(link, { attributes: true, attributeFilter: ['href'] });
+
+  // При переходе к заявке передаём состав заказа по пунктам
+  link.addEventListener('click', function () {
+    var lines = Array.prototype.map.call(box.querySelectorAll('li'), function (li) {
+      var name = li.querySelector('span').textContent.trim(), sum = li.querySelector('b').textContent.trim();
+      if (li.classList.contains('calc-receipt-total')) return 'Итого: ' + sum;
+      return (li.classList.contains('is-sub') ? '   ' + name : '• ' + name) + ' — ' + sum;
+    });
+    if (!lines.length) return;
+    var url = new URL(link.href, location.href);
+    url.searchParams.set('receipt', lines.join('\n'));
+    link.href = url.toString();
+  });
   render();
 })();
