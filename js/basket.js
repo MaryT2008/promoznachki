@@ -57,12 +57,22 @@
     clearTimeout(showToast.t);
     showToast.t = setTimeout(function () { toast.classList.remove('is-visible'); }, 3500);
   }
+  var hint = null;
+  function hintText(n) {
+    return n
+      ? 'В заявке уже ' + n + ' ' + plural(n) + '. <b>«Оформить заказ»</b> добавит этот расчёт в заявку и перейдёт к отправке.<br><b>«Добавить в заявку»</b> — если хотите добавить его и посчитать ещё товары.'
+      : '<b>«Оформить заказ»</b> — если нужен только этот товар.<br><b>«Добавить в заявку»</b> — если хотите заказать несколько товаров одной заявкой, например значки и кружки.';
+  }
+  function plural(n) { var a = n % 10, b = n % 100; return a === 1 && b !== 11 ? 'товар' : a >= 2 && a <= 4 && (b < 12 || b > 14) ? 'товара' : 'товаров'; }
   if (order && document.querySelector('.calc-receipt, #calc')) {
     var add = document.createElement('button');
     add.type = 'button';
     add.className = 'btn btn--ghost-light calc-to-basket';
     add.innerHTML = '+ Добавить в заявку';
     order.insertAdjacentElement('afterend', add);
+    hint = document.createElement('p');
+    hint.className = 'calc-basket-hint';
+    add.insertAdjacentElement('afterend', hint);
     add.addEventListener('click', function () {
       var c = currentCalc();
       if (!c || !c.rows.length) return;
@@ -119,6 +129,7 @@
   function render() {
     var list = load();
     badges.forEach(function (b) { b.hidden = !list.length; b.querySelector('b').textContent = list.length; });
+    if (hint) hint.innerHTML = hintText(list.length);
     if (!box) return;
     box.hidden = !list.length;
     if (!list.length) { box.innerHTML = ''; return; }

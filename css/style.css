@@ -3842,6 +3842,8 @@ body.no-scroll { overflow: hidden; }
   .sticky-calc.is-visible ~ .basket-float { bottom: calc(86px + env(safe-area-inset-bottom)); }
 }
 .calc-to-basket { margin-top: 10px; align-self: flex-start; padding: 12px 22px; border: 1.5px solid rgba(255, 255, 255, .8); border-radius: 999px; background: transparent; color: #fff; font: inherit; font-weight: 700; cursor: pointer; transition: background .2s; }
+.calc-basket-hint { margin: 10px 0 0; max-width: 420px; font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, .85); }
+.calc-basket-hint b { color: #fff; font-weight: 600; }
 .calc-to-basket:hover { background: rgba(255, 255, 255, .15); }
 .basket-toast { position: fixed; left: 50%; bottom: 24px; z-index: 80; max-width: min(92vw, 440px); padding: 14px 18px; border-radius: 16px; background: #26262b; color: #fff; font-size: 14px; line-height: 1.5; box-shadow: 0 16px 40px rgba(0, 0, 0, .3); transform: translate(-50%, 30px); opacity: 0; visibility: hidden; transition: .3s; }
 .basket-toast.is-visible { transform: translate(-50%, 0); opacity: 1; visibility: visible; }
