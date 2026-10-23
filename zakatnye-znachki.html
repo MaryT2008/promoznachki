@@ -729,7 +729,7 @@
         if (total < MIN_ORDER) hint = 'Минимальная сумма заказа — 3000 ₽';
         else if (idx < QTY.length - 1) {
           var next = QTY[idx + 1];
-          hint = 'От ' + next.toLocaleString('ru-RU') + ' шт — ' + money(Math.round(PRICES[size][idx + 1] * k * 100) / 100, 2) + ' за штуку';
+          hint = (multi ? 'Ø ' + size + ' мм: от ' : 'От ') + next.toLocaleString('ru-RU') + ' шт — ' + money(Math.round(PRICES[size][idx + 1] * k * 100) / 100, 2) + ' за штуку';
         }
         hintEl.textContent = hint;
 

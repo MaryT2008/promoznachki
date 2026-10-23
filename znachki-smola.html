@@ -659,7 +659,10 @@
         totalEl.textContent = money(total, 0);
         showBreakdown(base, ex);
         perEl.textContent = totalQty.toLocaleString('ru-RU') + ' шт · ' + all.length + ' ' + (all.length < 5 ? 'размера' : 'размеров');
-        hintEl.textContent = sum < MIN_ORDER ? 'Минимальная сумма заказа — 3000 ₽' : '';
+        var ci = 0, cq = (mine || all[all.length - 1]).qty;
+        for (var j = 0; j < QTY.length; j++) if (cq >= QTY[j]) ci = j;
+        hintEl.textContent = sum < MIN_ORDER ? 'Минимальная сумма заказа — 3000 ₽'
+          : ci < QTY.length - 1 ? 'Ø ' + size + ' мм: от ' + QTY[ci + 1].toLocaleString('ru-RU') + ' шт — ' + money(PRICES[size][ci + 1], PRICES[size][ci + 1] % 1 ? 2 : 0) + ' за штуку' : '';
         var params = { item: 'Значки с заливкой смолой', qty: String(totalQty), total: money(total, 0),
           lines: all.map(function (it) { return it.size + ' мм × ' + it.qty + ' шт' + (it.pack ? ', в пакете' : '') + ' по ' + money(it.price, it.price % 1 ? 2 : 0) + ' = ' + money(it.sum, 0); }).join('; ') };
         if (ex.text) params.opts = ex.text;

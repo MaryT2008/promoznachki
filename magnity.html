@@ -600,7 +600,12 @@
         perEl.textContent = multi ? totalQty.toLocaleString('ru-RU') + ' шт · ' + all.length + ' ' + (all.length < 5 ? 'позиции' : 'позиций') : money(price) + ' за штуку';
         breakdownEl.textContent = parts.length ? 'Магниты ' + money(base) + ' · ' + parts.join(', ') : '';
         if (qty < MIN_QTY) hintEl.textContent = 'Минимальный тираж — 50 шт, расчёт на 50 шт';
-        else if (multi) hintEl.textContent = sum < MIN_ORDER ? 'Минимальная сумма заказа — 3000 ₽' : '';
+        else if (multi) {
+          var cq = (mine || all[all.length - 1]).qty, ci = 0;
+          for (var j = 0; j < QTY.length; j++) if (cq >= QTY[j]) ci = j;
+          hintEl.textContent = sum < MIN_ORDER ? 'Минимальная сумма заказа — 3000 ₽'
+            : ci < QTY.length - 1 ? cur.label.replace(/^./, function (c) { return c.toUpperCase(); }) + ': от ' + QTY[ci + 1].toLocaleString('ru-RU') + ' шт — ' + money(PRICES[size][ci + 1]) + ' за штуку' : '';
+        }
         else if (base === MIN_ORDER && price * count < MIN_ORDER) hintEl.textContent = 'Минимальная сумма заказа — 3000 ₽';
         else if (idx < QTY.length - 1) hintEl.textContent = 'От ' + QTY[idx + 1].toLocaleString('ru-RU') + ' шт — ' + money(PRICES[size][idx + 1]) + ' за штуку';
         else hintEl.textContent = '';
