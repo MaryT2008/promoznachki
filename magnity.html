@@ -230,6 +230,9 @@
                 <button type="button" data-step="1" aria-label="Больше">+</button>
               </div>
               <div class="calc-presets"><button type="button" data-qty="50">50</button><button type="button" data-qty="100">100</button><button type="button" data-qty="200">200</button><button type="button" data-qty="400">400</button><button type="button" data-qty="600">600</button><button type="button" data-qty="1000">1&nbsp;000</button></div>
+              <!-- Несколько размеров в одном заказе -->
+              <ul class="calc-items" hidden></ul>
+              <button type="button" class="calc-add"><span aria-hidden="true">+</span> Добавить ещё размер</button>
             </div>
             <div class="calc-field">
               <span class="calc-label">Дополнительно</span>
@@ -496,6 +499,34 @@
       var packInput = document.getElementById('calc-pack');
       var orderLink = document.querySelector('.calc-order');
 
+      // Позиции заказа: сохранённые размеры/формы + текущая
+      var items = [];
+      var itemsEl = document.querySelector('.calc-items');
+      var addBtn = document.querySelector('.calc-add');
+      function tierPrice(size, count) {
+        var idx = 0;
+        for (var i = 0; i < QTY.length; i++) if (count >= QTY[i]) idx = i;
+        return PRICES[size][idx];
+      }
+      function current() {
+        var size = document.querySelector('input[name="calc-size"]:checked').value;
+        var shape = document.querySelector('input[name="calc-shape"]:checked');
+        var dims = SHAPES[size][shape.value] || SHAPES[size][Object.keys(SHAPES[size])[0]];
+        return { size: size, key: size + '-' + shape.value, label: shape.dataset.name + ' ' + dims[0] + '×' + dims[1] + ' мм' };
+      }
+      addBtn.addEventListener('click', function () {
+        var c = current();
+        var qty = Math.max(MIN_QTY, Math.floor(Number(qtyInput.value) || 0));
+        var same = items.filter(function (it) { return it.key === c.key; })[0];
+        if (same) same.qty += qty; else items.push({ size: c.size, key: c.key, label: c.label, qty: qty });
+        qtyInput.value = MIN_QTY;
+        update();
+      });
+      itemsEl.addEventListener('click', function (e) {
+        var b = e.target.closest('button[data-i]');
+        if (b) { items.splice(Number(b.dataset.i), 1); update(); }
+      });
+
       function money(v) {
         var f = v % 1 ? 2 : 0;
         return v.toLocaleString('ru-RU', { minimumFractionDigits: f, maximumFractionDigits: f }) + '\u00a0₽';
@@ -524,7 +555,20 @@
         var idx = 0;
         for (var i = 0; i < QTY.length; i++) if (count >= QTY[i]) idx = i;
         var price = PRICES[size][idx];
-        var base = Math.max(Math.round(price * count), MIN_ORDER);
+        // Несколько позиций: цена по тиражу каждой, минимум — на весь заказ
+        var cur = current();
+        var all = items.map(function (it) { return { size: it.size, key: it.key, label: it.label, qty: it.qty }; });
+        var mine = all.filter(function (it) { return it.key === cur.key; })[0];
+        if (mine) mine.qty += count; else all.push({ size: size, key: cur.key, label: cur.label, qty: count });
+        var multi = all.length > 1;
+        var totalQty = 0, sum = 0;
+        all.forEach(function (it) { it.price = tierPrice(it.size, it.qty); it.sum = Math.round(it.price * it.qty); totalQty += it.qty; sum += it.sum; });
+        itemsEl.hidden = !items.length;
+        itemsEl.innerHTML = items.length ? '<li class="calc-items-head">В заказе</li>' + items.map(function (it, i) {
+          return '<li><span>' + it.label + ' × ' + it.qty.toLocaleString('ru-RU') + ' шт</span><b>' + money(Math.round(tierPrice(it.size, it.qty) * it.qty)) + '</b><button type="button" data-i="' + i + '" aria-label="Убрать позицию">×</button></li>';
+        }).join('') + '<li class="is-current"><span>' + cur.label + ' × ' + count.toLocaleString('ru-RU') + ' шт <small>выбрано выше</small></span><b>' + money(Math.round(tierPrice(size, count) * count)) + '</b></li>' : '';
+        if (!multi) sum = Math.round(price * count);
+        var base = Math.max(sum, MIN_ORDER);
 
         document.querySelectorAll('.size-tab').forEach(function (t) {
           var on = t.dataset.size === size;
@@ -533,7 +577,7 @@
         });
         document.querySelectorAll('.tier-grid').forEach(function (g) { g.hidden = g.dataset.size !== size; });
 
-        var pack = packInput.checked ? PACK_PRICE * count : 0;
+        var pack = packInput.checked ? PACK_PRICE * totalQty : 0;
         var stamp = stampInput.checked ? STAMP_PRICE : 0;
         var dl = document.querySelector('input[name="calc-delivery"]:checked');
         var delivery = Number(dl.value);
@@ -544,14 +588,19 @@
         var total = base + stamp + pack + delivery;
 
         totalEl.textContent = money(total);
-        perEl.textContent = money(price) + ' за штуку';
+        perEl.textContent = multi ? totalQty.toLocaleString('ru-RU') + ' шт · ' + all.length + ' ' + (all.length < 5 ? 'позиции' : 'позиций') : money(price) + ' за штуку';
         breakdownEl.textContent = parts.length ? 'Магниты ' + money(base) + ' · ' + parts.join(', ') : '';
         if (qty < MIN_QTY) hintEl.textContent = 'Минимальный тираж — 50 шт, расчёт на 50 шт';
+        else if (multi) hintEl.textContent = sum < MIN_ORDER ? 'Минимальная сумма заказа — 3000 ₽' : '';
         else if (base === MIN_ORDER && price * count < MIN_ORDER) hintEl.textContent = 'Минимальная сумма заказа — 3000 ₽';
         else if (idx < QTY.length - 1) hintEl.textContent = 'От ' + QTY[idx + 1].toLocaleString('ru-RU') + ' шт — ' + money(PRICES[size][idx + 1]) + ' за штуку';
         else hintEl.textContent = '';
 
         var params = { item: 'Виниловые магниты', size: shapeInput.dataset.name + ', ' + dims[0] + '×' + dims[1] + ' мм', qty: String(count), per: money(price), total: money(total) };
+        if (multi) {
+          params = { item: 'Виниловые магниты', qty: String(totalQty), total: money(total),
+            lines: all.map(function (it) { return it.label + ' × ' + it.qty + ' шт по ' + money(it.price) + ' = ' + money(it.sum); }).join('; ') };
+        }
         if (parts.length) params.opts = parts.join(', ');
         orderLink.href = 'index.html?' + new URLSearchParams(params).toString() + '#order';
       }

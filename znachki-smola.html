@@ -234,6 +234,9 @@
                 <button type="button" data-step="1" aria-label="Больше">+</button>
               </div>
               <div class="calc-presets"><button type="button" data-qty="50">50</button><button type="button" data-qty="100">100</button><button type="button" data-qty="300">300</button><button type="button" data-qty="500">500</button><button type="button" data-qty="1000">1&nbsp;000</button><button type="button" data-qty="2000">2&nbsp;000</button></div>
+              <!-- Несколько размеров в одном заказе -->
+              <ul class="calc-items" hidden></ul>
+              <button type="button" class="calc-add"><span aria-hidden="true">+</span> Добавить ещё размер</button>
             </div>
             <div class="calc-field">
               <span class="calc-label">Дополнительно</span>
@@ -521,6 +524,30 @@
       var packInput = document.getElementById('calc-pack');
       var breakdownEl = document.getElementById('calc-breakdown');
 
+      // Позиции заказа: сохранённые размеры + текущий
+      var items = [];
+      var itemsEl = document.querySelector('.calc-items');
+      var addBtn = document.querySelector('.calc-add');
+      function tierPrice(size, count) {
+        var idx = 0;
+        for (var i = 0; i < QTY.length; i++) if (count >= QTY[i]) idx = i;
+        return PRICES[size][idx];
+      }
+      addBtn.addEventListener('click', function () {
+        var size = document.querySelector('input[name="calc-size"]:checked').value;
+        var qty = Math.max(MIN_QTY, Math.floor(Number(qtyInput.value) || 0));
+        var same = items.filter(function (it) { return it.size === size; })[0];
+        if (same) same.qty += qty; else items.push({ size: size, qty: qty });
+        var free = Object.keys(PRICES).filter(function (s) { return !items.some(function (it) { return it.size === s; }); });
+        document.querySelector('input[name="calc-size"][value="' + (free[0] || size) + '"]').checked = true;
+        qtyInput.value = MIN_QTY;
+        update();
+      });
+      itemsEl.addEventListener('click', function (e) {
+        var b = e.target.closest('button[data-i]');
+        if (b) { items.splice(Number(b.dataset.i), 1); update(); }
+      });
+
       function extras(count) {
         var pack = packInput.checked ? PACK_PRICE * count : 0;
         var dl = document.querySelector('input[name="calc-delivery"]:checked');
@@ -570,6 +597,8 @@
           if (exR.text) params.opts = exR.text;
         } else {
           var count = Math.max(qty, MIN_QTY);
+          if (items.length) return updateMulti(size, count);
+          itemsEl.hidden = true;
           var idx = 0;
           for (var i = 0; i < QTY.length; i++) if (count >= QTY[i]) idx = i;
           var price = tiers[idx];
@@ -587,6 +616,30 @@
           params.per = money(price, price % 1 ? 2 : 0);
           params.total = money(total, 0);
         }
+        orderLink.href = 'index.html?' + new URLSearchParams(params).toString() + '#order';
+      }
+
+      // Расчёт заказа из нескольких размеров: цена по тиражу каждого размера, минимум — на весь заказ
+      function updateMulti(size, count) {
+        var all = items.map(function (it) { return { size: it.size, qty: it.qty }; });
+        var mine = all.filter(function (it) { return it.size === size; })[0];
+        if (mine) mine.qty += count; else all.push({ size: size, qty: count });
+        var totalQty = 0, sum = 0;
+        all.forEach(function (it) { it.price = tierPrice(it.size, it.qty); it.sum = Math.round(it.price * it.qty); totalQty += it.qty; sum += it.sum; });
+        itemsEl.hidden = false;
+        itemsEl.innerHTML = '<li class="calc-items-head">В заказе</li>' + items.map(function (it, i) {
+          return '<li><span>Ø ' + it.size + ' мм × ' + it.qty.toLocaleString('ru-RU') + ' шт</span><b>' + money(Math.round(tierPrice(it.size, it.qty) * it.qty), 0) + '</b><button type="button" data-i="' + i + '" aria-label="Убрать позицию">×</button></li>';
+        }).join('') + '<li class="is-current"><span>Ø ' + size + ' мм × ' + count.toLocaleString('ru-RU') + ' шт <small>выбрано выше</small></span><b>' + money(Math.round(tierPrice(size, count) * count), 0) + '</b></li>';
+        var base = Math.max(sum, MIN_ORDER);
+        var ex = extras(totalQty);
+        var total = base + ex.sum;
+        totalEl.textContent = money(total, 0);
+        showBreakdown(base, ex);
+        perEl.textContent = totalQty.toLocaleString('ru-RU') + ' шт · ' + all.length + ' ' + (all.length < 5 ? 'размера' : 'размеров');
+        hintEl.textContent = sum < MIN_ORDER ? 'Минимальная сумма заказа — 3000 ₽' : '';
+        var params = { item: 'Значки с заливкой смолой', qty: String(totalQty), total: money(total, 0),
+          lines: all.map(function (it) { return it.size + ' мм × ' + it.qty + ' шт по ' + money(it.price, it.price % 1 ? 2 : 0) + ' = ' + money(it.sum, 0); }).join('; ') };
+        if (ex.text) params.opts = ex.text;
         orderLink.href = 'index.html?' + new URLSearchParams(params).toString() + '#order';
       }
 
