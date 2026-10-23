@@ -691,16 +691,20 @@
         if (!q.get('item')) return;
         var box = form.querySelector('.order-summary');
         var hidden = box.querySelector('input');
-        var title = q.get('item') + ', ' + q.get('size') + ' — ' + Number(q.get('qty')).toLocaleString('ru-RU') + ' шт';
+        // Несколько позиций (например, разные размеры значков) приходят в параметре lines
+        var title = q.get('lines')
+          ? q.get('item') + ': ' + q.get('lines') + ' — всего ' + Number(q.get('qty')).toLocaleString('ru-RU') + ' шт'
+          : q.get('item') + ', ' + q.get('size') + ' — ' + Number(q.get('qty')).toLocaleString('ru-RU') + ' шт';
         if (q.get('opts')) title += '; ' + q.get('opts');
         var price = q.get('per') ? q.get('total') + ' (' + q.get('per') + ' за шт)' : q.get('total');
+        var calculated = q.get('per') || q.get('lines');
         box.querySelector('.order-summary-title').textContent = title;
         box.querySelector('.order-summary-price').textContent = price;
         hidden.value = title + ', ' + price;
         hidden.disabled = false;
         box.hidden = false;
         if (!message.value.trim()) {
-          message.value = 'Хочу заказать: ' + title + '. ' + (q.get('per') ? 'Расчёт на сайте: ' + price + '. ' : 'Прошу рассчитать стоимость. ') + 'Макет прикладываю.';
+          message.value = 'Хочу заказать: ' + title + '. ' + (calculated ? 'Расчёт на сайте: ' + price + '. ' : 'Прошу рассчитать стоимость. ') + 'Макет прикладываю.';
         }
         box.querySelector('.order-summary-remove').addEventListener('click', function () {
           box.hidden = true;

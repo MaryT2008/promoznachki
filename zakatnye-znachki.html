@@ -229,6 +229,9 @@
               <div class="calc-presets">
                 <button type="button" data-qty="50">50</button><button type="button" data-qty="100">100</button><button type="button" data-qty="300">300</button><button type="button" data-qty="500">500</button><button type="button" data-qty="1000">1&nbsp;000</button>
               </div>
+              <!-- Несколько размеров в одном заказе -->
+              <ul class="calc-items" hidden></ul>
+              <button type="button" class="calc-add"><span aria-hidden="true">+</span> Добавить ещё размер</button>
             <div class="calc-field">
               <span class="calc-label" id="calc-term-label">Срок изготовления</span>
               <div class="calc-delivery" role="radiogroup" aria-labelledby="calc-term-label">
@@ -585,6 +588,38 @@
       });
       var breakdownEl = document.getElementById('calc-breakdown');
 
+      // Позиции заказа: сохранённые размеры + тот, что сейчас выбран в калькуляторе
+      var items = [];
+      var itemsEl = document.querySelector('.calc-items');
+      var addBtn = document.querySelector('.calc-add');
+
+      function priceFor(size, qty, k) {
+        var idx = 0;
+        for (var i = 0; i < QTY.length; i++) if (qty >= QTY[i]) idx = i;
+        return { idx: idx, price: Math.round(PRICES[size][idx] * k * 100) / 100 };
+      }
+
+      addBtn.addEventListener('click', function () {
+        var size = document.querySelector('input[name="calc-size"]:checked').value;
+        var qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
+        var same = items.filter(function (it) { return it.size === size; })[0];
+        if (same) same.qty += qty; else items.push({ size: size, qty: qty });
+        // Следующий размер, которого ещё нет в заказе
+        var sizes = Object.keys(PRICES);
+        var free = sizes.filter(function (s) { return !items.some(function (it) { return it.size === s; }); });
+        var nextSize = free.length ? free[0] : size;
+        document.querySelector('input[name="calc-size"][value="' + nextSize + '"]').checked = true;
+        qtyInput.value = 20;
+        update();
+      });
+
+      itemsEl.addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-i]');
+        if (!btn) return;
+        items.splice(Number(btn.dataset.i), 1);
+        update();
+      });
+
       function extras(count) {
         var magnet = magnetInput.checked ? MAGNET_PRICE * count : 0;
         var pack = packInput.checked ? PACK_PRICE * count : 0;
@@ -623,19 +658,45 @@
         circle.classList.toggle('is-78', size === '78');
         circle.querySelector('.badge-scheme-label').textContent = 'Ø ' + size + ' мм';
         var qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
-        var idx = 0;
-        for (var i = 0; i < QTY.length; i++) if (qty >= QTY[i]) idx = i;
         var term = document.querySelector('input[name="calc-term"]:checked');
         var personal = document.getElementById('calc-personal').checked;
         // Наценки за срочность и персонализацию складываются
         var k = 1 + Number(term.value) + (personal ? 0.3 : 0);
-        var price = Math.round(PRICES[size][idx] * k * 100) / 100;
-        var total = Math.round(price * qty);
+        var cur = priceFor(size, qty, k);
+        var idx = cur.idx;
+        var price = cur.price;
+
+        // Все позиции заказа: сохранённые + текущая (одинаковый размер объединяем)
+        var all = items.map(function (it) { return { size: it.size, qty: it.qty }; });
+        var mine = all.filter(function (it) { return it.size === size; })[0];
+        if (mine) mine.qty += qty; else all.push({ size: size, qty: qty });
+        var totalQty = 0, total = 0;
+        all.forEach(function (it) {
+          var p = priceFor(it.size, it.qty, k);
+          it.price = p.price;
+          it.sum = Math.round(p.price * it.qty);
+          totalQty += it.qty;
+          total += it.sum;
+        });
+        var multi = all.length > 1;
+        if (mine) { var m2 = priceFor(size, mine.qty, k); idx = m2.idx; price = m2.price; }
+
+        // Список уже добавленных размеров
+        itemsEl.hidden = !items.length;
+        itemsEl.innerHTML = '<li class="calc-items-head">В заказе</li>' + items.map(function (it, i) {
+          var p = priceFor(it.size, it.qty, k).price;
+          return '<li><span>Ø ' + it.size + ' мм × ' + it.qty.toLocaleString('ru-RU') + ' шт</span><b>' + money(Math.round(p * it.qty), 0) +
+            '</b><button type="button" data-i="' + i + '" aria-label="Убрать позицию">×</button></li>';
+        }).join('') + '<li class="is-current"><span>Ø ' + size + ' мм × ' + qty.toLocaleString('ru-RU') + ' шт <small>выбрано выше</small></span><b>' +
+          money(Math.round(priceFor(size, qty, k).price * qty), 0) + '</b></li>';
+        addBtn.querySelector('span').nextSibling.textContent = ' Добавить ещё размер';
+
+        // Минимальная сумма — на весь заказ, допы и доставка — один раз
         var base = Math.max(total, MIN_ORDER);
-        var ex = extras(qty);
+        var ex = extras(totalQty);
         totalEl.textContent = money(base + ex.sum, 0);
         showBreakdown(base, ex);
-        perEl.textContent = money(price, 2) + ' за штуку';
+        perEl.textContent = multi ? totalQty.toLocaleString('ru-RU') + ' шт · ' + all.length + ' ' + (all.length < 5 ? 'размера' : 'размеров') : money(price, 2) + ' за штуку';
         var hint = '';
         if (total < MIN_ORDER) hint = 'Минимальная сумма заказа — 3000 ₽';
         else if (idx < QTY.length - 1) {
@@ -648,10 +709,17 @@
         var params = new URLSearchParams({
           item: 'Закатные значки',
           size: size + ' мм',
-          qty: String(qty),
+          qty: String(multi ? totalQty : qty),
           per: money(price, 2),
           total: money(base + ex.sum, 0)
         });
+        if (multi) {
+          params.delete('size');
+          params.delete('per');
+          params.set('lines', all.map(function (it) {
+            return it.size + ' мм × ' + it.qty + ' шт по ' + money(it.price, 2) + ' = ' + money(it.sum, 0);
+          }).join('; '));
+        }
         var opts = [term.dataset.name, personal ? 'персонализация (разные имена/номера)' : '', ex.text].filter(Boolean).join(', ');
         if (opts) params.set('opts', opts);
         orderLink.href = 'index.html?' + params.toString() + '#order';
