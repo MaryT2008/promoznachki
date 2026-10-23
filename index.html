@@ -436,6 +436,7 @@
             <input type="hidden" name="_subject" value="Новый запрос с сайта promoznachki.ru">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_autoresponse" value="">
             <input type="hidden" name="_blacklist" value="casino, crypto, bitcoin, viagra, loan, seo, backlinks, porn, казино, ставки, кредит, займ, продвижение сайта">
             <input type="text" name="_honey" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
 
@@ -800,6 +801,20 @@
         }
         button.disabled = true;
         button.classList.add('is-loading');
+        // Письмо-подтверждение клиенту на указанную почту — с составом заявки
+        form.elements['_autoresponse'].value = [
+          'Здравствуйте, ' + name.value.trim() + '!',
+          '',
+          'Спасибо за заявку на сайте promoznachki.ru. Мы её получили, в ближайшее время обработаем и свяжемся с вами (по будням с 10:00 до 19:00).',
+          '',
+          'Состав заявки:',
+          message.value.trim()
+        ].concat(files.length ? ['', 'Прикреплённые файлы: ' + files.map(function (f) { return f.name; }).join(', ')] : []).concat([
+          '',
+          'Если нужно что-то уточнить или добавить, напишите на sales@promoznachki.ru или позвоните: +7 (499) 394-59-84, +7 (926) 676-44-35.',
+          '',
+          'С уважением, команда «ПромоЗначки»'
+        ]).join('\n');
 
         if (files.length) {
           // С файлами — обычная отправка формы: FormSubmit принимает вложения только так
