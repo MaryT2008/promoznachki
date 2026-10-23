@@ -3694,3 +3694,10 @@ body.no-scroll { overflow: hidden; }
   .mag-scheme-logo { font-size: calc(min(var(--w, 50), var(--h, 50)) * .24px); }
   .mag-scheme-logo i { width: calc(min(var(--w, 50), var(--h, 50)) * .3px); height: calc(min(var(--w, 50), var(--h, 50)) * .3px); }
 }
+
+/* Фигурный магнит (индивидуальный штамп) */
+.mag-scheme-custom { position: absolute; top: 50%; left: 50%; width: calc(108 * 2.3px); transform: translate(-50%, -58%) scale(.6); opacity: 0; transition: opacity .35s, transform .45s cubic-bezier(.22, .61, .36, 1); }
+.mag-scheme.is-custom .mag-scheme-custom { opacity: 1; transform: translate(-50%, -58%); }
+.mag-scheme.is-custom .mag-scheme-shape { opacity: 0; transform: translate(-50%, -58%) scale(.6); }
+.mag-scheme-shape { transition: width .45s cubic-bezier(.22, .61, .36, 1), height .45s cubic-bezier(.22, .61, .36, 1), border-radius .35s, opacity .3s, transform .35s; }
+@media (max-width: 640px) { .mag-scheme-custom { width: calc(108 * 1.8px); } }
