@@ -3708,3 +3708,24 @@ body.no-scroll { overflow: hidden; }
 .badge-scheme-circle.is-magnet.is-mini { background-image: url("../assets/img/pin-back-magnet-small.webp"); box-shadow: 0 14px 30px rgba(120, 40, 0, .32); }
 .badge-scheme-circle.is-magnet.is-56 { background-image: url("../assets/img/pin-back-magnet-56.webp"); }
 .badge-scheme-circle.is-magnet.is-78 { background-image: url("../assets/img/pin-back-magnet-78.webp"); }
+/* Мобильная версия: колонка первого экрана не шире экрана (фото не распирает текст) */
+@media (max-width: 960px) {
+  .pp-hero-inner, .pp-hero-inner--wide { grid-template-columns: minmax(0, 1fr); }
+  .pp-hero-inner > * { min-width: 0; }
+}
+@media (max-width: 960px) {
+  .calc-card { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  /* Плашки фактов в две равные колонки, текст переносится */
+  .pp-facts--grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pp-facts--grid li { min-width: 0; }
+  .pp-facts--grid li span { min-width: 0; overflow-wrap: anywhere; }
+}
+@media (max-width: 640px) {
+  /* Удобные для пальца ссылки (минимум ~32–44 px по высоте) */
+  .header-contacts a { padding: 10px 0; }
+  .request-contacts a, .contacts-card a { display: inline-block; padding: 6px 0; }
+  .policy-toc li + li { margin-top: 2px; }
+  .policy-toc a { display: block; padding: 6px 0; }
+}
