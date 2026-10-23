@@ -3561,3 +3561,12 @@ body.no-scroll { overflow: hidden; }
   /* Не перекрываем кнопку «Рассчитать стоимость» */
   .sticky-calc.is-visible ~ .msg-float { bottom: calc(86px + env(safe-area-inset-bottom)); }
 }
+
+/* WhatsApp */
+.footer-wa svg { color: #25d366; }
+.msg-float--wa { bottom: 84px; padding-right: 20px; background: linear-gradient(135deg, #2bd46f, #1ba855); box-shadow: 0 12px 28px rgba(30, 170, 85, .4); --wa-i: #1fb75e; }
+.msg-float--wa:hover { box-shadow: 0 16px 34px rgba(30, 170, 85, .5); }
+@media (max-width: 640px) {
+  .msg-float--wa { bottom: calc(80px + env(safe-area-inset-bottom)); padding: 12px; }
+  .sticky-calc.is-visible ~ .msg-float--wa { bottom: calc(150px + env(safe-area-inset-bottom)); }
+}
