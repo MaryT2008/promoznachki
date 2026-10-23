@@ -240,6 +240,7 @@
             </div>
             <div class="calc-field">
               <span class="calc-label">Дополнительно</span>
+              <p class="calc-item-note" hidden>Упаковка выбирается для позиции, отмеченной выше пунктиром.</p>
               <label class="calc-check">
                 <input type="checkbox" id="calc-pack">
                 <span>Индивидуальная упаковка в пакет <b>+5&nbsp;₽/шт</b></span>
@@ -536,8 +537,10 @@
       addBtn.addEventListener('click', function () {
         var size = document.querySelector('input[name="calc-size"]:checked').value;
         var qty = Math.max(MIN_QTY, Math.floor(Number(qtyInput.value) || 0));
-        var same = items.filter(function (it) { return it.size === size; })[0];
-        if (same) same.qty += qty; else items.push({ size: size, qty: qty });
+        var pk = packInput.checked;
+        var same = items.filter(function (it) { return it.size === size && it.pack === pk; })[0];
+        if (same) same.qty += qty; else items.push({ size: size, qty: qty, pack: pk });
+        packInput.checked = false;
         var free = Object.keys(PRICES).filter(function (s) { return !items.some(function (it) { return it.size === s; }); });
         document.querySelector('input[name="calc-size"][value="' + (free[0] || size) + '"]').checked = true;
         qtyInput.value = MIN_QTY;
@@ -550,14 +553,17 @@
         var li = e.target.closest('li[data-edit]');
         if (!li) return;
         var i = Number(li.dataset.edit), it = items[i];
-        items[i] = { size: document.querySelector('input[name="calc-size"]:checked').value, qty: Math.max(MIN_QTY, Math.floor(Number(qtyInput.value) || 0)) };
+        items[i] = { size: document.querySelector('input[name="calc-size"]:checked').value, qty: Math.max(MIN_QTY, Math.floor(Number(qtyInput.value) || 0)), pack: packInput.checked };
         document.querySelector('input[name="calc-size"][value="' + it.size + '"]').checked = true;
         qtyInput.value = it.qty;
+        packInput.checked = it.pack;
         update();
       });
 
+      // count — число штук (одна позиция) или список позиций со своей упаковкой
       function extras(count) {
-        var pack = packInput.checked ? PACK_PRICE * count : 0;
+        var pack = typeof count === 'number' ? (packInput.checked ? PACK_PRICE * count : 0)
+          : count.reduce(function (s, it) { return s + (it.pack ? PACK_PRICE * it.qty : 0); }, 0);
         var dl = document.querySelector('input[name="calc-delivery"]:checked');
         var delivery = Number(dl.value);
         var parts = [];
@@ -607,6 +613,7 @@
           var count = Math.max(qty, MIN_QTY);
           if (items.length) return updateMulti(size, count);
           itemsEl.hidden = true;
+          document.querySelector('.calc-item-note').hidden = true;
           var idx = 0;
           for (var i = 0; i < QTY.length; i++) if (count >= QTY[i]) idx = i;
           var price = tiers[idx];
@@ -629,24 +636,26 @@
 
       // Расчёт заказа из нескольких размеров: цена по тиражу каждого размера, минимум — на весь заказ
       function updateMulti(size, count) {
-        var all = items.map(function (it) { return { size: it.size, qty: it.qty }; });
-        var mine = all.filter(function (it) { return it.size === size; })[0];
-        if (mine) mine.qty += count; else all.push({ size: size, qty: count });
+        var curPk = packInput.checked;
+        var all = items.map(function (it) { return { size: it.size, qty: it.qty, pack: it.pack }; });
+        var mine = all.filter(function (it) { return it.size === size && it.pack === curPk; })[0];
+        if (mine) mine.qty += count; else all.push({ size: size, qty: count, pack: curPk });
         var totalQty = 0, sum = 0;
         all.forEach(function (it) { it.price = tierPrice(it.size, it.qty); it.sum = Math.round(it.price * it.qty); totalQty += it.qty; sum += it.sum; });
         itemsEl.hidden = false;
+        document.querySelector('.calc-item-note').hidden = false;
         itemsEl.innerHTML = '<li class="calc-items-head">В заказе</li>' + items.map(function (it, i) {
-          return '<li data-edit="' + i + '" title="Нажмите, чтобы изменить"><span>Ø ' + it.size + ' мм × ' + it.qty.toLocaleString('ru-RU') + ' шт</span><b>' + money(Math.round(tierPrice(it.size, it.qty) * it.qty), 0) + '</b><button type="button" data-i="' + i + '" aria-label="Убрать позицию">×</button></li>';
-        }).join('') + '<li class="is-current"><span>Ø ' + size + ' мм × ' + count.toLocaleString('ru-RU') + ' шт <small>выбрано выше</small></span><b>' + money(Math.round(tierPrice(size, count) * count), 0) + '</b></li>';
+          return '<li data-edit="' + i + '" title="Нажмите, чтобы изменить"><span>Ø ' + it.size + ' мм × ' + it.qty.toLocaleString('ru-RU') + ' шт' + (it.pack ? ' <small>в пакете</small>' : '') + '</span><b>' + money(Math.round(tierPrice(it.size, it.qty) * it.qty), 0) + '</b><button type="button" data-i="' + i + '" aria-label="Убрать позицию">×</button></li>';
+        }).join('') + '<li class="is-current"><span>Ø ' + size + ' мм × ' + count.toLocaleString('ru-RU') + ' шт' + (curPk ? ' <small>в пакете</small>' : '') + ' <small>выбрано выше</small></span><b>' + money(Math.round(tierPrice(size, count) * count), 0) + '</b></li>';
         var base = Math.max(sum, MIN_ORDER);
-        var ex = extras(totalQty);
+        var ex = extras(all);
         var total = base + ex.sum;
         totalEl.textContent = money(total, 0);
         showBreakdown(base, ex);
         perEl.textContent = totalQty.toLocaleString('ru-RU') + ' шт · ' + all.length + ' ' + (all.length < 5 ? 'размера' : 'размеров');
         hintEl.textContent = sum < MIN_ORDER ? 'Минимальная сумма заказа — 3000 ₽' : '';
         var params = { item: 'Значки с заливкой смолой', qty: String(totalQty), total: money(total, 0),
-          lines: all.map(function (it) { return it.size + ' мм × ' + it.qty + ' шт по ' + money(it.price, it.price % 1 ? 2 : 0) + ' = ' + money(it.sum, 0); }).join('; ') };
+          lines: all.map(function (it) { return it.size + ' мм × ' + it.qty + ' шт' + (it.pack ? ', в пакете' : '') + ' по ' + money(it.price, it.price % 1 ? 2 : 0) + ' = ' + money(it.sum, 0); }).join('; ') };
         if (ex.text) params.opts = ex.text;
         orderLink.href = 'index.html?' + new URLSearchParams(params).toString() + '#order';
       }
