@@ -505,8 +505,9 @@
           shapeInput.checked = true;
         }
         var dims = allowed[shapeInput.value];
-        shapeEl.style.setProperty('--w', dims[0]);
-        shapeEl.style.setProperty('--h', dims[1]);
+        // Прямоугольник показываем горизонтально
+        shapeEl.style.setProperty('--w', Math.max(dims[0], dims[1]));
+        shapeEl.style.setProperty('--h', Math.min(dims[0], dims[1]));
         shapeEl.dataset.shape = shapeInput.value;
         shapeLabel.textContent = dims[0] + '×' + dims[1] + ' мм';
         var qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));

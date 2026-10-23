@@ -3644,3 +3644,11 @@ body.no-scroll { overflow: hidden; }
   .mag-scheme-ghost { width: calc(70 * 1.8px); height: calc(100 * 1.8px); }
   .mag-scheme-shape { width: calc(var(--w, 50) * 1.8px); height: calc(var(--h, 50) * 1.8px); border-radius: 12px; }
 }
+/* Горизонтальная ориентация прямоугольных магнитов */
+.mag-scheme { height: 210px; }
+.mag-scheme-ghost { width: calc(100 * 2.3px); height: calc(70 * 2.3px); transform: translate(-50%, -58%); }
+.mag-scheme-shape { transform: translate(-50%, -58%); }
+@media (max-width: 640px) {
+  .mag-scheme { width: 200px; height: 165px; }
+  .mag-scheme-ghost { width: calc(100 * 1.8px); height: calc(70 * 1.8px); }
+}
