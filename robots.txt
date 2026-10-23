@@ -2,4 +2,8 @@ User-agent: *
 Allow: /
 Disallow: /*?
 
+User-agent: Yandex
+Allow: /
+Clean-param: item&size&qty&per&total&opts&need&sent /index.html
+
 Sitemap: https://promoznachki.ru/sitemap.xml
