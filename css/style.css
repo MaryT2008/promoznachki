@@ -3795,3 +3795,13 @@ body.no-scroll { overflow: hidden; }
 .calc-items li[data-edit] { cursor: pointer; transition: border-color .2s, background .2s; }
 .calc-items li[data-edit]:hover { border-color: var(--orange); background: #fffaf5; }
 .calc-items li[data-edit] b::after { content: "изменить"; display: block; font-size: 11px; font-weight: 500; color: var(--muted); text-align: right; }
+
+/* Состав заказа на оранжевой панели калькулятора */
+.calc-receipt { margin: 10px 0 4px; padding: 10px 0 0; list-style: none; border-top: 1px solid rgba(255, 255, 255, .3); font-size: 13.5px; line-height: 1.35; }
+.calc-receipt li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 3px 0; }
+.calc-receipt li span { opacity: .92; }
+.calc-receipt li b { flex-shrink: 0; font-weight: 600; white-space: nowrap; }
+.calc-receipt li + li:not(.calc-receipt-total) { border-top: 1px dashed rgba(255, 255, 255, .18); }
+.calc-receipt .calc-receipt-total { margin-top: 4px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, .45); font-size: 15px; font-weight: 700; }
+.calc-receipt .calc-receipt-total span { opacity: 1; }
+.calc-receipt:empty { display: none; }
