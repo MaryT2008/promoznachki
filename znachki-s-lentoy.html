@@ -214,9 +214,13 @@
                 <button type="button" data-step="1" aria-label="Больше">+</button>
               </div>
               <div class="calc-presets"><button type="button" data-qty="50">50</button><button type="button" data-qty="100">100</button><button type="button" data-qty="300">300</button><button type="button" data-qty="500">500</button><button type="button" data-qty="1000">1&nbsp;000</button><button type="button" data-qty="5000">5&nbsp;000</button></div>
+              <!-- Несколько лент в одном заказе -->
+              <ul class="calc-items" hidden></ul>
+              <button type="button" class="calc-add"><span aria-hidden="true">+</span> Добавить другую ленту</button>
             </div>
             <div class="calc-field">
               <span class="calc-label">Дополнительно</span>
+              <p class="calc-item-note" hidden>Упаковка выбирается для позиции, отмеченной выше пунктиром.</p>
               <label class="calc-check">
                 <input type="checkbox" id="calc-pack">
                 <span>Индивидуальная упаковка в пакет <b>+5&nbsp;₽/шт</b></span>
@@ -492,31 +496,96 @@
         return v.toLocaleString('ru-RU', { minimumFractionDigits: frac, maximumFractionDigits: frac }) + '\u00a0₽';
       }
 
-      function update() {
-        var ribbon = document.querySelector('input[name="calc-ribbon"]:checked').value;
-        var qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
-        var count = Math.max(qty, MIN_QTY);
+      // Позиции заказа: сохранённые ленты + текущая
+      var items = [];
+      var itemsEl = document.querySelector('.calc-items');
+      var addBtn = document.querySelector('.calc-add');
+      var noteEl = document.querySelector('.calc-item-note');
+      var NAMES = { 'триколор': 'Лента-триколор', 'георгиевская лента': 'Георгиевская лента' };
+      function tierPrice(count) {
         var idx = 0;
         for (var i = 0; i < QTY.length; i++) if (count >= QTY[i]) idx = i;
-        var price = PRICES[idx];
-        var base = Math.max(Math.round(price * count), MIN_ORDER);
+        return { idx: idx, price: PRICES[idx] };
+      }
+      function current() {
+        return {
+          ribbon: document.querySelector('input[name="calc-ribbon"]:checked').value,
+          qty: Math.max(MIN_QTY, Math.floor(Number(qtyInput.value) || 0)),
+          pack: packInput.checked
+        };
+      }
+      addBtn.addEventListener('click', function () {
+        var c = current();
+        var same = items.filter(function (it) { return it.ribbon === c.ribbon && it.pack === c.pack; })[0];
+        if (same) same.qty += c.qty; else items.push(c);
+        // Следующая — другая лента, тираж по минимуму, без пакета
+        var other = Object.keys(NAMES).filter(function (r) { return !items.some(function (it) { return it.ribbon === r; }); })[0] || c.ribbon;
+        document.querySelector('input[name="calc-ribbon"][value="' + other + '"]').checked = true;
+        qtyInput.value = MIN_QTY;
+        packInput.checked = false;
+        update();
+      });
+      itemsEl.addEventListener('click', function (e) {
+        var b = e.target.closest('button[data-i]');
+        if (b) { items.splice(Number(b.dataset.i), 1); update(); return; }
+        // Клик по строке — переключаемся на неё для правки
+        var li = e.target.closest('li[data-edit]');
+        if (!li) return;
+        var i = Number(li.dataset.edit), it = items[i];
+        items[i] = current();
+        document.querySelector('input[name="calc-ribbon"][value="' + it.ribbon + '"]').checked = true;
+        qtyInput.value = it.qty;
+        packInput.checked = it.pack;
+        update();
+      });
+      function line(it) {
+        return NAMES[it.ribbon] + ' × ' + it.qty.toLocaleString('ru-RU') + ' шт' + (it.pack ? ' <small>в пакете</small>' : '');
+      }
 
-        var pack = packInput.checked ? PACK_PRICE * count : 0;
+      function update() {
+        var c = current();
+        var qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
+        var all = items.map(function (it) { return { ribbon: it.ribbon, qty: it.qty, pack: it.pack }; });
+        var mine = all.filter(function (it) { return it.ribbon === c.ribbon && it.pack === c.pack; })[0];
+        if (mine) mine.qty += c.qty; else all.push({ ribbon: c.ribbon, qty: c.qty, pack: c.pack });
+        var multi = all.length > 1;
+        var totalQty = 0, sum = 0, packSum = 0;
+        all.forEach(function (it) {
+          it.price = tierPrice(it.qty).price;
+          it.sum = Math.round(it.price * it.qty);
+          totalQty += it.qty; sum += it.sum;
+          if (it.pack) packSum += PACK_PRICE * it.qty;
+        });
+        var curT = tierPrice((mine || all[all.length - 1]).qty);
+        var price = curT.price, idx = curT.idx;
+
+        itemsEl.hidden = !items.length;
+        noteEl.hidden = !items.length;
+        itemsEl.innerHTML = items.length ? '<li class="calc-items-head">В заказе</li>' + items.map(function (it, i) {
+          return '<li data-edit="' + i + '" title="Нажмите, чтобы изменить"><span>' + line(it) + '</span><b>' + money(Math.round(tierPrice(it.qty).price * it.qty), 0) +
+            '</b><button type="button" data-i="' + i + '" aria-label="Убрать позицию">×</button></li>';
+        }).join('') + '<li class="is-current"><span>' + line(c) + ' <small>выбрано выше</small></span><b>' + money(Math.round(tierPrice(c.qty).price * c.qty), 0) + '</b></li>' : '';
+
+        var base = Math.max(sum, MIN_ORDER);
         var dl = document.querySelector('input[name="calc-delivery"]:checked');
         var delivery = Number(dl.value);
         var parts = [];
-        if (pack) parts.push('упаковка в пакет +' + money(pack, 0));
+        if (packSum) parts.push('упаковка в пакет +' + money(packSum, 0));
         if (delivery) parts.push(dl.dataset.name + ' +' + money(delivery, 0));
-        var total = base + pack + delivery;
+        var total = base + packSum + delivery;
 
         totalEl.textContent = money(total, 0);
-        perEl.textContent = money(price, price % 1 ? 2 : 0) + ' за штуку';
+        perEl.textContent = multi ? totalQty.toLocaleString('ru-RU') + ' шт · ' + all.length + ' ' + (all.length < 5 ? 'позиции' : 'позиций') : money(price, price % 1 ? 2 : 0) + ' за штуку';
         breakdownEl.textContent = parts.length ? 'Значки ' + money(base, 0) + ' · ' + parts.join(', ') : '';
         if (qty < MIN_QTY) hintEl.textContent = 'Минимальный тираж — 50 шт, расчёт на 50 шт';
-        else if (idx < QTY.length - 1) hintEl.textContent = 'От ' + QTY[idx + 1].toLocaleString('ru-RU') + ' шт — ' + money(PRICES[idx + 1], PRICES[idx + 1] % 1 ? 2 : 0) + ' за штуку';
+        else if (sum < MIN_ORDER) hintEl.textContent = 'Минимальная сумма заказа — 3000 ₽';
+        else if (idx < QTY.length - 1) hintEl.textContent = (multi ? NAMES[c.ribbon] + ': от ' : 'От ') + QTY[idx + 1].toLocaleString('ru-RU') + ' шт — ' + money(PRICES[idx + 1], PRICES[idx + 1] % 1 ? 2 : 0) + ' за штуку';
         else hintEl.textContent = '';
 
-        var params = { item: 'Значки с лентой (' + ribbon + ')', size: '56 мм', qty: String(count), per: money(price, price % 1 ? 2 : 0), total: money(total, 0) };
+        var params = multi
+          ? { item: 'Значки с лентой 56 мм', qty: String(totalQty), total: money(total, 0),
+              lines: all.map(function (it) { return NAMES[it.ribbon] + ' × ' + it.qty + ' шт' + (it.pack ? ', в пакете' : '') + ' по ' + money(it.price, it.price % 1 ? 2 : 0) + ' = ' + money(it.sum, 0); }).join('; ') }
+          : { item: 'Значки с лентой (' + c.ribbon + ')', size: '56 мм', qty: String(c.qty), per: money(price, price % 1 ? 2 : 0), total: money(total, 0) };
         if (parts.length) params.opts = parts.join(', ');
         orderLink.href = 'index.html?' + new URLSearchParams(params).toString() + '#order';
       }
