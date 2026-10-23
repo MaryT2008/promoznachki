@@ -3621,3 +3621,26 @@ body.no-scroll { overflow: hidden; }
   .msg-float--tg { bottom: calc(144px + env(safe-area-inset-bottom)); }
   .sticky-calc.is-visible ~ .msg-float--tg { bottom: calc(214px + env(safe-area-inset-bottom)); }
 }
+
+/* Калькулятор магнитов: форма и размер на оранжевой панели */
+.mag-scheme { position: relative; display: flex; align-items: center; justify-content: center; align-self: center; width: 260px; height: 270px; margin-bottom: 18px; }
+.mag-scheme-ghost, .mag-scheme-shape { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -54%); }
+/* Пунктир — самый большой магнит 70×100 мм, для сравнения */
+.mag-scheme-ghost { width: calc(70 * 2.3px); height: calc(100 * 2.3px); border: 1.5px dashed rgba(255, 255, 255, .45); border-radius: 18px; }
+.mag-scheme-shape {
+  width: calc(var(--w, 50) * 2.3px);
+  height: calc(var(--h, 50) * 2.3px);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, .95) 0 10%, transparent 45%),
+    linear-gradient(145deg, #ffffff 0%, #ecebf0 50%, #cfcfd8 100%);
+  box-shadow: 0 14px 30px rgba(120, 40, 0, .32), inset 0 -5px 12px rgba(0, 0, 0, .08);
+  transition: width .45s cubic-bezier(.22, .61, .36, 1), height .45s cubic-bezier(.22, .61, .36, 1), border-radius .35s;
+}
+.mag-scheme-shape[data-shape="round"] { border-radius: 50%; }
+.mag-scheme-label { position: absolute; left: 0; right: 0; bottom: -4px; text-align: center; font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--white); }
+@media (max-width: 640px) {
+  .mag-scheme { width: 200px; height: 220px; }
+  .mag-scheme-ghost { width: calc(70 * 1.8px); height: calc(100 * 1.8px); }
+  .mag-scheme-shape { width: calc(var(--w, 50) * 1.8px); height: calc(var(--h, 50) * 1.8px); border-radius: 12px; }
+}

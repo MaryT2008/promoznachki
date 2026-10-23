@@ -213,6 +213,10 @@
               <div class="calc-sizes calc-sizes--many" role="radiogroup" aria-labelledby="calc-size-label"><label><input type="radio" name="calc-size" value="s50" checked><span>50×50 мм</span></label><label><input type="radio" name="calc-size" value="r5070"><span>50×70 мм</span></label><label><input type="radio" name="calc-size" value="s70"><span>70×70 / 50×90 мм</span></label><label><input type="radio" name="calc-size" value="r70100"><span>70×100 мм</span></label></div>
             </div>
             <div class="calc-field">
+              <span class="calc-label" id="calc-shape-label">Форма</span>
+              <div class="calc-sizes" role="radiogroup" aria-labelledby="calc-shape-label"><label data-shape="round"><input type="radio" name="calc-shape" value="round" data-name="круглые" checked><span>Круг</span></label><label data-shape="square"><input type="radio" name="calc-shape" value="square" data-name="квадратные"><span>Квадрат</span></label><label data-shape="rect"><input type="radio" name="calc-shape" value="rect" data-name="прямоугольные"><span>Прямоугольник</span></label></div>
+            </div>
+            <div class="calc-field">
               <label class="calc-label" for="calc-qty">Количество, шт</label>
               <div class="calc-qty">
                 <button type="button" data-step="-1" aria-label="Меньше">−</button>
@@ -242,6 +246,11 @@
             </div>
           </div>
           <div class="calc-result calc-result--magnets" aria-live="polite">
+            <div class="mag-scheme" aria-hidden="true">
+              <span class="mag-scheme-ghost"></span>
+              <span class="mag-scheme-shape"></span>
+              <b class="mag-scheme-label"></b>
+            </div>
             <span class="calc-result-label">Стоимость тиража</span>
             <b class="calc-total" id="calc-total"></b>
             <span class="calc-per" id="calc-per"></span>
@@ -463,6 +472,15 @@
       var PACK_PRICE = 5;
       var STAMP_PRICE = 3000;
       var stampInput = document.getElementById('calc-stamp');
+      // Какие формы есть у каждого размера и их габариты, мм
+      var SHAPES = {
+        s50: { round: [50, 50], square: [50, 50] },
+        r5070: { rect: [50, 70] },
+        s70: { round: [70, 70], square: [70, 70], rect: [50, 90] },
+        r70100: { rect: [70, 100] }
+      };
+      var shapeEl = document.querySelector('.mag-scheme-shape');
+      var shapeLabel = document.querySelector('.mag-scheme-label');
 
       var qtyInput = document.getElementById('calc-qty');
       var totalEl = document.getElementById('calc-total');
@@ -479,6 +497,18 @@
 
       function update() {
         var size = document.querySelector('input[name="calc-size"]:checked').value;
+        var allowed = SHAPES[size];
+        document.querySelectorAll('label[data-shape]').forEach(function (l) { l.hidden = !allowed[l.dataset.shape]; });
+        var shapeInput = document.querySelector('input[name="calc-shape"]:checked');
+        if (!allowed[shapeInput.value]) {
+          shapeInput = document.querySelector('input[name="calc-shape"][value="' + Object.keys(allowed)[0] + '"]');
+          shapeInput.checked = true;
+        }
+        var dims = allowed[shapeInput.value];
+        shapeEl.style.setProperty('--w', dims[0]);
+        shapeEl.style.setProperty('--h', dims[1]);
+        shapeEl.dataset.shape = shapeInput.value;
+        shapeLabel.textContent = dims[0] + '×' + dims[1] + ' мм';
         var qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
         var count = Math.max(qty, MIN_QTY);
         var idx = 0;
@@ -511,7 +541,7 @@
         else if (idx < QTY.length - 1) hintEl.textContent = 'От ' + QTY[idx + 1].toLocaleString('ru-RU') + ' шт — ' + money(PRICES[size][idx + 1]) + ' за штуку';
         else hintEl.textContent = '';
 
-        var params = { item: 'Виниловые магниты', size: NAMES[size], qty: String(count), per: money(price), total: money(total) };
+        var params = { item: 'Виниловые магниты', size: shapeInput.dataset.name + ', ' + dims[0] + '×' + dims[1] + ' мм', qty: String(count), per: money(price), total: money(total) };
         if (parts.length) params.opts = parts.join(', ');
         orderLink.href = 'index.html?' + new URLSearchParams(params).toString() + '#order';
       }
@@ -522,7 +552,7 @@
           update();
         });
       });
-      document.querySelectorAll('input[name="calc-size"], input[name="calc-delivery"], #calc-pack, #calc-stamp').forEach(function (el) {
+      document.querySelectorAll('input[name="calc-size"], input[name="calc-shape"], input[name="calc-delivery"], #calc-pack, #calc-stamp').forEach(function (el) {
         el.addEventListener('change', update);
       });
       qtyInput.addEventListener('input', update);
