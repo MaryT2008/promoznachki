@@ -3491,3 +3491,40 @@ body.no-scroll { overflow: hidden; }
 @media (max-width: 960px) { .calc-result--magnets::after { display: none; } }
 .calc-pack-note { display: block; margin-top: 2px; font-size: 12.5px; color: var(--orange-dark); }
 .calc-check:has(input:disabled) { cursor: default; }
+
+/* Калькулятор закатных значков: оборотная сторона на булавке или на магните */
+.badge-scheme { margin-bottom: 40px; }
+.badge-scheme-circle {
+  border: 0;
+  background: url("../assets/img/pin-back-pin.webp") center / cover no-repeat;
+  box-shadow: 0 14px 30px rgba(120, 40, 0, .32);
+}
+.badge-scheme-circle.is-magnet { background-image: url("../assets/img/pin-back-plain.webp"); }
+.badge-scheme-magnet {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(12 * 3px);
+  height: calc(12 * 3px);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .95) 0 12%, transparent 45%),
+    linear-gradient(150deg, #f2f3f6 0%, #c3c6cd 50%, #8f939c 100%);
+  box-shadow: 0 0 0 2px #b3b6bd, 0 5px 8px rgba(0, 0, 0, .35), inset 0 -3px 5px rgba(0, 0, 0, .18);
+  transform: translate(-50%, -50%) scale(.4);
+  opacity: 0;
+  transition: opacity .3s, transform .3s cubic-bezier(.34, 1.56, .64, 1);
+}
+.badge-scheme-circle.is-magnet .badge-scheme-magnet { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.badge-scheme-circle .badge-scheme-label,
+.badge-scheme-circle.is-small .badge-scheme-label { position: absolute; top: 100%; margin-top: 12px; color: var(--white); }
+@media (max-width: 640px) {
+  .badge-scheme-magnet { width: calc(12 * 2.35px); height: calc(12 * 2.35px); }
+}
+/* Подпись диаметра — под пунктирным кругом 78 мм */
+.badge-scheme-circle .badge-scheme-label,
+.badge-scheme-circle.is-small .badge-scheme-label { top: calc(50% + 125px); margin-top: 0; }
+@media (max-width: 640px) {
+  .badge-scheme-circle .badge-scheme-label,
+  .badge-scheme-circle.is-small .badge-scheme-label { top: calc(50% + 98px); }
+}

@@ -22,6 +22,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Onest:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="preload" as="image" href="assets/img/pin-back-pin.webp">
   <script src="js/reveal.js" defer></script>
 </head>
 <body id="top">
@@ -243,7 +244,7 @@
           <div class="calc-result calc-result--badges" aria-live="polite">
             <div class="badge-scheme" aria-hidden="true">
               <span class="badge-scheme-ghost" style="--d:78"></span>
-              <span class="badge-scheme-circle" style="--d:56"><b class="badge-scheme-label">Ø 56 мм</b></span>
+              <span class="badge-scheme-circle" style="--d:56"><span class="badge-scheme-magnet"></span><b class="badge-scheme-label">Ø 56 мм</b></span>
             </div>
             <span class="calc-result-label">Стоимость тиража</span>
             <b class="calc-total" id="calc-total">5&nbsp;370&nbsp;₽</b>
@@ -559,6 +560,8 @@
         var circle = document.querySelector('.badge-scheme-circle');
         circle.style.setProperty('--d', size);
         circle.classList.toggle('is-small', Number(size) < 38);
+        // Оборот значка: на булавке или на магните
+        circle.classList.toggle('is-magnet', document.getElementById('calc-magnet').checked);
         circle.querySelector('.badge-scheme-label').textContent = 'Ø ' + size + ' мм';
         var qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
         var idx = 0;
