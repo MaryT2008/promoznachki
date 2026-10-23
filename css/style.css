@@ -3729,3 +3729,10 @@ body.no-scroll { overflow: hidden; }
   .policy-toc li + li { margin-top: 2px; }
   .policy-toc a { display: block; padding: 6px 0; }
 }
+
+/* Ссылки на мессенджеры с иконками */
+.msg-link { display: inline-flex !important; align-items: center; gap: 8px; }
+.msg-link svg { flex-shrink: 0; width: 22px; height: 22px; }
+.msg-link--tg svg { color: #2aabee; }
+.msg-link--wa svg { color: #25d366; }
+.msg-link--max svg { color: #6a3cf5; }
