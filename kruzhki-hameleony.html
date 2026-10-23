@@ -244,6 +244,9 @@
                 <button type="button" data-step="1" aria-label="Больше">+</button>
               </div>
               <div class="calc-presets"><button type="button" data-qty="10">10</button><button type="button" data-qty="20">20</button><button type="button" data-qty="50">50</button><button type="button" data-qty="100">100</button><button type="button" data-qty="200">200</button><button type="button" data-qty="300">300</button><button type="button" data-qty="500">500</button></div>
+              <!-- Сборный заказ -->
+              <ul class="calc-items" hidden></ul>
+              <button type="button" class="calc-add"><span aria-hidden="true">+</span> Добавить ещё позицию</button>
             </div>
             <div class="calc-field">
               <span class="calc-label" id="calc-term-label">Срок изготовления</span>
@@ -255,6 +258,7 @@
             </div>
             <div class="calc-field">
               <span class="calc-label">Дополнительно</span>
+              <p class="calc-item-note" hidden>Персонализация и упаковка выбираются для позиции, отмеченной выше пунктиром. Срок — для всего заказа, цена — по общему тиражу.</p>
               <label class="calc-check">
                 <input type="checkbox" id="calc-personal">
                 <span>Персонализация — именные кружки, своё имя или надпись на&nbsp;каждой кружке <b>+30% к&nbsp;цене</b></span>
@@ -571,9 +575,54 @@
         return v.toLocaleString('ru-RU') + '\u00a0₽';
       }
 
+      // Позиции заказа (сборный заказ): сохранённые + текущая, отмеченная пунктиром
+      var items = [];
+      var itemsEl = document.querySelector('.calc-items');
+      var addBtn = document.querySelector('.calc-add');
+      var noteEl = document.querySelector('.calc-item-note');
+      var FLAGS = [{ id: 'calc-personal', key: 'personal', tag: 'персонализация', markup: 0.3, single: 'именные кружки (разные имена/надписи)' }, { id: 'calc-box', key: 'box', tag: 'в коробке', price: 50, opt: 'упаковка в коробку' }];
+      function table(m) { return MODELS[m]; }
+      function current() {
+        var c = { model: document.querySelector('input[name="calc-size"]:checked').value, qty: Math.max(1, Math.floor(Number(qtyInput.value) || 0)) };
+        var col = document.querySelector('input[name="calc-color"]:checked'); c.color = col.value; c.colorName = col.dataset.name;
+        FLAGS.forEach(function (f) { c[f.key] = document.getElementById(f.id).checked; });
+        return c;
+      }
+      function key(it) { return [it.model, it.color || ''].concat(FLAGS.map(function (f) { return it[f.key]; })).join('|'); }
+      function title(it) { return 'Хамелеон ' + MODELS[it.model].name.toLowerCase() + ', ' + it.colorName; }
+      function label(it) {
+        return title(it) + ' × ' + it.qty.toLocaleString('ru-RU') + ' шт' + FLAGS.map(function (f) { return it[f.key] ? ' <small>' + f.tag + '</small>' : ''; }).join('');
+      }
+      addBtn.addEventListener('click', function () {
+        var c = current();
+        var same = items.filter(function (it) { return key(it) === key(c); })[0];
+        if (same) same.qty += c.qty; else items.push(c);
+        FLAGS.forEach(function (f) { document.getElementById(f.id).checked = false; });
+        qtyInput.value = 10;
+        update();
+      });
+      itemsEl.addEventListener('click', function (e) {
+        var b = e.target.closest('button[data-i]');
+        if (b) { items.splice(Number(b.dataset.i), 1); update(); return; }
+        var li = e.target.closest('li[data-edit]');
+        if (!li) return;
+        var i = Number(li.dataset.edit), it = items[i];
+        items[i] = current();
+        document.querySelector('input[name="calc-size"][value="' + it.model + '"]').checked = true;
+        document.querySelector('input[name="calc-color"][value="' + it.color + '"]').checked = true;
+        qtyInput.value = it.qty;
+        FLAGS.forEach(function (f) { document.getElementById(f.id).checked = it[f.key]; });
+        update();
+      });
+
       function update() {
         var model = document.querySelector('input[name="calc-size"]:checked').value;
-        var m = MODELS[model];
+        document.querySelectorAll('.size-tab').forEach(function (t) {
+          var on = t.dataset.size === model;
+          t.classList.toggle('is-active', on);
+          t.setAttribute('aria-selected', on);
+        });
+        document.querySelectorAll('.tier-grid').forEach(function (g) { g.hidden = g.dataset.size !== model; });
         var allowed = COLORS[model];
         document.querySelectorAll('.calc-colors label').forEach(function (l) { l.hidden = allowed.indexOf(l.dataset.color) < 0; });
         var color = document.querySelector('input[name="calc-color"]:checked');
@@ -581,50 +630,70 @@
           color = document.querySelector('input[name="calc-color"][value="' + allowed[0] + '"]');
           color.checked = true;
         }
-        var qty = Math.max(1, Math.floor(Number(qtyInput.value) || 0));
-        var count = Math.max(qty, MIN_QTY);
-
-        document.querySelectorAll('.size-tab').forEach(function (t) {
-          var on = t.dataset.size === model;
-          t.classList.toggle('is-active', on);
-          t.setAttribute('aria-selected', on);
-        });
-        document.querySelectorAll('.tier-grid').forEach(function (g) { g.hidden = g.dataset.size !== model; });
         colorName.textContent = color.dataset.name;
         colorWhat.textContent = model === 'inner' ? 'Цвет внутренней части' : 'Цвет кружки';
         var src = mugSrc(model, color.value);
         if (mugImg.getAttribute('src') !== src) mugImg.src = src;
-
-        var idx = 0;
-        for (var i = 0; i < m.qty.length; i++) if (count >= m.qty[i]) idx = i;
-        var personal = document.getElementById('calc-personal').checked;
         var term = document.querySelector('input[name="calc-term"]:checked');
         document.querySelector('.calc-term-note').classList.toggle('is-visible', !!Number(term.value));
-        var k = 1 + Number(term.value) + (personal ? 0.3 : 0);
-        var price = Math.round(m.prices[idx] * k);
-        var base = Math.max(price * count, MIN_ORDER);
+        var kt = 1 + Number(term.value);
+        var c = current();
+        var all = items.map(function (it) { return Object.assign({}, it); });
+        var mine = all.filter(function (it) { return key(it) === key(c); })[0];
+        if (mine) mine.qty += c.qty; else { mine = Object.assign({}, c); all.push(mine); }
+        var multi = all.length > 1;
+        var totalQty = all.reduce(function (s, it) { return s + it.qty; }, 0);
+        if (!multi) mine.qty = Math.max(mine.qty, MIN_QTY);
+        if (multi) all.forEach(function (it) { it.qty = Math.max(it.qty, 1); });
+        totalQty = all.reduce(function (s, it) { return s + it.qty; }, 0);
+        var count = Math.max(totalQty, MIN_QTY);
+        // Цена за штуку — по общему тиражу
+        function tierQty(it) { return true ? count : it.qty; }
+        function tier(it) { var t = table(it.model), x = 0; for (var i = 0; i < t.qty.length; i++) if (tierQty(it) >= t.qty[i]) x = i; return x; }
+        function markup(it) { return FLAGS.reduce(function (s, f) { return s + (f.markup && it[f.key] ? f.markup : 0); }, kt); }
+        function unitPrice(it) { return Math.round(table(it.model).prices[tier(it)] * markup(it) * 100) / 100; }
+        var sum = 0, perUnit = {};
+        all.forEach(function (it) {
+          it.price = unitPrice(it); it.sum = Math.round(it.price * it.qty); sum += it.sum;
+          FLAGS.forEach(function (f) { if (f.price && it[f.key]) perUnit[f.key] = (perUnit[f.key] || 0) + f.price * it.qty; });
+        });
+        var price = mine.price, idx = tier(mine), mt = table(model), k = multi ? kt : markup(mine);
+
+        itemsEl.hidden = !items.length;
+        noteEl.hidden = !items.length;
+        itemsEl.innerHTML = items.length ? '<li class="calc-items-head">В заказе</li>' + items.map(function (it, n) {
+          var t = Object.assign({}, it);
+          return '<li data-edit="' + n + '" title="Нажмите, чтобы изменить"><span>' + label(it) + '</span><b>' + money(Math.round((all.filter(function (a) { return key(a) === key(t); })[0] || t).price * it.qty)) +
+            '</b><button type="button" data-i="' + n + '" aria-label="Убрать позицию">×</button></li>';
+        }).join('') + '<li class="is-current"><span>' + label(c) + ' <small>выбрано выше</small></span><b>' + money(Math.round(mine.price * c.qty)) + '</b></li>' : '';
+
+        var base = Math.max(sum, MIN_ORDER);
         var dl = document.querySelector('input[name="calc-delivery"]:checked');
         var delivery = Number(dl.value);
-        var box = document.getElementById('calc-box').checked ? 50 * count : 0;
-        var parts = [];
-        if (box) parts.push('упаковка в коробку +' + money(box));
+        var parts = [], extra = 0;
+        FLAGS.forEach(function (f) { if (perUnit[f.key]) { parts.push(f.opt + ' +' + money(perUnit[f.key])); extra += perUnit[f.key]; } });
+
         if (delivery) parts.push(dl.dataset.name + ' +' + money(delivery));
-        var total = base + box + delivery;
+        var total = base + extra + delivery;
         totalEl.textContent = money(total);
-        perEl.textContent = money(price) + ' за кружку';
-        breakdownEl.textContent = parts.length ? 'Кружки ' + money(base) + ' · ' + parts.join(', ') : '';
-        if (qty < MIN_QTY) hintEl.textContent = 'Минимальный тираж — 10 шт, расчёт на 10 шт';
-        else if (base === MIN_ORDER && price * count < MIN_ORDER) hintEl.textContent = 'Минимальная сумма заказа — 3000 ₽';
+        perEl.textContent = multi ? count.toLocaleString('ru-RU') + ' шт · ' + all.length + ' ' + (all.length < 5 ? 'позиции' : 'позиций') : money(price) + ' за кружку';
+        breakdownEl.textContent = '';
+        if (totalQty < MIN_QTY) hintEl.textContent = 'Минимальный тираж — ' + MIN_QTY + ' шт, расчёт на ' + MIN_QTY + ' шт';
+        else if (sum < MIN_ORDER) hintEl.textContent = 'Минимальная сумма заказа — 3000 ₽';
         else {
-          // Подсказка о ближайшем тираже, где кружка дешевле
           var next = idx + 1;
-          while (next < m.qty.length && Math.round(m.prices[next] * k) >= price) next++;
-          hintEl.textContent = next < m.qty.length ? 'От ' + m.qty[next] + ' шт — ' + money(Math.round(m.prices[next] * k)) + ' за кружку' : '';
+          while (next < mt.qty.length && mt.prices[next] >= mt.prices[idx]) next++;
+          hintEl.textContent = next < mt.qty.length ? (multi ? (true ? 'При общем тираже от ' : title(c) + ': от ') : 'От ') + mt.qty[next].toLocaleString('ru-RU') + ' шт — ' + money(Math.round(mt.prices[next] * k * 100) / 100) + ' за кружку' : '';
         }
 
-        var size = '330 мл, ' + m.name.toLowerCase() + ', цвет: ' + color.dataset.name;
-        var params = { item: 'Кружки-хамелеоны с нанесением', size: size, qty: String(count), per: money(price), total: money(total) };
-        var opts = [term.dataset.name, personal ? 'именные кружки (разные имена/надписи)' : ''].concat(parts).filter(Boolean);
+        var params;
+        if (multi) {
+          params = { item: 'Кружки-хамелеоны 330 мл с нанесением', qty: String(count), total: money(total),
+            lines: all.map(function (it) { return title(it) + ' × ' + it.qty + ' шт' + FLAGS.map(function (f) { return it[f.key] ? ', ' + f.tag : ''; }).join('') + ' по ' + money(it.price) + ' = ' + money(it.sum); }).join('; ') };
+        } else {
+          params = { item: 'Кружки-хамелеоны с нанесением', size: '330 мл, ' + MODELS[model].name.toLowerCase() + ', цвет: ' + color.dataset.name, qty: String(count), per: money(price), total: money(total) };
+        }
+        var opts = [term.dataset.name].concat(multi ? [] : FLAGS.filter(function (f) { return f.markup && c[f.key]; }).map(function (f) { return f.single; })).concat(parts).filter(Boolean);
         if (opts.length) params.opts = opts.join(', ');
         orderLink.href = 'index.html?' + new URLSearchParams(params).toString() + '#order';
       }
@@ -705,6 +774,6 @@
       new IntersectionObserver(function (e) { b.forEach(function (x) { x.classList.toggle('is-hidden', e[0].isIntersecting); }); }).observe(f);
     })();
   </script>
-  <script src="js/calc-receipt.js?v=20261023f"></script>
+  <script src="js/calc-receipt.js?v=20261023g"></script>
 </body>
 </html>

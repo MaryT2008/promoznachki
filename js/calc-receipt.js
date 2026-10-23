@@ -39,7 +39,7 @@
       q.get('lines').split('; ').forEach(function (l) {
         var parts = l.split(' = ');
         var qm = parts[0].match(/× ([\d\s\u00a0]+) шт/);
-        goods.push({ name: parts[0].replace(/ по [\d\s,\u00a0]+₽$/, '').replace(/,? (на магните|в пакете|в коробке|персонализация)/g, ''), raw: parts[0], qty: qm ? num(qm[1]) : 0, sum: num(parts[1]), subs: [] });
+        goods.push({ name: parts[0].replace(/ по [\d\s,\u00a0]+₽$/, '').replace(/,? (на магните|в пакете|в коробке|с подставкой|персонализация)/g, ''), raw: parts[0], qty: qm ? num(qm[1]) : 0, sum: num(parts[1]), subs: [] });
       });
     } else {
       var qty = Number(q.get('qty')) || 0;
@@ -69,7 +69,7 @@
       var v = num(mm[2]), name = cap(mm[1]);
       extras += v;
       if (!/магнит|упаковка|подставк/i.test(name)) { orderRows.push([name, v]); return; }
-      var marker = /магнит/i.test(name) ? 'на магните' : /пакет/i.test(name) ? 'в пакете' : /коробк/i.test(name) ? 'в коробке' : '';
+      var marker = /магнит/i.test(name) ? 'на магните' : /пакет/i.test(name) ? 'в пакете' : /коробк/i.test(name) ? 'в коробке' : /подставк/i.test(name) ? 'с подставкой' : '';
       var elig = goods.filter(function (g) { return marker && g.raw.indexOf(marker) > -1; });
       if (!elig.length) elig = goods;
       var eq = elig.reduce(function (s, g) { return s + g.qty; }, 0) || 1, left = v;
