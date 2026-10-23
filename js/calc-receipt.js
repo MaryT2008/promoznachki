@@ -38,38 +38,56 @@
     if (q.get('lines')) {
       q.get('lines').split('; ').forEach(function (l) {
         var parts = l.split(' = ');
-        goods.push({ name: parts[0].replace(/ по [\d\s, ]+₽$/, ''), sum: num(parts[1]) });
+        var qm = parts[0].match(/× ([\d\s\u00a0]+) шт/);
+        goods.push({ name: parts[0].replace(/ по [\d\s,\u00a0]+₽$/, '').replace(/,? (на магните|в пакете)/g, ''), raw: parts[0], qty: qm ? num(qm[1]) : 0, sum: num(parts[1]), subs: [] });
       });
     } else {
       var qty = Number(q.get('qty')) || 0;
       var pr = num(q.get('per'));
-      goods.push({ name: (q.get('size') ? q.get('size') + ' × ' : '') + qty.toLocaleString('ru-RU') + ' шт' + (pr ? ' по ' + unit(pr / k) : ''), sum: Math.round(pr * qty) });
+      goods.push({ name: (q.get('size') ? q.get('size') + ' × ' : '') + qty.toLocaleString('ru-RU') + ' шт' + (pr ? ' по ' + unit(pr / k) : ''), raw: '', qty: qty, sum: Math.round(pr * qty), subs: [] });
     }
     var goodsSum = goods.reduce(function (s, g) { return s + g.sum; }, 0);
-    var baseSum = Math.round(goodsSum / k);
+    var cap = function (s) { return s.replace(/^./, function (c) { return c.toUpperCase(); }); };
+
+    // Наценки — под каждой позицией, своей суммой
+    goods.forEach(function (g) {
+      g.base = Math.round(g.sum / k);
+      var ts = Math.round(g.base * t);
+      if (t && term) g.subs.push([cap(term.dataset.name || 'срочное изготовление') + ' (+' + Math.round(t * 100) + '%)', ts]);
+      if (p) g.subs.push(['Персонализация (+' + Math.round(p * 100) + '%)', g.sum - g.base - ts]);
+    });
+
+    // Допуслуги: штучные (магнит, упаковка, подставки) — под позициями, остальные — в конце
+    var extras = 0, orderRows = [];
+    (q.get('opts') || '').split(', ').forEach(function (o) {
+      var mm = o.match(/^(.*?)\s*\+\s*([\d\s\u00a0]+)\s*₽$/);
+      if (!mm) return;
+      var v = num(mm[2]), name = cap(mm[1]);
+      extras += v;
+      if (!/магнит|упаковка|подставк/i.test(name)) { orderRows.push([name, v]); return; }
+      var marker = /магнит/i.test(name) ? 'на магните' : /пакет/i.test(name) ? 'в пакете' : '';
+      var elig = goods.filter(function (g) { return marker && g.raw.indexOf(marker) > -1; });
+      if (!elig.length) elig = goods;
+      var eq = elig.reduce(function (s, g) { return s + g.qty; }, 0) || 1, left = v;
+      elig.forEach(function (g, n) {
+        var part = n === elig.length - 1 ? left : Math.round(v * g.qty / eq);
+        left -= part;
+        g.subs.push([name, part]);
+      });
+    });
 
     var rows = [];
-    goods.forEach(function (g) { rows.push([g.name, Math.round(g.sum / k)]); });
-    var termSum = Math.round(baseSum * t);
-    var persSum = goodsSum - baseSum - termSum;
-    if (t && term) rows.push([(term.dataset.name || 'срочное изготовление').replace(/^./, function (c) { return c.toUpperCase(); }) + ' (+' + Math.round(t * 100) + '%)', termSum]);
-    if (p) rows.push(['Персонализация (+' + Math.round(p * 100) + '%)', persSum]);
-
-    // Дополнительные услуги с суммой: «упаковка в пакет +500 ₽»
-    var extras = 0;
-    (q.get('opts') || '').split(', ').forEach(function (o) {
-      var mm = o.match(/^(.*?)\s*\+\s*([\d\s ]+)\s*₽$/);
-      if (!mm) return;
-      var v = num(mm[2]);
-      extras += v;
-      rows.push([mm[1].replace(/^./, function (c) { return c.toUpperCase(); }), v]);
+    goods.forEach(function (g) {
+      rows.push([g.name, g.base, '']);
+      g.subs.forEach(function (s) { rows.push(['+ ' + s[0].replace(/^./, function (c) { return c.toLowerCase(); }), s[1], 'sub']); });
     });
+    orderRows.forEach(function (r) { rows.push([r[0], r[1], 'order']); });
     // Минимальная сумма заказа
     var rest = total - goodsSum - extras;
-    if (rest > 5) rows.push(['Доплата до минимальной суммы заказа ' + money(MIN_ORDER), rest]);
+    if (rest > 5) rows.push(['Доплата до минимальной суммы заказа ' + money(MIN_ORDER), rest, 'order']);
 
     box.innerHTML = rows.map(function (r) {
-      return '<li><span>' + esc(r[0]) + '</span><b>' + money(r[1]) + '</b></li>';
+      return '<li' + (r[2] ? ' class="is-' + r[2] + '"' : '') + '><span>' + esc(r[0]) + '</span><b>' + money(r[1]) + '</b></li>';
     }).join('') + '<li class="calc-receipt-total"><span>Итого</span><b>' + money(total) + '</b></li>';
   }
 
