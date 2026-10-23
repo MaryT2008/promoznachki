@@ -132,11 +132,11 @@
     if (hint) hint.innerHTML = hintText(list.length);
     if (!box) return;
     box.hidden = !list.length;
-    if (!list.length) { box.innerHTML = ''; return; }
+    if (!list.length) { box.innerHTML = ''; fillMessage(''); return; }
     var goods = list.reduce(function (s, it) { return s + it.sum; }, 0);
     var rest = Math.max(0, MIN_ORDER - goods);
     var total = goods + rest + deliveryValue;
-    box.innerHTML = '<div class="basket-head"><b>Ваша заявка</b><small>' + list.length + ' ' + (list.length === 1 ? 'товар' : list.length < 5 ? 'товара' : 'товаров') + '</small></div>' +
+    box.innerHTML = '<div class="basket-head"><b>Ваша заявка</b><small>' + list.length + ' ' + plural(list.length) + '</small></div>' +
       list.map(function (it) {
         return '<div class="basket-item"><div class="basket-item-top"><a href="' + esc(it.page) + '#calc">' + esc(it.item) + '</a><b>' + money(it.sum) + '</b>' +
           '<button type="button" data-remove="' + it.id + '" aria-label="Убрать из заявки">×</button></div>' +
@@ -150,13 +150,23 @@
       '<div class="basket-total"><span>Итого по заявке</span><b>' + money(total) + '</b></div>' +
       '<input type="hidden" name="Заявка с сайта" value="' + esc(text(list, deliveryValue, total)) + '">' +
       '<a class="basket-more" href="index.html#catalog">+ Добавить ещё товар</a>';
-    // Текст заявки — в поле сообщения, если клиент его ещё не правил
+    fillMessage('Хочу заказать:\n' + text(list, deliveryValue, total));
+  }
+
+  // Текст заявки в поле сообщения: при каждом изменении заменяем прежний блок новым,
+  // не трогая то, что клиент дописал сам
+  var lastBlock = '';
+  function fillMessage(block) {
     var msg = document.getElementById('f-message');
-    if (msg && (!msg.value.trim() || msg.dataset.basket === '1')) {
-      msg.value = 'Хочу заказать:\n' + text(list, deliveryValue, total) + '\n\nМакет прикладываю.';
-      msg.dataset.basket = '1';
-      msg.addEventListener('input', function () { msg.dataset.basket = '0'; }, { once: true });
-    }
+    if (!msg) return;
+    var v = msg.value;
+    if (lastBlock && v.indexOf(lastBlock) !== -1) v = v.replace(lastBlock, function () { return block; });
+    else if (!block) return;
+    else if (!v.trim()) v = block + '\n\nМакет прикладываю.';
+    else v = block + '\n\n' + v;
+    if (!block) v = v.replace(/^\s+/, '').replace(/^Макет прикладываю\.\s*$/, '');
+    msg.value = v;
+    lastBlock = block;
   }
 
   window.addEventListener('storage', function (e) { if (e.key === KEY) render(); });
