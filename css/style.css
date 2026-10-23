@@ -3736,7 +3736,3 @@ body.no-scroll { overflow: hidden; }
 .msg-link--tg svg { color: #2aabee; }
 .msg-link--wa svg { color: #25d366; }
 .msg-link--max svg { color: #6a3cf5; }
-/* Крупнее иконки мессенджеров в карточке «Контакты» */
-.contacts-card .msg-link { gap: 10px; padding: 5px 0; font-size: 17px; }
-.contacts-card .msg-link svg { width: 32px; height: 32px; }
-.request-contacts .msg-link svg { width: 26px; height: 26px; }
