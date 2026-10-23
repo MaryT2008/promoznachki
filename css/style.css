@@ -3653,3 +3653,44 @@ body.no-scroll { overflow: hidden; }
   .mag-scheme-ghost { width: calc(100 * 1.8px); height: calc(70 * 1.8px); }
 }
 .calc-check-note { display: block; margin-top: 3px; font-size: 12.5px; line-height: 1.4; color: var(--muted); }
+
+/* Магнит в калькуляторе: место под логотип */
+.mag-scheme-shape {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 4px solid #fff;
+  outline: 2px dashed rgba(244, 123, 32, .55);
+  outline-offset: -12px;
+}
+.mag-scheme-shape[data-shape="round"] { outline-offset: -10px; }
+.mag-scheme-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: calc(min(var(--w, 50), var(--h, 50)) * .3px);
+  line-height: 1.05;
+  letter-spacing: .02em;
+  text-align: center;
+  background: linear-gradient(135deg, var(--orange), #e2532b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: font-size .45s;
+}
+.mag-scheme-logo i {
+  width: calc(min(var(--w, 50), var(--h, 50)) * .38px);
+  height: calc(min(var(--w, 50), var(--h, 50)) * .38px);
+  border-radius: 30%;
+  background: linear-gradient(135deg, var(--orange), #e2532b);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.2 5.8 20.9l1.6-7L2 9.2l7.1-.6z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.2 5.8 20.9l1.6-7L2 9.2l7.1-.6z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+@media (max-width: 640px) {
+  .mag-scheme-logo { font-size: calc(min(var(--w, 50), var(--h, 50)) * .24px); }
+  .mag-scheme-logo i { width: calc(min(var(--w, 50), var(--h, 50)) * .3px); height: calc(min(var(--w, 50), var(--h, 50)) * .3px); }
+}
