@@ -3702,7 +3702,9 @@ body.no-scroll { overflow: hidden; }
 .mag-scheme-shape { transition: width .45s cubic-bezier(.22, .61, .36, 1), height .45s cubic-bezier(.22, .61, .36, 1), border-radius .35s, opacity .3s, transform .35s; }
 @media (max-width: 640px) { .mag-scheme-custom { width: calc(108 * 1.8px); } }
 /* Оборот значка на магните — фото с магнитом, рисованный магнит больше не нужен */
-.badge-scheme-circle.is-magnet { background-image: url("../assets/img/pin-back-magnet.webp"); box-shadow: 0 14px 30px rgba(120, 40, 0, .32), inset 0 0 0 2px rgba(255, 255, 255, .55), inset 0 -6px 12px rgba(0, 0, 0, .12); }
+.badge-scheme-circle.is-magnet { box-shadow: 0 14px 30px rgba(120, 40, 0, .32), inset 0 0 0 2px rgba(255, 255, 255, .55), inset 0 -6px 12px rgba(0, 0, 0, .12); }
 .badge-scheme-circle .badge-scheme-magnet { display: none; }
 /* 25 и 38 мм на магните — заготовка как у значка с булавкой, но с магнитом */
 .badge-scheme-circle.is-magnet.is-mini { background-image: url("../assets/img/pin-back-magnet-small.webp"); box-shadow: 0 14px 30px rgba(120, 40, 0, .32); }
+.badge-scheme-circle.is-magnet.is-56 { background-image: url("../assets/img/pin-back-magnet-56.webp"); }
+.badge-scheme-circle.is-magnet.is-78 { background-image: url("../assets/img/pin-back-magnet-78.webp"); }
