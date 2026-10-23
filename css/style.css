@@ -3570,3 +3570,14 @@ body.no-scroll { overflow: hidden; }
   .msg-float--wa { bottom: calc(80px + env(safe-area-inset-bottom)); padding: 12px; }
   .sticky-calc.is-visible ~ .msg-float--wa { bottom: calc(150px + env(safe-area-inset-bottom)); }
 }
+/* Мессенджеры — круглые иконки друг над другом */
+.msg-float { justify-content: center; width: 56px; height: 56px; padding: 0; border-radius: 50%; }
+.msg-float span { display: none; }
+.msg-float svg { width: 32px; height: 32px; }
+.msg-float--wa { bottom: 90px; padding: 0; }
+.msg-float:hover { transform: scale(1.08); }
+@media (max-width: 640px) {
+  .msg-float { width: 52px; height: 52px; padding: 0; }
+  .msg-float svg { width: 30px; height: 30px; }
+  .msg-float--wa { bottom: calc(80px + env(safe-area-inset-bottom)); padding: 0; }
+}
