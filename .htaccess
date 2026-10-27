@@ -1,1 +1,10 @@
 ErrorDocument 404 /404.html
+
+RewriteEngine On
+
+# www.promoznachki.ru → promoznachki.ru (один основной адрес для Google)
+RewriteCond %{HTTP_HOST} ^www\.promoznachki\.ru$ [NC]
+RewriteRule ^ https://promoznachki.ru%{REQUEST_URI} [R=301,L]
+
+# Старый обработчик формы от прошлого сайта — удалён навсегда
+RewriteRule ^send1\.php$ - [G,L]
