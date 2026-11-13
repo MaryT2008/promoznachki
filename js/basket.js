@@ -15,7 +15,7 @@
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
   // ---------- Значок «Заявка (N)»: в оранжевой полосе и плавающий на телефоне ----------
-  var home = /(\/|index\.html)$/.test(location.pathname) ? '#order' : 'index.html#order';
+  var home = /(\/|index\.html)$/.test(location.pathname) ? '#order' : '/#order';
   var badges = [];
   function makeBadge(cls) {
     var a = document.createElement('a');
@@ -77,7 +77,7 @@
       var c = currentCalc();
       if (!c || !c.rows.length) return;
       var list = load(); list.push(c); save(list);
-      showToast('<b>Добавлено в заявку</b> ' + esc(c.item) + ' — ' + money(c.sum) + '<br><a href="index.html#order">Оформить заявку (' + list.length + ')</a> или посчитайте другие товары');
+      showToast('<b>Добавлено в заявку</b> ' + esc(c.item) + ' — ' + money(c.sum) + '<br><a href="/#order">Оформить заявку (' + list.length + ')</a> или посчитайте другие товары');
     });
     // Если в заявке уже есть товары — «Оформить заказ» добавляет текущий расчёт к ним
     order.addEventListener('click', function (e) {
@@ -86,7 +86,7 @@
       if (c && c.rows.length) { var list = load(); list.push(c); save(list); }
       e.preventDefault();
       e.stopImmediatePropagation();
-      location.href = 'index.html#order';
+      location.href = '/#order';
     }, true);
   }
 
@@ -149,7 +149,7 @@
       (rest ? '<p class="basket-min">Доплата до минимальной суммы заказа 3 000 ₽: ' + money(rest) + '</p>' : '') +
       '<div class="basket-total"><span>Итого по заявке</span><b>' + money(total) + '</b></div>' +
       '<input type="hidden" name="Заявка с сайта" value="' + esc(text(list, deliveryValue, total)) + '">' +
-      '<a class="basket-more" href="index.html#catalog">+ Добавить ещё товар</a>';
+      '<a class="basket-more" href="/#catalog">+ Добавить ещё товар</a>';
     fillMessage('Хочу заказать:\n' + text(list, deliveryValue, total));
   }
 

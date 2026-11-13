@@ -29,6 +29,28 @@
     <script type="application/ld+json" data-seo>
     {"@context": "https://schema.org", "@type": "Product", "name": "Стеклянные кружки с логотипом", "description": "Стеклянные кружки 330 мл с логотипом на заказ: матовое и прозрачное стекло, полноцветная сублимационная печать. Тираж от 10 штук, цены от 290 ₽ и онлайн-расчёт стоимости.", "image": "https://promoznachki.ru/assets/img/mugs-glass-hero.webp", "brand": {"@type": "Brand", "name": "ПромоЗначки"}, "url": "https://promoznachki.ru/steklyannye-kruzhki.html", "offers": {"@type": "AggregateOffer", "priceCurrency": "RUB", "lowPrice": "290", "highPrice": "600", "availability": "https://schema.org/InStock", "seller": {"@id": "https://promoznachki.ru/#org", "@type": "Organization", "name": "ПромоЗначки"}}}
     </script>
+  <!-- Yandex.Metrika counter -->
+  <script>
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    ym(113761709, "init", { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true });
+    // цель «lead» — заявка успешно отправлена (форма получает класс is-sent)
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('form').forEach(function (form) {
+        var sent = false;
+        function check() {
+          if (!sent && form.classList.contains('is-sent')) { sent = true; ym(113761709, 'reachGoal', 'lead'); }
+        }
+        check();
+        new MutationObserver(check).observe(form, { attributes: true, attributeFilter: ['class'] });
+      });
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/113761709" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+  <!-- /Yandex.Metrika counter -->
 </head>
 <body id="top">
   <!-- Общие SVG-иконки -->
@@ -91,7 +113,7 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="index.html" aria-label="ПромоЗначки — на главную">
+      <a class="logo" href="/" aria-label="ПромоЗначки — на главную">
         <img src="assets/img/logo.png" width="207" height="63" alt="ПромоЗначки — стань заметным">
       </a>
 
@@ -102,21 +124,21 @@
       <nav class="main-nav" id="main-nav" aria-label="Основное меню">
         <a href="about.html">О нас</a>
         <div class="nav-drop">
-          <a class="nav-drop-link" href="index.html#badges">Значки<svg class="nav-drop-chev" aria-hidden="true" viewBox="0 0 12 12"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a class="nav-drop-link" href="/#badges">Значки<svg class="nav-drop-chev" aria-hidden="true" viewBox="0 0 12 12"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           <div class="nav-drop-menu"><a href="zakatnye-znachki.html"><b>Закатные значки</b><small>от 20 шт, 25–78 мм</small></a><a href="znachki-smola.html"><b>Значки с заливкой смолой</b><small>металл и смола, 13–35 мм</small></a><a href="znachki-s-lentoy.html"><b>Значки с лентой</b><small>триколор и георгиевская лента</small></a></div>
         </div>
         <div class="nav-drop">
-          <a class="nav-drop-link" href="index.html#mugs" aria-current="page">Кружки<svg class="nav-drop-chev" aria-hidden="true" viewBox="0 0 12 12"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a class="nav-drop-link" href="/#mugs" aria-current="page">Кружки<svg class="nav-drop-chev" aria-hidden="true" viewBox="0 0 12 12"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           <div class="nav-drop-menu"><a href="belye-kruzhki.html"><b>Белые кружки</b><small>классика 330 мл</small></a><a href="cvetnye-kruzhki.html"><b>Цветные кружки</b><small>10 цветов, золото и серебро</small></a><a href="steklyannye-kruzhki.html" aria-current="page"><b>Стеклянные кружки</b><small>матовое и прозрачное стекло</small></a><a href="kruzhki-hameleony.html"><b>Кружки-хамелеоны</b><small>рисунок проявляется от тепла</small></a><a href="sportivnye-butylki.html"><b>Спортивные бутылки</b><small>500 и 600 мл с карабином</small></a></div>
         </div>
         <a href="magnity.html">Магниты</a>
         <a href="veera.html">Веера</a>
         <a href="tarelki.html">Тарелки</a>
-        <a class="main-nav-order" href="index.html#order">Оформить заказ</a>
+        <a class="main-nav-order" href="/#order">Оформить заказ</a>
         <!-- Пункты оранжевой полосы: на телефоне она скрыта, и они переезжают в меню -->
         <div class="main-nav-extra">
-          <a href="index.html#catalog"><svg aria-hidden="true"><use href="#i-catalog"/></svg>Каталог</a>
-          <a href="index.html#order"><svg aria-hidden="true"><use href="#i-calc"/></svg>Рассчитать заказ</a>
+          <a href="/#catalog"><svg aria-hidden="true"><use href="#i-catalog"/></svg>Каталог</a>
+          <a href="/#order"><svg aria-hidden="true"><use href="#i-calc"/></svg>Рассчитать заказ</a>
           <a href="dostavka-i-oplata.html"><svg aria-hidden="true"><use href="#i-truck"/></svg>Доставка и оплата</a>
           <a href="kontakty.html"><svg aria-hidden="true"><use href="#i-contacts"/></svg>Контакты</a>
           <a href="mailto:sales@promoznachki.ru"><svg aria-hidden="true"><use href="#i-mail"/></svg>sales@promoznachki.ru</a>
@@ -139,8 +161,8 @@
     <div class="sub-nav">
       <div class="container sub-nav-inner">
         <a href="mailto:sales@promoznachki.ru"><svg aria-hidden="true"><use href="#i-mail"/></svg>sales@promoznachki.ru</a>
-        <a href="index.html#catalog"><svg aria-hidden="true"><use href="#i-catalog"/></svg>Каталог</a>
-        <a href="index.html#order"><svg aria-hidden="true"><use href="#i-calc"/></svg>Рассчитать заказ</a>
+        <a href="/#catalog"><svg aria-hidden="true"><use href="#i-catalog"/></svg>Каталог</a>
+        <a href="/#order"><svg aria-hidden="true"><use href="#i-calc"/></svg>Рассчитать заказ</a>
         <a href="dostavka-i-oplata.html"><svg aria-hidden="true"><use href="#i-truck"/></svg>Доставка и оплата</a>
         <a href="kontakty.html"><svg aria-hidden="true"><use href="#i-contacts"/></svg>Контакты</a>
       </div>
@@ -153,7 +175,7 @@
       <div class="container pp-hero-inner pp-hero-inner--wide">
         <div class="pp-hero-text">
           <nav class="breadcrumbs" aria-label="Хлебные крошки">
-            <a href="index.html">Главная</a><span aria-hidden="true">/</span><a href="index.html#mugs">Кружки</a><span aria-hidden="true">/</span><span aria-current="page">Стеклянные кружки</span>
+            <a href="/">Главная</a><span aria-hidden="true">/</span><a href="/#mugs">Кружки</a><span aria-hidden="true">/</span><span aria-current="page">Стеклянные кружки</span>
           </nav>
           <span class="section-eyebrow">Кружки с логотипом</span>
           <h1 class="about-title">Стеклянные кружки <span class="about-title-accent">с&nbsp;логотипом</span></h1>
@@ -265,7 +287,7 @@
             <span class="calc-per" id="calc-per"></span>
             <span class="calc-breakdown" id="calc-breakdown"></span>
             <p class="calc-hint" id="calc-hint"></p>
-            <a class="btn btn--light calc-order" href="index.html#order">Оформить заказ</a>
+            <a class="btn btn--light calc-order" rel="nofollow" href="/#order">Оформить заказ</a>
             <small>Срок изготовления и&nbsp;итоговую стоимость подтвердим при оформлении заявки и&nbsp;после согласования макета</small>
           </div>
         </div>
@@ -430,7 +452,7 @@
             <p>Пришлите логотип или идею — подберём модель и рассчитаем точную стоимость тиража.</p>
           </div>
           <div class="cta-actions">
-            <a class="btn btn--light" href="index.html?need=%D0%9D%D1%83%D0%B6%D0%BD%D1%8B%20%D1%81%D1%82%D0%B5%D0%BA%D0%BB%D1%8F%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BA%D1%80%D1%83%D0%B6%D0%BA%D0%B8%20%D1%81%20%D0%BB%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF%D0%BE%D0%BC#order">Оставить заявку</a>
+            <a class="btn btn--light" rel="nofollow" href="/?need=%D0%9D%D1%83%D0%B6%D0%BD%D1%8B%20%D1%81%D1%82%D0%B5%D0%BA%D0%BB%D1%8F%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BA%D1%80%D1%83%D0%B6%D0%BA%D0%B8%20%D1%81%20%D0%BB%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF%D0%BE%D0%BC#order">Оставить заявку</a>
             <a class="cta-phone" href="tel:+74993945984">+7 (499) 394-59-84</a>
           </div>
         </div>
@@ -442,11 +464,11 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a class="footer-logo" href="index.html" aria-label="ПромоЗначки — на главную">
+          <a class="footer-logo" href="/" aria-label="ПромоЗначки — на главную">
             <img src="assets/img/logo.png" width="207" height="63" alt="ПромоЗначки — стань заметным" loading="lazy" decoding="async">
           </a>
           <p>Закатные значки, кружки, магниты и веера с логотипом. Собственное производство в Москве, доставка по всей России.</p>
-          <a class="btn footer-cta" href="index.html#order">Рассчитать заказ</a>
+          <a class="btn footer-cta" href="/#order">Рассчитать заказ</a>
         </div>
 
         <div class="footer-col footer-contacts">
@@ -458,7 +480,7 @@
             <li><a class="footer-max footer-tg" href="https://t.me/Promogift_Support" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-tg"/></svg>Написать в Telegram</a></li>
             <li><a class="footer-max footer-wa" href="https://wa.me/qr/CG5LBFJK6QRCH1" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>Написать в WhatsApp</a></li>
             <li><a class="footer-max" href="https://max.ru/u/f9LHodD0cOIUJK19XiIwKd3uW_x30U4Qt7683yFB2-2XNrdhEBmbESW0N_A" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-max"/></svg>Написать в MAX</a></li>
-            <li>Москва, ул.&nbsp;Нижегородская, д.&nbsp;32, стр.&nbsp;6, оф.&nbsp;1</li>
+            <li>Москва, ул.&nbsp;Нижегородская, д.&nbsp;32, стр.&nbsp;4</li>
             <li>По будням, 10:00–19:00</li>
           </ul>
         </div>
@@ -466,7 +488,7 @@
         <nav class="footer-col" aria-label="Информация">
           <h2 class="footer-title">Покупателям</h2>
           <ul class="footer-list">
-            <li><a href="index.html#works">Наши работы</a></li>
+            <li><a href="/#works">Наши работы</a></li>
             <li><a href="trebovaniya-k-maketam.html">Требования к макетам</a></li>
             <li><a href="voprosy-otvety.html">Вопросы и ответы</a></li>
             <li><a href="dostavka.html">Доставка</a></li>
@@ -480,7 +502,7 @@
           <ul class="footer-list">
             <li><a href="zakatnye-znachki.html">Закатные значки</a></li>
             <li><a href="magnity.html">Магниты</a></li>
-            <li><a href="index.html#mugs">Кружки</a></li>
+            <li><a href="/#mugs">Кружки</a></li>
             <li><a href="veera.html">Веера</a></li>
             <li><a href="tarelki.html">Тарелки</a></li>
           </ul>

@@ -15,6 +15,28 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Onest:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css?v=20261023b">
   <script src="/js/reveal.js?v=20261023" defer></script>
+  <!-- Yandex.Metrika counter -->
+  <script>
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    ym(113761709, "init", { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true });
+    // цель «lead» — заявка успешно отправлена (форма получает класс is-sent)
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('form').forEach(function (form) {
+        var sent = false;
+        function check() {
+          if (!sent && form.classList.contains('is-sent')) { sent = true; ym(113761709, 'reachGoal', 'lead'); }
+        }
+        check();
+        new MutationObserver(check).observe(form, { attributes: true, attributeFilter: ['class'] });
+      });
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/113761709" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+  <!-- /Yandex.Metrika counter -->
 </head>
 <body id="top">
   <!-- Общие SVG-иконки -->
@@ -170,7 +192,7 @@
             <li><a class="footer-max footer-tg" href="https://t.me/Promogift_Support" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-tg"/></svg>Написать в Telegram</a></li>
             <li><a class="footer-max footer-wa" href="https://wa.me/qr/CG5LBFJK6QRCH1" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>Написать в WhatsApp</a></li>
             <li><a class="footer-max" href="https://max.ru/u/f9LHodD0cOIUJK19XiIwKd3uW_x30U4Qt7683yFB2-2XNrdhEBmbESW0N_A" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-max"/></svg>Написать в MAX</a></li>
-            <li>Москва, ул.&nbsp;Нижегородская, д.&nbsp;32, стр.&nbsp;6, оф.&nbsp;1</li>
+            <li>Москва, ул.&nbsp;Нижегородская, д.&nbsp;32, стр.&nbsp;4</li>
             <li>По будням, 10:00–19:00</li>
           </ul>
         </div>
